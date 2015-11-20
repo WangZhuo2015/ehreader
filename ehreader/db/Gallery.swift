@@ -80,7 +80,13 @@ public class Gallery: Object {
     
     public dynamic var size:Int = 0
     
+    public dynamic var image:UIImage?
+    
     public let photos = List<Photo>()
+    
+    override public static func ignoredProperties() -> [String] {
+        return ["image"]
+    }
     
     public override static func primaryKey() -> String? {
         return "id"
@@ -97,21 +103,24 @@ public class Gallery: Object {
     }
     
     public func fillValues(values:[String:AnyObject]) {
-        self.token = values["token"] as! String
-        self.title = values["title"] as? String
-        self.subtitle = values["title_jpn"] as? String
-        self.category = values["category"] as? String ?? GalleryCategory.Misc.rawValue
-        self.thumbnail = values["thumb"] as? String
-        self.count = values["filecount"]?.integerValue ?? 0
-        self.rating = values["rating"]?.floatValue ?? 0
-        self.uploader = values["uploader"] as? String
-        if let tags = values["tags"] as? [String] {
-            self.createTags(tags)
+        let realm = try! Realm()
+        try! realm.write {
+            self.token = values["token"] as! String
+            self.title = values["title"] as? String
+            self.subtitle = values["title_jpn"] as? String
+            self.category = values["category"] as? String ?? GalleryCategory.Misc.rawValue
+            self.thumbnail = values["thumb"] as? String
+            self.count = values["filecount"]?.integerValue ?? 0
+            self.rating = values["rating"]?.floatValue ?? 0
+            self.uploader = values["uploader"] as? String
+            if let tags = values["tags"] as? [String] {
+                self.createTags(tags)
+            }
+            if let timeinterval = values["posted"]!.longValue {
+                let posted = NSDate(timeIntervalSince1970: NSTimeInterval(timeinterval))
+                self.created = posted
+            }
+            self.size = values["filesize"]?.longValue ?? 0
         }
-        if let timeinterval = values["posted"]!.longValue {
-            let posted = NSDate(timeIntervalSince1970: NSTimeInterval(timeinterval))
-            self.created = posted
-        }
-        self.size = values["filesize"]?.longValue ?? 0
     }
 }

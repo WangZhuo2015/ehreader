@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		86EA0D6DDE51F968E31AD00E /* Pods_ehreader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */; };
+		F730FDE61BFEF83500F44740 /* CollectionViewWaterfallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F730FDE51BFEF83500F44740 /* CollectionViewWaterfallLayout.swift */; };
+		F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F730FDE71BFEFA6000F44740 /* GalleryService.swift */; };
 		F78DD6DA1BF9DB7C003D3CB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78DD6D91BF9DB7C003D3CB9 /* AppDelegate.swift */; };
 		F78DD6DC1BF9DB7C003D3CB9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78DD6DB1BF9DB7C003D3CB9 /* ViewController.swift */; };
 		F78DD6DF1BF9DB7C003D3CB9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F78DD6DD1BF9DB7C003D3CB9 /* Main.storyboard */; };
@@ -48,6 +50,8 @@
 		45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ehreader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18FFB26088383633394625A /* Pods-ehreader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.debug.xcconfig"; sourceTree = "<group>"; };
 		C546FD883CD238072C87AC87 /* Pods-ehreader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.release.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.release.xcconfig"; sourceTree = "<group>"; };
+		F730FDE51BFEF83500F44740 /* CollectionViewWaterfallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewWaterfallLayout.swift; sourceTree = "<group>"; };
+		F730FDE71BFEFA6000F44740 /* GalleryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryService.swift; sourceTree = "<group>"; };
 		F78DD6D61BF9DB7C003D3CB9 /* ehreader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ehreader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F78DD6D91BF9DB7C003D3CB9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F78DD6DB1BF9DB7C003D3CB9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -194,6 +198,7 @@
 		F78DD6FB1BF9E4E1003D3CB9 /* service */ = {
 			isa = PBXGroup;
 			children = (
+				F730FDE71BFEFA6000F44740 /* GalleryService.swift */,
 			);
 			path = service;
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 		F78DD6FD1BF9E4E1003D3CB9 /* wedget */ = {
 			isa = PBXGroup;
 			children = (
+				F730FDE51BFEF83500F44740 /* CollectionViewWaterfallLayout.swift */,
 				F7EB13371BFDCFEF00538CC5 /* customcell */,
 			);
 			path = wedget;
@@ -390,9 +396,11 @@
 				F7A556D21BFB2A1F00E7CBEB /* ImageSearch.swift in Sources */,
 				F7A556D41BFB2DAB00E7CBEB /* Download.swift in Sources */,
 				F7FAA4EB1BFAC43100E27E4A /* Gallery.swift in Sources */,
+				F730FDE61BFEF83500F44740 /* CollectionViewWaterfallLayout.swift in Sources */,
 				F7EB13391BFDD01300538CC5 /* GalleryCell.swift in Sources */,
 				F78DD6DC1BF9DB7C003D3CB9 /* ViewController.swift in Sources */,
 				F78DD6DA1BF9DB7C003D3CB9 /* AppDelegate.swift in Sources */,
+				F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */,
 				F7EE39E51BFC0E9E00531983 /* Extensions.swift in Sources */,
 				F78DD6FF1BF9E56D003D3CB9 /* DataLoader.swift in Sources */,
 				F7FAA4ED1BFACA6200E27E4A /* Photo.swift in Sources */,

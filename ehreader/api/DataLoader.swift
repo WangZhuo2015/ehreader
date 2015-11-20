@@ -121,13 +121,17 @@ public class DataLoader: NSObject {
                             }
                             realm.objects(Gallery).filter("id = \(id)")
                             
-                            let gallery = realm.objects(Gallery).filter("id = \(id)").first ?? Gallery()
-                            gallery.id = id
-                            gallery.fillValues(values)
-                            try! realm.write {
-                                realm.add(gallery, update: true)
+                            var gallery = realm.objects(Gallery).filter("id = \(id)").first
+                            if gallery == nil {
+                                gallery = Gallery()
+                                gallery!.id = id
                             }
-                            galleries.append(gallery)
+                            
+                            gallery!.fillValues(values)
+                            try! realm.write {
+                                realm.add(gallery!, update: true)
+                            }
+                            galleries.append(gallery!)
                         }
                     }
                 }
