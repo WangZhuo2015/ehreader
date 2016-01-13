@@ -83,7 +83,14 @@ public class DataLoader: NSObject {
         }
     }
     
-    public func getGallery(base:String, page:Int, complete:(galleries:[Gallery])->Void) {
+    /**
+     Fetch the gallery list, this method will cached the data
+     
+     - parameter base:     The base url
+     - parameter page:     page of the gallery
+     - parameter complete: complete closure
+     */
+    public func getGallery(base:String, page:Int, complete:((galleries:[Gallery])->Void)?) {
         let url = "\(base)?page=\(page)"
         httpManager.request(.GET, url).responseString { (response:Response<String, NSError>) -> Void in
             var gidlist:[[String]] = []
@@ -101,9 +108,15 @@ public class DataLoader: NSObject {
         }
     }
     
-    public func getGalleryList(gidlist:[[String]], complete:(galleries:[Gallery])->Void) {
+    /**
+     When you know the gid list, you can call the this method to get the gallery list, it will cahce the data automatically
+     
+     - parameter gidlist:
+     - parameter complete: complete closure
+     */
+    public func getGalleryList(gidlist:[[String]], complete:((galleries:[Gallery])->Void)?) {
         if gidlist.isEmpty {
-            complete(galleries: [])
+            complete?(galleries: [])
         }
         self.callApi(ApiMethod.gdata, gidlist: gidlist) { (response:Response<AnyObject, NSError>) -> Void in
             let realm = try! Realm()
@@ -111,7 +124,7 @@ public class DataLoader: NSObject {
             if let result = response.result.value as? [NSObject:AnyObject] {
                 if let error = result["error"] as? String {
                     print(error)
-                    complete(galleries: [])
+                    complete?(galleries: [])
                 }
                 if let gmetadata = result["gmetadata"] as? [[String:AnyObject]] {
                     for values in gmetadata {
@@ -136,32 +149,106 @@ public class DataLoader: NSObject {
                     }
                 }
             }
-            complete(galleries: galleries)
+            complete?(galleries: galleries)
         }
     }
     
-    public func getPhotoList(galleryId:Int, page:Int, complete:(photos:[Photo])->Void) {
+    /**
+     account to the gallery id to get all the photo list
+     
+     - parameter galleryId: gallery id
+     - parameter page:
+     - parameter complete:
+     */
+    public func getPhotoList(galleryId:Int, page:Int, complete:((photos:[Photo])->Void)?) {
         let realm = try! Realm()
         if let gallery = realm.objects(Gallery).filter("id = \(galleryId)").first {
             getPhotoListWithGallery(gallery, page: page, complete: complete)
         }else {
-            complete(photos: [])
+            complete?(photos: [])
         }
     }
     
-    public func getPhotoListWithGallery(gallery:Gallery, page:Int, complete:(photos:[Photo])->Void) {
+    /**
+     According to the gallery to get all the photo list
+     
+     - parameter gallery:  gallery model from the database
+     - parameter page:
+     - parameter complete: 
+     */
+    public func getPhotoListWithGallery(gallery:Gallery, page:Int, complete:((photos:[Photo])->Void)?) {
         let uri = gallery.getUri(page, ex: isLoggedIn())
+        print("request uri:\(uri)")
 
         httpManager.request(.GET, uri).responseString { (response:Response<String, NSError>) -> Void in
+            let photoes:[Photo] = []
             if let responseString = response.result.value {
                 print(responseString)
-                let regularExpression = try! NSRegularExpression(pattern: pPhotoUrl, options: NSRegularExpressionOptions.AllowCommentsAndWhitespace)
-                let range = NSRange(location: 0, length: responseString.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
-                let matches = regularExpression.matchesInString(responseString, options: NSMatchingOptions.Anchored, range: range)
+                let regex = try! RegexHelper(pattern: pPhotoUrl)
+                let matches = regex.matches(responseString)
+                //here the result is like [0] : "http://g.e-hentai.org/s/11a30da13e/893685-1"
+                // [1] : "g.e-"
+                // [2] : "11a30da13e"  this is token
+                // [3] : "893685"
+                // [4] : "1" this is photo page
                 for result in matches {
-                    result.rangeAtIndex(2)
+                    let token = result[2]
+                    if let  photoPage = Int(result[4]) {
+                        print("Photo found: {galleryId: \(gallery.id), token: \(token), page: \(photoPage)}")
+                        let realm = try! Realm()
+                        if let photo = self.getPhotoFromCacheWithGallery(gallery, photoPage: photoPage) {
+                            try! realm.write({ () -> Void in
+                                photo.token = token
+                            })
+                        }else {
+                            let photo = Photo()
+                            photo.token = token
+                            photo.page = photoPage
+                            photo.downloaded = false
+                            photo.bookmarked = false
+                            photo.invalid = false
+                            gallery.photos.append(photo)
+                            try! realm.write {
+                                realm.add(photo)
+                            }
+                            
+                        }
+                    }//if
+                }//for
+            }//if
+            complete?(photos: photoes)
+        }
+    }
+    
+    /**
+     Fetch the photo from database
+     
+     - parameter galleryId:
+     - parameter photoId:
+     
+     - returns: photo
+     */
+    public func getPhotoFromCacheWithGalleryId(galleryId:Int, photoPage:Int)->Photo? {
+        let realm = try! Realm()
+        if let gallery = realm.objects(Gallery).filter("id = \(galleryId)").first {
+            for photo in gallery.photos {
+                if photo.page == photoPage {
+                    return photo
                 }
             }
         }
+        return nil
+    }
+    
+    public func getPhotoFromCacheWithGallery(gallery:Gallery, photoPage:Int)->Photo? {
+        for photo in gallery.photos {
+            if photo.page == photoPage {
+                return photo
+            }
+        }
+        return nil
+    }
+    
+    public func getPhotoInfo() {
     }
 }

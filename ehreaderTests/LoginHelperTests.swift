@@ -9,7 +9,7 @@
 import XCTest
 @testable import ehreader
 
-let defaultTimeout:NSTimeInterval = 1000
+let defaultTimeout:NSTimeInterval = 100000
 
 class LoginHelperTests: XCTestCase {
     

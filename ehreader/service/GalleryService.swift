@@ -18,22 +18,22 @@ public class GalleryService: NSObject {
     }
     
     public func startLoading(completeHandler:()->Void) {
-//        let baseUrl = LoginHelper.getInstance().isLoggedIn() ? BASE_URL_EX : BASE_URL
-//        DataLoader.getInstance().getGallery(baseUrl, page: 0) { (galleries) -> Void in
+        let baseUrl = LoginHelper.getInstance().isLoggedIn() ? BASE_URL_EX : BASE_URL
+        DataLoader.getInstance().getGallery(baseUrl, page: 0) { (galleries) -> Void in
             let realm = try! Realm()
-        for gallery in realm.objects(Gallery) {
-            //Get the cache image
-            if let thumbnail = gallery.thumbnail {
-                KingfisherManager.sharedManager.retrieveImageWithURL(NSURL(string: thumbnail)!, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) -> () in
-                    gallery.image = image
-                    self.galleries.append(gallery)
-                    completeHandler()
-                })
-                
+            for gallery in realm.objects(Gallery) {
+                //Get the cache image
+                if let thumbnail = gallery.thumbnail {
+                    KingfisherManager.sharedManager.retrieveImageWithURL(NSURL(string: thumbnail)!, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) -> () in
+                        gallery.image = image
+                        self.galleries.append(gallery)
+                        completeHandler()
+                    })
+                    
+                }
             }
-        }
         
-        //}
+        }
     }
     
     public func count(page:Int = 0)->Int {

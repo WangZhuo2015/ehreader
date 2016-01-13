@@ -1,12 +1,12 @@
 PODS:
-  - Alamofire (3.1.2)
-  - Kingfisher (1.8.1)
-  - Realm (0.96.2):
-    - Realm/Headers (= 0.96.2)
-  - Realm/Headers (0.96.2)
-  - RealmSwift (0.96.2):
-    - Realm (= 0.96.2)
-  - SnapKit (0.17.0)
+  - Alamofire (3.1.4)
+  - Kingfisher (1.9.1)
+  - Realm (0.97.0):
+    - Realm/Headers (= 0.97.0)
+  - Realm/Headers (0.97.0)
+  - RealmSwift (0.97.0):
+    - Realm (= 0.97.0)
+  - SnapKit (0.18.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -15,10 +15,10 @@ DEPENDENCIES:
   - SnapKit
 
 SPEC CHECKSUMS:
-  Alamofire: 7c16ca65f3c7e681fd925fd7f2dec7747ff96855
-  Kingfisher: a20680f220c52620284fae571805a179809985c2
-  Realm: 3ce8448151c571e90b85002d984d7f93f54fc8a3
-  RealmSwift: 485599fe54e35461c4a0daa7d01d8fbf11424873
-  SnapKit: 49fd7b1b3ff58ab4064004036b8afcfddbd3a4bd
+  Alamofire: fbc829692f351fa1d8a31dd75fd7f7f56fea31fb
+  Kingfisher: 98fedd5d44d982b331fc7303f9f6144b7d8ba289
+  Realm: b498a6fb9d288b171ff98d0e2d4384c295be8990
+  RealmSwift: d014810dec75c9a3f1a33926d2dabfed855c582c
+  SnapKit: e1f090a6d47b1dd4bd89b73f72b6746a7835ef3c
 
 COCOAPODS: 0.39.0

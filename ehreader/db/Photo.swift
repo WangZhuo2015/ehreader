@@ -10,8 +10,6 @@ import Foundation
 import RealmSwift
 
 public class Photo: Object {
-    public dynamic var id = 0
-    
     public dynamic var page:Int = 0
     
     public dynamic var token:String = ""
@@ -30,7 +28,5 @@ public class Photo: Object {
     
     public dynamic var invalid:Bool = false
     
-    public override static func primaryKey() -> String? {
-        return "id"
-    }
+    public dynamic var bookmarked:Bool = false
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		86EA0D6DDE51F968E31AD00E /* Pods_ehreader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */; };
+		E9DC51EC1C4699740053D331 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC51EB1C4699740053D331 /* Constants.swift */; };
 		F730FDE61BFEF83500F44740 /* CollectionViewWaterfallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F730FDE51BFEF83500F44740 /* CollectionViewWaterfallLayout.swift */; };
 		F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F730FDE71BFEFA6000F44740 /* GalleryService.swift */; };
 		F78DD6DA1BF9DB7C003D3CB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78DD6D91BF9DB7C003D3CB9 /* AppDelegate.swift */; };
@@ -17,7 +18,6 @@
 		F78DD6E41BF9DB7D003D3CB9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F78DD6E21BF9DB7D003D3CB9 /* LaunchScreen.storyboard */; };
 		F78DD6EF1BF9DB7D003D3CB9 /* ehreaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78DD6EE1BF9DB7D003D3CB9 /* ehreaderTests.swift */; };
 		F78DD6FF1BF9E56D003D3CB9 /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78DD6FE1BF9E56D003D3CB9 /* DataLoader.swift */; };
-		F7A556D01BFB118300E7CBEB /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A556CF1BFB118300E7CBEB /* Constant.swift */; };
 		F7A556D21BFB2A1F00E7CBEB /* ImageSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A556D11BFB2A1F00E7CBEB /* ImageSearch.swift */; };
 		F7A556D41BFB2DAB00E7CBEB /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A556D31BFB2DAB00E7CBEB /* Download.swift */; };
 		F7A556D61BFB485000E7CBEB /* LoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A556D51BFB485000E7CBEB /* LoginHelper.swift */; };
@@ -50,6 +50,7 @@
 		45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ehreader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18FFB26088383633394625A /* Pods-ehreader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.debug.xcconfig"; sourceTree = "<group>"; };
 		C546FD883CD238072C87AC87 /* Pods-ehreader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.release.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.release.xcconfig"; sourceTree = "<group>"; };
+		E9DC51EB1C4699740053D331 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F730FDE51BFEF83500F44740 /* CollectionViewWaterfallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewWaterfallLayout.swift; sourceTree = "<group>"; };
 		F730FDE71BFEFA6000F44740 /* GalleryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryService.swift; sourceTree = "<group>"; };
 		F78DD6D61BF9DB7C003D3CB9 /* ehreader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ehreader.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,7 +64,6 @@
 		F78DD6EE1BF9DB7D003D3CB9 /* ehreaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ehreaderTests.swift; sourceTree = "<group>"; };
 		F78DD6F01BF9DB7D003D3CB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F78DD6FE1BF9E56D003D3CB9 /* DataLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataLoader.swift; sourceTree = "<group>"; };
-		F7A556CF1BFB118300E7CBEB /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		F7A556D11BFB2A1F00E7CBEB /* ImageSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearch.swift; sourceTree = "<group>"; };
 		F7A556D31BFB2DAB00E7CBEB /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		F7A556D51BFB485000E7CBEB /* LoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHelper.swift; sourceTree = "<group>"; };
@@ -159,7 +159,6 @@
 				F78DD6FD1BF9E4E1003D3CB9 /* wedget */,
 				F78DD6D91BF9DB7C003D3CB9 /* AppDelegate.swift */,
 				F78DD6DB1BF9DB7C003D3CB9 /* ViewController.swift */,
-				F7A556CF1BFB118300E7CBEB /* Constant.swift */,
 				F78DD6DD1BF9DB7C003D3CB9 /* Main.storyboard */,
 				F78DD6E01BF9DB7D003D3CB9 /* Assets.xcassets */,
 				F78DD6E21BF9DB7D003D3CB9 /* LaunchScreen.storyboard */,
@@ -207,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				F7EE39E41BFC0E9E00531983 /* Extensions.swift */,
+				E9DC51EB1C4699740053D331 /* Constants.swift */,
 				F7A556D51BFB485000E7CBEB /* LoginHelper.swift */,
 				F7EB132B1BFD5F0E00538CC5 /* RegexHelper.swift */,
 			);
@@ -400,11 +400,11 @@
 				F7EB13391BFDD01300538CC5 /* GalleryCell.swift in Sources */,
 				F78DD6DC1BF9DB7C003D3CB9 /* ViewController.swift in Sources */,
 				F78DD6DA1BF9DB7C003D3CB9 /* AppDelegate.swift in Sources */,
+				E9DC51EC1C4699740053D331 /* Constants.swift in Sources */,
 				F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */,
 				F7EE39E51BFC0E9E00531983 /* Extensions.swift in Sources */,
 				F78DD6FF1BF9E56D003D3CB9 /* DataLoader.swift in Sources */,
 				F7FAA4ED1BFACA6200E27E4A /* Photo.swift in Sources */,
-				F7A556D01BFB118300E7CBEB /* Constant.swift in Sources */,
 				F7EB13361BFDCF2C00538CC5 /* GalleryViewController.swift in Sources */,
 				F7A556D61BFB485000E7CBEB /* LoginHelper.swift in Sources */,
 				F7EB132C1BFD5F0E00538CC5 /* RegexHelper.swift in Sources */,
