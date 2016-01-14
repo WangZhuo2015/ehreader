@@ -42,6 +42,7 @@ public enum ApiError:ErrorType {
 public enum ApiMethod:String {
     case gdata = "gdata"
     case gtoken = "gtoken"
+    case showpage = "showpage"
 }
 
 public class DataLoader: NSObject {
@@ -70,12 +71,12 @@ public class DataLoader: NSObject {
         return loginHelper.isLoggedIn()
     }
     
-    public func callApi(method:ApiMethod, gidlist:[[String]], completionHandler: Response<AnyObject, NSError> -> Void) {
+    public func callApi(method:ApiMethod, parameter:AnyObject, completionHandler: Response<AnyObject, NSError> -> Void) {
         let url = isLoggedIn() ? API_URL_EX : API_URL
         
         let parameters:[String:AnyObject] = [
             "method": method.rawValue,
-            "gidlist": gidlist
+            "gidlist": parameter
         ]
         
         httpManager.request(.POST, url, parameters: parameters, encoding: ParameterEncoding.JSON, headers: nil).responseJSON { (response:Response<AnyObject, NSError>) -> Void in
@@ -118,7 +119,7 @@ public class DataLoader: NSObject {
         if gidlist.isEmpty {
             complete?(galleries: [])
         }
-        self.callApi(ApiMethod.gdata, gidlist: gidlist) { (response:Response<AnyObject, NSError>) -> Void in
+        self.callApi(ApiMethod.gdata, parameter: gidlist) { (response:Response<AnyObject, NSError>) -> Void in
             let realm = try! Realm()
             var galleries:[Gallery] = []
             if let result = response.result.value as? [NSObject:AnyObject] {
