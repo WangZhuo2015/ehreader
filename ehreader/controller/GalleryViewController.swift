@@ -43,16 +43,16 @@ class GalleryViewController: UIViewController {
         }
         self.activityIndicator.startAnimating()
         self.galleryService.startLoading { () -> Void in
-            if !self.activityIndicator.hidden {
-                self.activityIndicator.stopAnimating()
-                self.activityIndicator.hidden = true
-                
-                self.view.addSubview(self.collectionView)
-                self.collectionView.snp_makeConstraints { (make) -> Void in
-                    make.edges.equalTo(self.view)
-                }
-            }
-            self.collectionView.reloadData()
+//            if !self.activityIndicator.hidden {
+//                self.activityIndicator.stopAnimating()
+//                self.activityIndicator.hidden = true
+//                
+//                self.view.addSubview(self.collectionView)
+//                self.collectionView.snp_makeConstraints { (make) -> Void in
+//                    make.edges.equalTo(self.view)
+//                }
+//            }
+//            self.collectionView.reloadData()
         }
     }
 

@@ -9,6 +9,7 @@
 import XCTest
 @testable import ehreader
 import Alamofire
+import RealmSwift
 
 class DataLoaderTests: XCTestCase {
     let dataLoader = DataLoader.getInstance()
@@ -38,9 +39,10 @@ class DataLoaderTests: XCTestCase {
         let expectation = expectationWithDescription("The data result should not be null")
         let gidlist:[[String]] = [["618395","0439fa3666"], ["618395","0439fa3666"]]
         var galleries:[AnyObject] = []
+        let parameters = ["gidlist":gidlist];
         
         //When
-        dataLoader.callApi(ApiMethod.gdata, gidlist: gidlist) { (response:Response<AnyObject, NSError>) -> Void in
+        dataLoader.callApi(ApiMethod.gdata, parameter: parameters) { (response:Response<AnyObject, NSError>) -> Void in
             if response.result.isSuccess {
                 if let result = response.result.value as? [NSObject:AnyObject] {
                     if let error = result["error"] as? String {
@@ -103,6 +105,12 @@ class DataLoaderTests: XCTestCase {
         gallery.uploader = "lanxin1128"
         gallery.progress = 0
         gallery.size = 44604817
+        
+        let realm = try! Realm()
+        try! realm.write { () -> Void in
+            realm.add(gallery, update: true)
+        }
+        
         return gallery
     }
     
@@ -123,6 +131,30 @@ class DataLoaderTests: XCTestCase {
         XCTAssertNotNil(testPhotos, "photo should not null")
         if gallery.count == 0 {
             XCTAssert(false)
+        }
+    }
+    
+    func testGetPhotoInfo() {
+        //Given
+        let gallery = createTestGallery()
+        if gallery.photos.count <= 0 {
+            self.testGetPhotoListWithGallery()
+        }
+        do {
+            try dataLoader.getShowkey(gallery)
+        }catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        //When
+        for photo in gallery.photos {
+            let expectation = expectationWithDescription("The data result should not be null")
+            dataLoader.getPhotoInfo(gallery, photo: photo) { (photo) -> Void in
+                expectation.fulfill()
+            }
+            waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+            XCTAssertNotNil(photo.src)
+            XCTAssertNotNil(photo.filename)
         }
     }
 }

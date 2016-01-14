@@ -29,4 +29,23 @@ public class Photo: Object {
     public dynamic var invalid:Bool = false
     
     public dynamic var bookmarked:Bool = false
+    
+    public var gallery:[Gallery] {
+        return linkingObjects(Gallery.self, forProperty: "photos")
+    }
+    
+    public override static func primaryKey() -> String? {
+        return "token"
+    }
+    
+    public func getUri(ex:Bool = false)->String {
+        let base = ex ? PHOTO_URL_EX : PHOTO_URL
+        //A photo add to cache, it must have to link to a gallery
+        let galleryId = self.gallery.first!.id
+        return String(format: base, arguments: [self.token, galleryId, self.page])
+    }
+    
+    public func getUrl(ex:Bool = false)->NSURL? {
+        return NSURL(string: self.getUri(ex))
+    }
 }

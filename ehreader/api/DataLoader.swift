@@ -16,6 +16,8 @@ public let pShowkey = "var showkey.*=.*\"([\\w-]+?)\";"
 public let pImageSrc = "<img id=\"img\" src=\"(.+)/(.+?)\""
 public let pGalleryURL = "<a href=\"http://(g\\.e-|ex)hentai\\.org/g/(\\d+)/(\\w+)/\" onmouseover"
 
+private let TimeoutInterval:NSTimeInterval = 10
+
 public enum ApiError:ErrorType {
     case GALLERY_NOT_EXIST
     case PHOTO_NOT_EXIST
@@ -71,13 +73,11 @@ public class DataLoader: NSObject {
         return loginHelper.isLoggedIn()
     }
     
-    public func callApi(method:ApiMethod, parameter:AnyObject, completionHandler: Response<AnyObject, NSError> -> Void) {
+    public func callApi(method:ApiMethod, parameter:[String:AnyObject], completionHandler: Response<AnyObject, NSError> -> Void) {
         let url = isLoggedIn() ? API_URL_EX : API_URL
         
-        let parameters:[String:AnyObject] = [
-            "method": method.rawValue,
-            "gidlist": parameter
-        ]
+        var parameters:[String:AnyObject] = parameter
+        parameters["method"] = method.rawValue
         
         httpManager.request(.POST, url, parameters: parameters, encoding: ParameterEncoding.JSON, headers: nil).responseJSON { (response:Response<AnyObject, NSError>) -> Void in
             completionHandler(response)
@@ -91,12 +91,12 @@ public class DataLoader: NSObject {
      - parameter page:     page of the gallery
      - parameter complete: complete closure
      */
-    public func getGallery(base:String, page:Int, complete:((galleries:[Gallery])->Void)?) {
+    public func getGallery(base:String, page:Int = 0, complete:((galleries:[Gallery])->Void)?) {
         let url = "\(base)?page=\(page)"
         httpManager.request(.GET, url).responseString { (response:Response<String, NSError>) -> Void in
             var gidlist:[[String]] = []
             if let responseString = response.result.value {
-                print(responseString)
+                //print(responseString)
                 let regex = try! RegexHelper(pattern: pGalleryURL)
                 let results = regex.matches(responseString)
                 for result in results {
@@ -119,7 +119,9 @@ public class DataLoader: NSObject {
         if gidlist.isEmpty {
             complete?(galleries: [])
         }
-        self.callApi(ApiMethod.gdata, parameter: gidlist) { (response:Response<AnyObject, NSError>) -> Void in
+        
+        let parameter = ["gidlist":gidlist]
+        self.callApi(ApiMethod.gdata, parameter: parameter) { (response:Response<AnyObject, NSError>) -> Void in
             let realm = try! Realm()
             var galleries:[Gallery] = []
             if let result = response.result.value as? [NSObject:AnyObject] {
@@ -184,7 +186,7 @@ public class DataLoader: NSObject {
         httpManager.request(.GET, uri).responseString { (response:Response<String, NSError>) -> Void in
             let photoes:[Photo] = []
             if let responseString = response.result.value {
-                print(responseString)
+                //print(responseString)
                 let regex = try! RegexHelper(pattern: pPhotoUrl)
                 let matches = regex.matches(responseString)
                 //here the result is like [0] : "http://g.e-hentai.org/s/11a30da13e/893685-1"
@@ -208,9 +210,10 @@ public class DataLoader: NSObject {
                             photo.downloaded = false
                             photo.bookmarked = false
                             photo.invalid = false
-                            gallery.photos.append(photo)
+                            
                             try! realm.write {
-                                realm.add(photo)
+                                realm.add(photo, update: true)
+                                gallery.photos.append(photo)
                             }
                             
                         }
@@ -250,6 +253,114 @@ public class DataLoader: NSObject {
         return nil
     }
     
-    public func getPhotoInfo() {
+    /**
+     Update the photo information, include the photo's src, filename, file size
+     
+     - parameter gallery:
+     - parameter photo:
+     - parameter complete:
+     */
+    public func getPhotoInfo(gallery:Gallery, photo:Photo, complete:((photo:Photo?, error:NSError?)->Void)?) {
+        if photo.src != nil && !photo.src!.isEmpty && !photo.invalid {
+            complete?(photo:photo, error:nil)
+            return
+        }
+        guard let showKey = gallery.showkey else {
+            print("get photo error, show key does not exist")
+            return
+        }
+        var parameter:[String:AnyObject] = [String:AnyObject]()
+        parameter["gid"] = gallery.id
+        parameter["page"] = photo.page
+        parameter["imgkey"] = photo.token
+        parameter["showkey"] = showKey
+        callApi(ApiMethod.showpage, parameter: parameter) { (response:Response<AnyObject, NSError>) -> Void in
+            if let result = response.result.value as? [NSObject:AnyObject] {
+                let content = result["i3"] as! String
+                
+                var filename:String = ""
+                var src:String = ""
+                let regex = try! RegexHelper(pattern: pImageSrc)
+                let matches = regex.matches(content)
+                for match in matches {
+                    filename = match[2]
+                    src = match[1] + "/" + filename
+                }
+                
+                
+                if filename.isEmpty || src.isEmpty {
+                    let error = NSError(domain: "getPhotoInfo", code: ApiError.PHOTO_NOT_FOUND._code, userInfo: [NSLocalizedDescriptionKey:"get photo source failed"])
+                    complete?(photo:nil, error: error)
+                    return
+                }
+                
+                let realm = try! Realm()
+                try! realm.write({ () -> Void in
+                    photo.src = src
+                    photo.filename = filename
+                    photo.width = Int(result["x"] as! String)!
+                    photo.height = Int(result["y"] as! String)!
+                    photo.invalid = false
+                })
+                
+                complete?(photo:photo, error:nil)
+            }
+        }
+    }
+    
+    private func generalImageSource(content:String)->(String?, String?) {
+        let regex = try! RegexHelper(pattern: pImageSrc)
+        let matches = regex.matches(content)
+        for match in matches {
+            let filename = match[2]
+            let src = match[1] + "/" + filename
+            return (filename, src)
+        }
+        return (nil, nil)
+    }
+    
+    /**
+     Get the show key for the gallery, without this key, you can not get the detail photoes
+     
+     - parameter gallery:
+     
+     - returns: The show key, it will update the gallery automatically
+     */
+    public func getShowkey(gallery:Gallery)throws->String {
+        guard let photo = gallery.photos.first else {
+            throw ApiError.PHOTO_NOT_FOUND
+        }
+        
+        let url = photo.getUrl()!
+        print("Get show key url:\(url)")
+        let request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringCacheData, timeoutInterval: TimeoutInterval)
+        var response:NSURLResponse?
+        let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
+        guard let content = String(data: data, encoding: NSUTF8StringEncoding) else{
+            throw ApiError.IO_ERROR
+        }
+        print("Get show key callback:\(content)")
+        if content.containsString("This gallery is pining for the fjords") {
+            throw ApiError.GALLERY_PINNED
+        }else if content.containsString("Invalid page.") {
+            //TODO retry
+        }
+        let regex = try RegexHelper(pattern: pShowkey)
+        guard let matches = regex.matches(content).first else{
+            throw ApiError.SHOWKEY_NOT_FOUND
+        }
+        var showKey = ""
+        if matches.count >= 2 {
+            showKey = matches[1]
+        }else {
+            throw ApiError.SHOWKEY_NOT_FOUND
+        }
+        
+        //update gallery
+        let realm = try! Realm()
+        try! realm.write({ () -> Void in
+            gallery.showkey = showKey
+        })
+        return showKey
     }
 }

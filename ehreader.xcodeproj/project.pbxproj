@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		86EA0D6DDE51F968E31AD00E /* Pods_ehreader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */; };
+		E942D5331C4754F600E595CC /* GalleryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E942D5321C4754F600E595CC /* GalleryTableViewController.swift */; };
 		E9DC51EC1C4699740053D331 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC51EB1C4699740053D331 /* Constants.swift */; };
 		F730FDE61BFEF83500F44740 /* CollectionViewWaterfallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F730FDE51BFEF83500F44740 /* CollectionViewWaterfallLayout.swift */; };
 		F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F730FDE71BFEFA6000F44740 /* GalleryService.swift */; };
@@ -50,6 +51,7 @@
 		45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ehreader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18FFB26088383633394625A /* Pods-ehreader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.debug.xcconfig"; sourceTree = "<group>"; };
 		C546FD883CD238072C87AC87 /* Pods-ehreader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.release.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.release.xcconfig"; sourceTree = "<group>"; };
+		E942D5321C4754F600E595CC /* GalleryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryTableViewController.swift; sourceTree = "<group>"; };
 		E9DC51EB1C4699740053D331 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F730FDE51BFEF83500F44740 /* CollectionViewWaterfallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewWaterfallLayout.swift; sourceTree = "<group>"; };
 		F730FDE71BFEFA6000F44740 /* GalleryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryService.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				F7EB13351BFDCF2C00538CC5 /* GalleryViewController.swift */,
+				E942D5321C4754F600E595CC /* GalleryTableViewController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				F7A556D41BFB2DAB00E7CBEB /* Download.swift in Sources */,
 				F7FAA4EB1BFAC43100E27E4A /* Gallery.swift in Sources */,
 				F730FDE61BFEF83500F44740 /* CollectionViewWaterfallLayout.swift in Sources */,
+				E942D5331C4754F600E595CC /* GalleryTableViewController.swift in Sources */,
 				F7EB13391BFDD01300538CC5 /* GalleryCell.swift in Sources */,
 				F78DD6DC1BF9DB7C003D3CB9 /* ViewController.swift in Sources */,
 				F78DD6DA1BF9DB7C003D3CB9 /* AppDelegate.swift in Sources */,
@@ -544,6 +548,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = ehreader/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bravedefault.ehreader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -560,6 +565,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = ehreader/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bravedefault.ehreader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
