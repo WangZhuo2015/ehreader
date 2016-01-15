@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 let GalleryTableViewCellIdentifier = "GalleryTableViewCell"
 
@@ -26,6 +27,21 @@ class GalleryTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func configCell(gallery:Gallery) {
+        thumbnailImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        
+        if let thumbUri = gallery.thumbnail {
+            thumbnailImageView.kf_setImageWithURL(NSURL(string: thumbUri)!, placeholderImage: nil, optionsInfo: nil, completionHandler: { (image, error, cacheType, imageURL) -> () in
+                gallery.image = image
+            })
+        }
+        
+        galleryTitleLabel.text = gallery.title
+        japaneseTitleLabel.text = gallery.subtitle
+        pageLabel.text = "\(gallery.count) Page"
+        sizeLabel.text = "\(gallery.size) kb"
     }
 
 }

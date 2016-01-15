@@ -7,19 +7,68 @@
 //
 
 import UIKit
+import SnapKit
 
 class GalleryTableViewController: UIViewController {
     @IBOutlet weak var tableView:UITableView!
+    private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
+    
+    let galleryService = GalleryService()
+    private var currentPage = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        view.addSubview(backgroundView)
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        backgroundView.status = BackgroundViewStatus.Loading
+        backgroundView.addTarget(self, action: "startLoading", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(backgroundView)
+        startLoading()
+        addConstraints()
+    }
+    
+    private func addConstraints() {
+        backgroundView.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(self.view)
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func startLoading() {
+        self.galleryService.startLoading(self.currentPage) { (galleries, error) -> Void in
+            if error != nil && galleries.isEmpty {
+                print("loading choice data failed:\(error!.localizedDescription)")
+                self.backgroundView.status = BackgroundViewStatus.Failed
+                return
+            }
+            
+            self.tableView.reloadData()
+            self.backgroundView.status = BackgroundViewStatus.Hidden
+        }
+    }
+}
 
+
+extension GalleryTableViewController:UITableViewDelegate, UITableViewDataSource {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.galleryService.count()
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(GalleryTableViewCellIdentifier) as! GalleryTableViewCell
+        let gallery = self.galleryService.getGallery(indexPath)
+        cell.configCell(gallery)
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 120
+    }
 }
