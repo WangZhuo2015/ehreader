@@ -17,6 +17,7 @@ class GalleryTableViewCell: UITableViewCell {
     @IBOutlet weak var japaneseTitleLabel:UILabel!
     @IBOutlet weak var pageLabel:UILabel!
     @IBOutlet weak var sizeLabel:UILabel!
+    @IBOutlet weak var ratingBar:RatingBar!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,7 +31,8 @@ class GalleryTableViewCell: UITableViewCell {
     }
     
     func configCell(gallery:Gallery) {
-        thumbnailImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        thumbnailImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        thumbnailImageView.clipsToBounds = true
         
         if let thumbUri = gallery.thumbnail {
             thumbnailImageView.kf_setImageWithURL(NSURL(string: thumbUri)!, placeholderImage: nil, optionsInfo: nil, completionHandler: { (image, error, cacheType, imageURL) -> () in
@@ -40,8 +42,9 @@ class GalleryTableViewCell: UITableViewCell {
         
         galleryTitleLabel.text = gallery.title
         japaneseTitleLabel.text = gallery.subtitle
-        pageLabel.text = "\(gallery.count) Page"
-        sizeLabel.text = "\(gallery.size) kb"
+        pageLabel.text = "\(gallery.category) / \(gallery.count) page"
+        sizeLabel.text = autoCalculateCapacity(gallery.size)
+        ratingBar.rating = gallery.rating
     }
 
 }

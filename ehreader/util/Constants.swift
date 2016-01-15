@@ -21,6 +21,21 @@ public let TemporaryDirectory:String = NSTemporaryDirectory()
 
 public let MainBundleDirectory:String? = NSBundle.mainBundle().resourcePath
 
+func autoCalculateCapacity(capacity:Int)->String {
+    if capacity < 1024 {
+        return "\(capacity) B"
+    }else if capacity < 1024*1024 {
+        let size = capacity/1024
+        return "\(size) K"
+    }else if capacity < 1024*1024*1024 {
+        let size = capacity/1024/1024
+        return "\(size) M"
+    }else {
+        let size = capacity/1024/1024
+        return "\(size) G"
+    }
+}
+
 
 let API_URL = "http://g.e-hentai.org/api.php"
 let API_URL_EX = "http://exhentai.org/api.php"
