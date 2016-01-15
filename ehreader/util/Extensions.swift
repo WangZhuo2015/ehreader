@@ -417,3 +417,20 @@ public class Cookie: NSHTTPCookie {
         super.init(properties: properties)
     }
 }
+
+
+public extension UIImage {
+    public func createImageWithColor(width:CGFloat = 1, height:CGFloat = 1, color:UIColor)->UIImage {
+        let rect = CGRectMake(0.0, 0.0, width, height)
+        UIGraphicsBeginImageContext(rect.size);
+        let context = UIGraphicsGetCurrentContext()
+        
+        CGContextSetFillColorWithColor(context, color.CGColor)
+        CGContextFillRect(context, rect)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+}

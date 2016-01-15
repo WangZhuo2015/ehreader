@@ -9,6 +9,8 @@
 import UIKit
 import SnapKit
 
+let GalleryDetailSegueIdentifier = "GalleryDetailSegueIdentifier"
+
 class GalleryTableViewController: UIViewController {
     @IBOutlet weak var tableView:UITableView!
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
@@ -51,6 +53,16 @@ class GalleryTableViewController: UIViewController {
             
             self.tableView.reloadData()
             self.backgroundView.status = BackgroundViewStatus.Hidden
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier! == GalleryDetailSegueIdentifier {
+            let detailViewController = segue.destinationViewController as! GalleryDetailViewController
+            if let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell) {
+                let gallery = self.galleryService.getGallery(indexPath)
+                detailViewController.gallery = gallery
+            }
         }
     }
 }

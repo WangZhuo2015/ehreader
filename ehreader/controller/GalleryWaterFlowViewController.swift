@@ -12,7 +12,7 @@ import RealmSwift
 import Alamofire
 import Kingfisher
 
-class GalleryViewController: UIViewController {
+class GalleryWaterFlowViewController: UIViewController {
     var collectionView:UICollectionView!
     var collectionWaterfallLayout:CollectionViewWaterfallLayout = CollectionViewWaterfallLayout()
     var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
@@ -50,7 +50,7 @@ class GalleryViewController: UIViewController {
     }
 }
 
-extension GalleryViewController: UICollectionViewDataSource {
+extension GalleryWaterFlowViewController: UICollectionViewDataSource {
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -67,7 +67,7 @@ extension GalleryViewController: UICollectionViewDataSource {
     }
 }
 
-extension GalleryViewController: UICollectionViewDelegate, CollectionViewWaterfallLayoutDelegate {
+extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionViewWaterfallLayoutDelegate {
     func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let gallery = galleryService.getGallery(indexPath)
         var size = CGSizeZero
