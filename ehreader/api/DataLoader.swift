@@ -33,7 +33,11 @@ public enum ApiError:ErrorType {
     case TOKEN_INVALID
     case SHOWKEY_EXPIRED
     case GALLERY_PINNED
+    case GIDLIST_EMPTY
+    case NETWORK_ERROR
 }
+
+let DataLoaderErrorDomain = "DataLoaderErrorDomain"
 
 /**
  to see http://ehwiki.org/wiki/API
@@ -91,9 +95,13 @@ public class DataLoader: NSObject {
      - parameter page:     page of the gallery
      - parameter complete: complete closure
      */
-    public func getGallery(base:String, page:Int = 0, complete:((galleries:[Gallery])->Void)?) {
+    public func getGallery(base:String, page:Int = 0, complete:((galleries:[Gallery], error:NSError?)->Void)?) {
         let url = "\(base)?page=\(page)"
         httpManager.request(.GET, url).responseString { (response:Response<String, NSError>) -> Void in
+            if response.result.error != nil {
+                complete?(galleries:[], error: response.result.error)
+            }
+            
             var gidlist:[[String]] = []
             if let responseString = response.result.value {
                 //print(responseString)
@@ -115,44 +123,60 @@ public class DataLoader: NSObject {
      - parameter gidlist:
      - parameter complete: complete closure
      */
-    public func getGalleryList(gidlist:[[String]], complete:((galleries:[Gallery])->Void)?) {
+    public func getGalleryList(gidlist:[[String]], complete:((galleries:[Gallery], error:NSError?)->Void)?) {
         if gidlist.isEmpty {
-            complete?(galleries: [])
+            let error = NSError(domain: DataLoaderErrorDomain, code: ApiError.GIDLIST_EMPTY._code, userInfo: [NSLocalizedDescriptionKey:"gid list is empty"])
+            complete?(galleries: [], error:error)
         }
         
         let parameter = ["gidlist":gidlist]
         self.callApi(ApiMethod.gdata, parameter: parameter) { (response:Response<AnyObject, NSError>) -> Void in
             let realm = try! Realm()
             var galleries:[Gallery] = []
-            if let result = response.result.value as? [NSObject:AnyObject] {
-                if let error = result["error"] as? String {
-                    print(error)
-                    complete?(galleries: [])
-                }
-                if let gmetadata = result["gmetadata"] as? [[String:AnyObject]] {
-                    for values in gmetadata {
-                        if let id = values["gid"]?.longValue {
-                            if values["expunged"]?.boolValue ?? false {
-                                continue
-                            }
-                            realm.objects(Gallery).filter("id = \(id)")
-                            
-                            var gallery = realm.objects(Gallery).filter("id = \(id)").first
-                            if gallery == nil {
-                                gallery = Gallery()
-                                gallery!.id = id
-                            }
-                            
-                            gallery!.fillValues(values)
-                            try! realm.write {
-                                realm.add(gallery!, update: true)
-                            }
-                            galleries.append(gallery!)
-                        }
+            
+            if response.result.error != nil {
+                complete?(galleries:galleries, error: response.result.error)
+                return
+            }
+            
+            guard let result = response.result.value as? [NSObject:AnyObject] else{
+                let error = NSError(domain: DataLoaderErrorDomain, code: ApiError.API_ERROR._code, userInfo: [NSLocalizedDescriptionKey:"response is empty"])
+                complete?(galleries: galleries, error:error)
+                return
+            }
+            
+            if let errorStr = result["error"] as? String {
+                let error = NSError(domain: DataLoaderErrorDomain, code: ApiError.API_ERROR._code, userInfo: [NSLocalizedDescriptionKey:errorStr])
+                complete?(galleries: galleries, error:error)
+            }
+            
+            guard let gmetadata = result["gmetadata"] as? [[String:AnyObject]] else{
+                let error = NSError(domain: DataLoaderErrorDomain, code: ApiError.API_ERROR._code, userInfo: [NSLocalizedDescriptionKey:"gmetadata is empty"])
+                complete?(galleries: galleries, error:error)
+                return
+            }
+            
+            for values in gmetadata {
+                if let id = values["gid"]?.longValue {
+                    if values["expunged"]?.boolValue ?? false {
+                        continue
                     }
+                    realm.objects(Gallery).filter("id = \(id)")
+                    
+                    var gallery = realm.objects(Gallery).filter("id = \(id)").first
+                    if gallery == nil {
+                        gallery = Gallery()
+                        gallery!.id = id
+                    }
+                    
+                    gallery!.fillValues(values)
+                    try! realm.write {
+                        realm.add(gallery!, update: true)
+                    }
+                    galleries.append(gallery!)
                 }
             }
-            complete?(galleries: galleries)
+            complete?(galleries: galleries, error:nil)
         }
     }
     
@@ -163,12 +187,13 @@ public class DataLoader: NSObject {
      - parameter page:
      - parameter complete:
      */
-    public func getPhotoList(galleryId:Int, page:Int, complete:((photos:[Photo])->Void)?) {
+    public func getPhotoList(galleryId:Int, page:Int, complete:((photos:[Photo], error:NSError?)->Void)?) {
         let realm = try! Realm()
         if let gallery = realm.objects(Gallery).filter("id = \(galleryId)").first {
             getPhotoListWithGallery(gallery, page: page, complete: complete)
         }else {
-            complete?(photos: [])
+            let error = NSError(domain: DataLoaderErrorDomain, code: ApiError.GALLERY_NOT_EXIST._code, userInfo: [NSLocalizedDescriptionKey:"gallery with galler id:\(galleryId) not exist"])
+            complete?(photos: [], error:error)
         }
     }
     
@@ -179,48 +204,57 @@ public class DataLoader: NSObject {
      - parameter page:
      - parameter complete: 
      */
-    public func getPhotoListWithGallery(gallery:Gallery, page:Int, complete:((photos:[Photo])->Void)?) {
+    public func getPhotoListWithGallery(gallery:Gallery, page:Int, complete:((photos:[Photo], error:NSError?)->Void)?) {
         let uri = gallery.getUri(page, ex: isLoggedIn())
         print("request uri:\(uri)")
 
         httpManager.request(.GET, uri).responseString { (response:Response<String, NSError>) -> Void in
             let photoes:[Photo] = []
-            if let responseString = response.result.value {
-                //print(responseString)
-                let regex = try! RegexHelper(pattern: pPhotoUrl)
-                let matches = regex.matches(responseString)
-                //here the result is like [0] : "http://g.e-hentai.org/s/11a30da13e/893685-1"
-                // [1] : "g.e-"
-                // [2] : "11a30da13e"  this is token
-                // [3] : "893685"
-                // [4] : "1" this is photo page
-                for result in matches {
-                    let token = result[2]
-                    if let  photoPage = Int(result[4]) {
-                        print("Photo found: {galleryId: \(gallery.id), token: \(token), page: \(photoPage)}")
-                        let realm = try! Realm()
-                        if let photo = self.getPhotoFromCacheWithGallery(gallery, photoPage: photoPage) {
-                            try! realm.write({ () -> Void in
-                                photo.token = token
-                            })
-                        }else {
-                            let photo = Photo()
+            
+            if response.result.error != nil {
+                complete?(photos: photoes, error: response.result.error)
+                return
+            }
+            
+            guard let responseString = response.result.value else{
+                let error = NSError(domain: DataLoaderErrorDomain, code: ApiError.API_ERROR._code, userInfo: [NSLocalizedDescriptionKey:"response is empty"])
+                complete?(photos: photoes, error: error)
+                return
+            }
+            
+            let regex = try! RegexHelper(pattern: pPhotoUrl)
+            let matches = regex.matches(responseString)
+            //here the result is like [0] : "http://g.e-hentai.org/s/11a30da13e/893685-1"
+            // [1] : "g.e-"
+            // [2] : "11a30da13e"  this is token
+            // [3] : "893685"
+            // [4] : "1" this is photo page
+            for result in matches {
+                let token = result[2]
+                if let  photoPage = Int(result[4]) {
+                    print("Photo found: {galleryId: \(gallery.id), token: \(token), page: \(photoPage)}")
+                    let realm = try! Realm()
+                    if let photo = self.getPhotoFromCacheWithGallery(gallery, photoPage: photoPage) {
+                        try! realm.write({ () -> Void in
                             photo.token = token
-                            photo.page = photoPage
-                            photo.downloaded = false
-                            photo.bookmarked = false
-                            photo.invalid = false
-                            
-                            try! realm.write {
-                                realm.add(photo, update: true)
-                                gallery.photos.append(photo)
-                            }
-                            
+                        })
+                    }else {
+                        let photo = Photo()
+                        photo.token = token
+                        photo.page = photoPage
+                        photo.downloaded = false
+                        photo.bookmarked = false
+                        photo.invalid = false
+                        
+                        try! realm.write {
+                            realm.add(photo, update: true)
+                            gallery.photos.append(photo)
                         }
-                    }//if
-                }//for
-            }//if
-            complete?(photos: photoes)
+                        
+                    }
+                }//if
+            }//for
+            complete?(photos: photoes, error:nil)
         }
     }
     

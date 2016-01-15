@@ -21,10 +21,12 @@ class DataLoaderTests: XCTestCase {
         let baseUrl = LoginHelper.getInstance().isLoggedIn() ? BASE_URL_EX : BASE_URL
         
         //When
-        dataLoader.getGallery(baseUrl, page: 0) { (galleries) -> Void in
+        dataLoader.getGallery(baseUrl, page: 0) { (galleries, error) -> Void in
             gallery = galleries
             expectation.fulfill()
+            XCTAssertNil(error)
         }
+        
         
         //Then
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
@@ -121,8 +123,9 @@ class DataLoaderTests: XCTestCase {
         var testPhotos:[Photo]?
         
         //When
-        dataLoader.getPhotoListWithGallery(gallery, page: 0) { (photos) -> Void in
+        dataLoader.getPhotoListWithGallery(gallery, page: 0) { (photos, error) -> Void in
             testPhotos = photos
+            XCTAssertNil(error)
             expectation.fulfill()
         }
         
