@@ -7,10 +7,10 @@
 //
 
 import UIKit
+import SnapKit
 
 class GalleryDetailViewController: UIViewController {
     @IBOutlet weak var contentImageView:UIImageView!
-    @IBOutlet weak var visualEffectView:UIVisualEffectView!
     @IBOutlet weak var imageView:UIImageView!
     @IBOutlet weak var pageLabel:UILabel!
     @IBOutlet weak var ratingBar:RatingBar!
@@ -20,15 +20,20 @@ class GalleryDetailViewController: UIViewController {
     @IBOutlet weak var downloadButton:UIButton!
     @IBOutlet weak var starButton:UIButton!
     
+    
+    private lazy var visualEffectView:UIVisualEffectView = {
+        let beffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+        let visualEffectView = UIVisualEffectView(effect: beffect)
+        //visualEffectView.alpha = 0.9
+        return visualEffectView
+    }()
+    
     var gallery:Gallery?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let gallery = self.gallery {
-
-//            let beffect = UIBlurEffect(style: UIBlurEffectStyle.ExtraLight)
-//            visualEffectView.effect = beffect
             
             if let thumbUri = gallery.thumbnail {
                 imageView.kf_setImageWithURL(NSURL(string: thumbUri)!, placeholderImage: nil, optionsInfo: nil, completionHandler: { (image, error, cacheType, imageURL) -> () in
@@ -39,11 +44,22 @@ class GalleryDetailViewController: UIViewController {
                     gallery.image = image
                 })
             }
-            contentImageView.contentMode = UIViewContentMode.ScaleToFill
+            contentImageView.contentMode = UIViewContentMode.ScaleAspectFill
+            contentImageView.insertSubview(visualEffectView, atIndex: 0)
+            contentImageView.clipsToBounds = true
+            
             pageLabel.text = "\(gallery.category) / \(gallery.count) page"
             ratingBar.rating = gallery.rating
             titleLabel.text = gallery.title
             subTitleLabel.text = gallery.subtitle
+        }
+        
+        addConstraints()
+    }
+    
+    private func addConstraints() {
+        self.visualEffectView.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(self.contentImageView)
         }
     }
 
