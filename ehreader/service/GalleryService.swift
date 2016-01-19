@@ -26,6 +26,12 @@ public class GalleryService: NSObject {
                 //Can't fetch data from web, we load the local cache
                 let realm = try! Realm()
                 let galleriesCache = realm.objects(Gallery.self)
+                
+                if galleriesCache.isEmpty {
+                    completeHandler?(galleries:self.galleries, error:error)
+                    return
+                }
+                
                 for index in 0..<GalleryPageCount {
                     let gallery = galleriesCache[index]
                     self.galleries.append(gallery)

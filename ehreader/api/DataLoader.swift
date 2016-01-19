@@ -235,9 +235,9 @@ public class DataLoader: NSObject {
                     print("Photo found: {galleryId: \(gallery.id), token: \(token), page: \(photoPage)}")
                     let realm = try! Realm()
                     if let photo = self.getPhotoFromCacheWithGallery(gallery, photoPage: photoPage) {
-                        try! realm.write({ () -> Void in
-                            photo.token = token
-                        })
+//                        try! realm.write({ () -> Void in
+//                            photo.token = token
+//                        })
                         photoes.append(photo)
                     }else {
                         let photo = Photo()
@@ -304,6 +304,11 @@ public class DataLoader: NSObject {
         
         let galleryPage = page/PHOTO_PER_PAGE
         self.getPhotoListWithGallery(gallery, page: galleryPage) { (photos, error) -> Void in
+            if photos.isEmpty {
+                let error = NSError(domain: DataLoaderErrorDomain, code: ApiError.PHOTO_NOT_EXIST._code, userInfo: [NSLocalizedDescriptionKey:"can' t find this page's photo"])
+                complete?(photo: nil, error: error)
+                return
+            }
             var index = (page - 1)%PHOTO_PER_PAGE
             
             index = (index >= photos.count) ? (photos.count - 1) : index

@@ -8,31 +8,37 @@
 
 import XCTest
 @testable import ehreader
+import RealmSwift
 
-class PhotoServiceTests: XCTestCase {
+class PhotoServiceTests: XCTestCase, PhotoServiceProtocol {
     private var photoService:PhotoService!
+    var expectation:XCTestExpectation?
     
     override func setUp() {
         super.setUp()
-        let gallery = createTestGallery()
-        self.photoService = PhotoService(gallery: gallery)
+        let realm = try! Realm()
+        var gallery = realm.objects(Gallery.self).last
+        if gallery == nil {
+            gallery = createTestGallery()
+        }
+        self.photoService = PhotoService(gallery: gallery!)
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testLoading() {
+        self.expectation = expectationWithDescription("start loading pages")
+        
+        self.photoService.startLoadingPhotoes()
+        
+        self.waitForExpectationsWithTimeout(defaultTimeout) { (error:NSError?) -> Void in
+            XCTAssertNil(error)
+        }
+        
+        //Check the documents
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
+    func onLoadingPagesProgress(photoService: PhotoService, gallery: Gallery, currentPage: Int, totoalPageCount: Int) {
+        if currentPage == totoalPageCount {
+            self.expectation?.fulfill()
         }
     }
-    
 }

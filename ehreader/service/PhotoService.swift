@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import Alamofire
 
 public protocol PhotoServiceProtocol {
     /**
-     When service have already load page for 5, user can start to read the gallery, otherwise, the loading will be continue
+     When starting load the photo to local, this func will tell current downloading progress
      
      - parameter photoService:    @Class PhotoService
-     - parameter loadedPageCount: already loaded count
-     - parameter totoalPageCount: totol page count at this gallery
+     - parameter currentPage:     current download page
+     - parameter totoalPageCount: total page count at this gallery
      */
-    func onReadingPagesReady(photoService:PhotoService, loadedPageCount:Int, totoalPageCount:Int)
+    func onLoadingPagesProgress(photoService:PhotoService, gallery:Gallery, currentPage:Int, totoalPageCount:Int)
 }
 
 /// Load the image to local, provide image to view controller
@@ -24,7 +25,9 @@ public class PhotoService: NSObject {
     private var gallery:Gallery
     
     public var pageCount:Int {
-        return self.gallery.count
+        get {
+            return self.gallery.count
+        }
     }
     
     private var photoes:[Photo] = []
@@ -41,21 +44,39 @@ public class PhotoService: NSObject {
     /**
      Create a fold to download the gallery images
      */
-    private func createGalleryDocument()throws->String {
+    private func createGalleryDocument()throws->NSURL {
         let documentName = "\(self.gallery.id)"
-        let path = DocumentDirectory!.stringByAppendingPathComponent(documentName)
-        try NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil)
+        let fileManager = NSFileManager.defaultManager()
+        let directoryURL = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+        let path = directoryURL.URLByAppendingPathComponent(documentName)
+        try NSFileManager.defaultManager().createDirectoryAtURL(path, withIntermediateDirectories: true, attributes: nil)
         return path
     }
     
     public func startLoadingPhotoes() {
         //first you should fill all the information of this gallery
         let pageCount = self.pageCount
-        var galleryDocument:String!
+        var galleryDocument:NSURL!
         do {
             galleryDocument = try self.createGalleryDocument()
         }catch let error as NSError {
-            
+            print("createGalleryDocument :" + error.localizedDescription)
         }
+        for page in 1...pageCount {
+            dataLoader.getPhotoInfo(self.gallery, page: page, complete: { (photo, error) -> Void in
+                if let imageUri = photo?.src, pageNumber = photo?.page {
+                    let ext = imageUri.pathExtension
+                    let filename = galleryDocument.URLByAppendingPathComponent("\(pageNumber).\(ext)")
+                    print("start loading filename:\(filename)")
+                    Alamofire.download(.GET, imageUri) { temporaryURL, response in
+                        let pathComponent = response.suggestedFilename
+                        print("loading filename:\(pathComponent)")
+                        self.delegate?.onLoadingPagesProgress(self, gallery:self.gallery, currentPage: page, totoalPageCount: pageCount)
+                        return galleryDocument.URLByAppendingPathComponent(pathComponent!)
+                    }
+                }
+            })
+        }
+        
     }
 }
