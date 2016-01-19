@@ -138,6 +138,38 @@
             </objects>
             <point key="canvasLocation" x="1647" y="1089"/>
         </scene>
+        <!--Photo View Controller-->
+        <scene sceneID="zKb-9n-KIn">
+            <objects>
+                <viewController restorationIdentifier="PhotoViewController" storyboardIdentifier="PhotoViewController" id="7Ca-4i-mbj" customClass="PhotoViewController" customModule="ehreader" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Fu6-Dv-6es"/>
+                        <viewControllerLayoutGuide type="bottom" id="lL8-QL-EJl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5wQ-6f-i7L">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4IT-xn-0Rb">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="4IT-xn-0Rb" secondAttribute="trailing" id="9Ib-vT-GM3"/>
+                            <constraint firstItem="4IT-xn-0Rb" firstAttribute="leading" secondItem="5wQ-6f-i7L" secondAttribute="leading" id="KL8-d2-mE5"/>
+                            <constraint firstItem="4IT-xn-0Rb" firstAttribute="top" secondItem="Fu6-Dv-6es" secondAttribute="bottom" id="dFO-W3-2El"/>
+                            <constraint firstItem="lL8-QL-EJl" firstAttribute="top" secondItem="4IT-xn-0Rb" secondAttribute="bottom" id="teP-WK-QVO"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="4IT-xn-0Rb" id="cOa-tO-Ecc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Eg-4Z-yfZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2391" y="1804"/>
+        </scene>
         <!--Gallery Detail-->
         <scene sceneID="hqj-wV-hkD">
             <objects>
@@ -192,6 +224,9 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="Read"/>
+                                        <connections>
+                                            <segue destination="7Ca-4i-mbj" kind="show" id="cau-eX-fQh"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Zg-V1-8KH">
                                         <rect key="frame" x="400" y="0.0" width="200" height="50"/>

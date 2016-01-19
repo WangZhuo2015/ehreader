@@ -24,7 +24,6 @@ class GalleryDetailViewController: UIViewController {
     private lazy var visualEffectView:UIVisualEffectView = {
         let beffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
         let visualEffectView = UIVisualEffectView(effect: beffect)
-        //visualEffectView.alpha = 0.9
         return visualEffectView
     }()
     

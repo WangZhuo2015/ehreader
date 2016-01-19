@@ -36,6 +36,20 @@ func autoCalculateCapacity(capacity:Int)->String {
     }
 }
 
+/**
+ 获取当前设备的剩余的磁盘空间大小
+ 
+ - returns: 剩余的磁盘空间大小
+ */
+public func getFreeDiskspace()throws->Float {
+    var totalFreeSpace:Float = 0
+    let atrributes = try NSFileManager.defaultManager().attributesOfFileSystemForPath(DocumentDirectory!)
+    if let freeFileSystemSizeInBytes = atrributes[NSFileSystemFreeSize] as? NSNumber {
+        totalFreeSpace = freeFileSystemSizeInBytes.floatValue
+    }
+    return totalFreeSpace
+}
+
 
 let API_URL = "http://g.e-hentai.org/api.php"
 let API_URL_EX = "http://exhentai.org/api.php"

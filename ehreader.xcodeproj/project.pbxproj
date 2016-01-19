@@ -8,10 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		86EA0D6DDE51F968E31AD00E /* Pods_ehreader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */; };
+		E92C26CF1C4E0787009FB297 /* BppDownloadFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92C26CE1C4E0787009FB297 /* BppDownloadFile.swift */; };
+		E92C26D11C4E091D009FB297 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E92C26D01C4E091D009FB297 /* CryptoSwift.framework */; };
 		E942D5331C4754F600E595CC /* GalleryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E942D5321C4754F600E595CC /* GalleryTableViewController.swift */; };
 		E949A03A1C4899B600C6C674 /* GalleryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E949A0391C4899B600C6C674 /* GalleryTableViewCell.swift */; };
 		E95C063F1C48C2A70081C9C3 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */; };
 		E95C06411C48C2F70081C9C3 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E95C06401C48C2F70081C9C3 /* Media.xcassets */; };
+		E97999971C4D1DFC00003AF6 /* PhotoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */; };
+		E9B216F41C4A77AF0099CF54 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F31C4A77AF0099CF54 /* PhotoViewController.swift */; };
+		E9B216F61C4A84990099CF54 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F51C4A84990099CF54 /* PhotoService.swift */; };
 		E9DC51EC1C4699740053D331 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC51EB1C4699740053D331 /* Constants.swift */; };
 		E9FDED9C1C49385E00557D0A /* RatingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FDED9B1C49385E00557D0A /* RatingBar.swift */; };
 		E9FDEDA11C49478F00557D0A /* GalleryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FDEDA01C49478F00557D0A /* GalleryDetailViewController.swift */; };
@@ -56,10 +61,15 @@
 		45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ehreader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18FFB26088383633394625A /* Pods-ehreader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.debug.xcconfig"; sourceTree = "<group>"; };
 		C546FD883CD238072C87AC87 /* Pods-ehreader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.release.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.release.xcconfig"; sourceTree = "<group>"; };
+		E92C26CE1C4E0787009FB297 /* BppDownloadFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BppDownloadFile.swift; sourceTree = "<group>"; };
+		E92C26D01C4E091D009FB297 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = "Pods/../build/Debug-iphoneos/CryptoSwift.framework"; sourceTree = "<group>"; };
 		E942D5321C4754F600E595CC /* GalleryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryTableViewController.swift; sourceTree = "<group>"; };
 		E949A0391C4899B600C6C674 /* GalleryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryTableViewCell.swift; sourceTree = "<group>"; };
 		E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		E95C06401C48C2F70081C9C3 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoServiceTests.swift; sourceTree = "<group>"; };
+		E9B216F31C4A77AF0099CF54 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
+		E9B216F51C4A84990099CF54 /* PhotoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
 		E9DC51EB1C4699740053D331 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E9FDED9B1C49385E00557D0A /* RatingBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingBar.swift; sourceTree = "<group>"; };
 		E9FDEDA01C49478F00557D0A /* GalleryDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryDetailViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E92C26D11C4E091D009FB297 /* CryptoSwift.framework in Frameworks */,
 				F7EB133B1BFDDC4300538CC5 /* Kingfisher.framework in Frameworks */,
 				F7FAA4E91BFABCCD00E27E4A /* SnapKit.framework in Frameworks */,
 				F7FAA4E71BFABCC900E27E4A /* RealmSwift.framework in Frameworks */,
@@ -121,6 +132,7 @@
 		21DD57ACF2F65B9C647D2B90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E92C26D01C4E091D009FB297 /* CryptoSwift.framework */,
 				F7EB133A1BFDDC4300538CC5 /* Kingfisher.framework */,
 				F7EB13331BFDB1A100538CC5 /* Alamofire.framework */,
 				F7FAA4E81BFABCCD00E27E4A /* SnapKit.framework */,
@@ -129,6 +141,14 @@
 				45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E9B216F21C4A6FD50099CF54 /* Photo */ = {
+			isa = PBXGroup;
+			children = (
+				E9B216F31C4A77AF0099CF54 /* PhotoViewController.swift */,
+			);
+			path = Photo;
 			sourceTree = "<group>";
 		};
 		E9FDED9F1C4946F200557D0A /* Gallery */ = {
@@ -194,6 +214,7 @@
 				F78DD6EE1BF9DB7D003D3CB9 /* ehreaderTests.swift */,
 				F7EE39E61BFC173300531983 /* LoginHelperTests.swift */,
 				F7EE3AAB1BFC9E6900531983 /* DataLoaderTests.swift */,
+				E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */,
 				F78DD6F01BF9DB7D003D3CB9 /* Info.plist */,
 			);
 			path = ehreaderTests;
@@ -210,6 +231,7 @@
 		F78DD6FA1BF9E4E1003D3CB9 /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				E9B216F21C4A6FD50099CF54 /* Photo */,
 				E9FDED9F1C4946F200557D0A /* Gallery */,
 				F7EB13351BFDCF2C00538CC5 /* GalleryWaterFlowViewController.swift */,
 				E942D5321C4754F600E595CC /* GalleryTableViewController.swift */,
@@ -221,7 +243,9 @@
 		F78DD6FB1BF9E4E1003D3CB9 /* service */ = {
 			isa = PBXGroup;
 			children = (
+				E92C26CE1C4E0787009FB297 /* BppDownloadFile.swift */,
 				F730FDE71BFEFA6000F44740 /* GalleryService.swift */,
+				E9B216F51C4A84990099CF54 /* PhotoService.swift */,
 			);
 			path = service;
 			sourceTree = "<group>";
@@ -431,6 +455,9 @@
 				F78DD6DC1BF9DB7C003D3CB9 /* ViewController.swift in Sources */,
 				E9FDED9C1C49385E00557D0A /* RatingBar.swift in Sources */,
 				F78DD6DA1BF9DB7C003D3CB9 /* AppDelegate.swift in Sources */,
+				E9B216F41C4A77AF0099CF54 /* PhotoViewController.swift in Sources */,
+				E9B216F61C4A84990099CF54 /* PhotoService.swift in Sources */,
+				E92C26CF1C4E0787009FB297 /* BppDownloadFile.swift in Sources */,
 				E9DC51EC1C4699740053D331 /* Constants.swift in Sources */,
 				E949A03A1C4899B600C6C674 /* GalleryTableViewCell.swift in Sources */,
 				F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */,
@@ -447,6 +474,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E97999971C4D1DFC00003AF6 /* PhotoServiceTests.swift in Sources */,
 				F7EE3AAC1BFC9E6900531983 /* DataLoaderTests.swift in Sources */,
 				F78DD6EF1BF9DB7D003D3CB9 /* ehreaderTests.swift in Sources */,
 				F7EE39E71BFC173300531983 /* LoginHelperTests.swift in Sources */,

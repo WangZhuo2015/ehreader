@@ -201,15 +201,15 @@ public class DataLoader: NSObject {
      According to the gallery to get all the photo list
      
      - parameter gallery:  gallery model from the database
-     - parameter page:
-     - parameter complete: 
+     - parameter page: note this page is not the normal photo page number, page = photoPage/PHOTO_PER_PAGE
+     - parameter complete: The complete closure
      */
     public func getPhotoListWithGallery(gallery:Gallery, page:Int, complete:((photos:[Photo], error:NSError?)->Void)?) {
         let uri = gallery.getUri(page, ex: isLoggedIn())
         print("request uri:\(uri)")
 
         httpManager.request(.GET, uri).responseString { (response:Response<String, NSError>) -> Void in
-            let photoes:[Photo] = []
+            var photoes:[Photo] = []
             
             if response.result.error != nil {
                 complete?(photos: photoes, error: response.result.error)
@@ -238,6 +238,7 @@ public class DataLoader: NSObject {
                         try! realm.write({ () -> Void in
                             photo.token = token
                         })
+                        photoes.append(photo)
                     }else {
                         let photo = Photo()
                         photo.token = token
@@ -250,8 +251,9 @@ public class DataLoader: NSObject {
                             realm.add(photo, update: true)
                             gallery.photos.append(photo)
                         }
-                        
+                        photoes.append(photo)
                     }
+                    
                 }//if
             }//for
             complete?(photos: photoes, error:nil)
@@ -288,6 +290,36 @@ public class DataLoader: NSObject {
     }
     
     /**
+     Fetch the single photo information from api
+     
+     - parameter gallery:   gallery of this photoes
+     - parameter page: the real page number
+     - parameter complete:  complet closure
+     */
+    public func getPhotoInfo(gallery:Gallery, page:Int, complete:((photo:Photo?, error:NSError?)->Void)?) {
+        var photo = self.getPhotoFromCacheWithGallery(gallery, photoPage: page)
+        if photo != nil {
+            return getPhotoInfo(gallery, photo: photo!, complete: complete)
+        }
+        
+        let galleryPage = page/PHOTO_PER_PAGE
+        self.getPhotoListWithGallery(gallery, page: galleryPage) { (photos, error) -> Void in
+            var index = (page - 1)%PHOTO_PER_PAGE
+            
+            index = (index >= photos.count) ? (photos.count - 1) : index
+            index = (index < 0) ? 0 : index
+            
+            photo = photos[index]
+            if photo != nil {
+                return self.getPhotoInfo(gallery, photo: photo!, complete: complete)
+            }else {
+                let error = NSError(domain: DataLoaderErrorDomain, code: ApiError.PHOTO_NOT_EXIST._code, userInfo: [NSLocalizedDescriptionKey:"can' t find this page's photo"])
+                complete?(photo: nil, error: error)
+            }
+        }
+    }
+    
+    /**
      Update the photo information, include the photo's src, filename, file size
      
      - parameter gallery:
@@ -299,10 +331,17 @@ public class DataLoader: NSObject {
             complete?(photo:photo, error:nil)
             return
         }
-        guard let showKey = gallery.showkey else {
+        
+        var showKey:String!
+        
+        do {
+            showKey = try self.getShowkey(gallery)
+        }catch let error as NSError {
             print("get photo error, show key does not exist")
+            complete?(photo: photo, error: error)
             return
         }
+        
         var parameter:[String:AnyObject] = [String:AnyObject]()
         parameter["gid"] = gallery.id
         parameter["page"] = photo.page

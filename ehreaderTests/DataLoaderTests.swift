@@ -11,6 +11,48 @@ import XCTest
 import Alamofire
 import RealmSwift
 
+/**
+ id = 871296
+ token = "0b2eac8c77"
+ title = "(C86) [Hikalphilia (Monatsu)] Euphoria (Touhou Project) [Chinese] [烂肉×伞尖]"
+ subtitle = "(C86) [ヒカルフィリア (もなつ)] ユーフォリア (東方Project) [中国翻訳]"
+ category = "Doujinshi"
+ count = 43
+ thumbnail = "http://gt0.ehgt.org/02/4c/024c800dea9727bb1746113035f5ee0cb56c8c9f-104812-1413-2000-jpg_l.jpg"
+ starred = false
+ rating = 4.5
+ created = nil
+ lastread = nil
+ tags = "chinese|translated|touhou project|maribel han|renko usami|females only|yuri|hikalphilia|monatsu"
+ uploader = "lanxin1128"
+ progress = 0
+ showkey = nil
+ size = 30270574
+ */
+func createTestGallery()->Gallery {
+    let gallery = Gallery()
+    gallery.id = 893685
+    gallery.token = "21d9c55d71"
+    gallery.title = "(C86) [Batsu Jirushi (Batsu)] x Yuubari (Kantai Collection -KanColle-) [Korean]"
+    gallery.subtitle = "(C86) [Batsu Jirushi (Batsu)] x Yuubari (Kantai Collection -KanColle-) [Korean]"
+    gallery.category = galleryCategoryName(GalleryCategory.Doujinshi)
+    gallery.count = 22
+    gallery.thumbnail = "http://gt1.ehgt.org/11/a3/11a30da13e6fd8497b54ae5a04cc108c85756c59-1045755-2110-3000-jpg_l.jpg"
+    gallery.starred = false
+    gallery.rating = 4.5
+    gallery.tags = "chinese|translated|touhou project|maribel han|renko usami|females only|yuri|hikalphilia|monatsu"
+    gallery.uploader = "lanxin1128"
+    gallery.progress = 0
+    gallery.size = 44604817
+    
+    let realm = try! Realm()
+    try! realm.write { () -> Void in
+        realm.add(gallery, update: true)
+    }
+    
+    return gallery
+}
+
 class DataLoaderTests: XCTestCase {
     let dataLoader = DataLoader.getInstance()
     
@@ -73,48 +115,7 @@ class DataLoaderTests: XCTestCase {
             XCTAssert(false)
         }
     }
-    
-    /**
-     id = 871296
-     token = "0b2eac8c77"
-     title = "(C86) [Hikalphilia (Monatsu)] Euphoria (Touhou Project) [Chinese] [烂肉×伞尖]"
-     subtitle = "(C86) [ヒカルフィリア (もなつ)] ユーフォリア (東方Project) [中国翻訳]"
-     category = "Doujinshi"
-     count = 43
-     thumbnail = "http://gt0.ehgt.org/02/4c/024c800dea9727bb1746113035f5ee0cb56c8c9f-104812-1413-2000-jpg_l.jpg"
-     starred = false
-     rating = 4.5
-     created = nil
-     lastread = nil
-     tags = "chinese|translated|touhou project|maribel han|renko usami|females only|yuri|hikalphilia|monatsu"
-     uploader = "lanxin1128"
-     progress = 0
-     showkey = nil
-     size = 30270574
-     */
-    func createTestGallery()->Gallery {
-        let gallery = Gallery()
-        gallery.id = 893685
-        gallery.token = "21d9c55d71"
-        gallery.title = "(C86) [Batsu Jirushi (Batsu)] x Yuubari (Kantai Collection -KanColle-) [Korean]"
-        gallery.subtitle = "(C86) [Batsu Jirushi (Batsu)] x Yuubari (Kantai Collection -KanColle-) [Korean]"
-        gallery.category = galleryCategoryName(GalleryCategory.Doujinshi)
-        gallery.count = 22
-        gallery.thumbnail = "http://gt1.ehgt.org/11/a3/11a30da13e6fd8497b54ae5a04cc108c85756c59-1045755-2110-3000-jpg_l.jpg"
-        gallery.starred = false
-        gallery.rating = 4.5
-        gallery.tags = "chinese|translated|touhou project|maribel han|renko usami|females only|yuri|hikalphilia|monatsu"
-        gallery.uploader = "lanxin1128"
-        gallery.progress = 0
-        gallery.size = 44604817
-        
-        let realm = try! Realm()
-        try! realm.write { () -> Void in
-            realm.add(gallery, update: true)
-        }
-        
-        return gallery
-    }
+
     
     func testGetPhotoListWithGallery() {
         //Given
@@ -143,11 +144,6 @@ class DataLoaderTests: XCTestCase {
         if gallery.photos.count <= 0 {
             self.testGetPhotoListWithGallery()
         }
-        do {
-            try dataLoader.getShowkey(gallery)
-        }catch let error as NSError {
-            print(error.localizedDescription)
-        }
         
         //When
         for photo in gallery.photos {
@@ -158,6 +154,21 @@ class DataLoaderTests: XCTestCase {
             waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
             XCTAssertNotNil(photo.src)
             XCTAssertNotNil(photo.filename)
+        }
+    }
+    
+    func testGetPhotoInfoAll() {
+        let gallery = createTestGallery()
+        for page in 0..<gallery.count {
+            let expectation = expectationWithDescription("The data result should not be null")
+            dataLoader.getPhotoInfo(gallery, page: page, complete: { (photo, error) -> Void in
+                XCTAssertNotNil(photo)
+                XCTAssertNotNil(photo!.src)
+                XCTAssertNotNil(photo!.filename)
+                XCTAssertNil(error)
+                expectation.fulfill()
+            })
+            waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
         }
     }
 }

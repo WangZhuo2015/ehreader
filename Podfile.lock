@@ -1,6 +1,7 @@
 PODS:
-  - Alamofire (3.1.4)
-  - Kingfisher (1.9.1)
+  - Alamofire (3.1.5)
+  - CryptoSwift (0.2.2)
+  - Kingfisher (1.9.2)
   - Realm (0.97.0):
     - Realm/Headers (= 0.97.0)
   - Realm/Headers (0.97.0)
@@ -10,13 +11,15 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - CryptoSwift
   - Kingfisher
   - RealmSwift
   - SnapKit
 
 SPEC CHECKSUMS:
-  Alamofire: fbc829692f351fa1d8a31dd75fd7f7f56fea31fb
-  Kingfisher: 98fedd5d44d982b331fc7303f9f6144b7d8ba289
+  Alamofire: 5f730ba29fd113b7ddd71c1e65d0c630acf5d7b0
+  CryptoSwift: d382228d6301c09474132417878a741c2a2e68cd
+  Kingfisher: 7b6df0fa9d211807152c32c46494f9bc08f0e07b
   Realm: b498a6fb9d288b171ff98d0e2d4384c295be8990
   RealmSwift: d014810dec75c9a3f1a33926d2dabfed855c582c
   SnapKit: e1f090a6d47b1dd4bd89b73f72b6746a7835ef3c

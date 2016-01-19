@@ -85,6 +85,7 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-ehreader/Alamofire.framework"
+  install_framework "Pods-ehreader/CryptoSwift.framework"
   install_framework "Pods-ehreader/Kingfisher.framework"
   install_framework "Pods-ehreader/Realm.framework"
   install_framework "Pods-ehreader/RealmSwift.framework"
@@ -92,6 +93,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ehreader/Alamofire.framework"
+  install_framework "Pods-ehreader/CryptoSwift.framework"
   install_framework "Pods-ehreader/Kingfisher.framework"
   install_framework "Pods-ehreader/Realm.framework"
   install_framework "Pods-ehreader/RealmSwift.framework"
