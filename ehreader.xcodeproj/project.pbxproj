@@ -10,6 +10,7 @@
 		86EA0D6DDE51F968E31AD00E /* Pods_ehreader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */; };
 		E92C26CF1C4E0787009FB297 /* BppDownloadFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92C26CE1C4E0787009FB297 /* BppDownloadFile.swift */; };
 		E92C26D11C4E091D009FB297 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E92C26D01C4E091D009FB297 /* CryptoSwift.framework */; };
+		E93D68CC1C4FDC6C00EB0932 /* PixivProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93D68CB1C4FDC6C00EB0932 /* PixivProviderTests.swift */; };
 		E942D5331C4754F600E595CC /* GalleryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E942D5321C4754F600E595CC /* GalleryTableViewController.swift */; };
 		E949A03A1C4899B600C6C674 /* GalleryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E949A0391C4899B600C6C674 /* GalleryTableViewCell.swift */; };
 		E95C063F1C48C2A70081C9C3 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */; };
@@ -64,6 +65,7 @@
 		C546FD883CD238072C87AC87 /* Pods-ehreader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.release.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.release.xcconfig"; sourceTree = "<group>"; };
 		E92C26CE1C4E0787009FB297 /* BppDownloadFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BppDownloadFile.swift; sourceTree = "<group>"; };
 		E92C26D01C4E091D009FB297 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = "Pods/../build/Debug-iphoneos/CryptoSwift.framework"; sourceTree = "<group>"; };
+		E93D68CB1C4FDC6C00EB0932 /* PixivProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivProviderTests.swift; sourceTree = "<group>"; };
 		E942D5321C4754F600E595CC /* GalleryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryTableViewController.swift; sourceTree = "<group>"; };
 		E949A0391C4899B600C6C674 /* GalleryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryTableViewCell.swift; sourceTree = "<group>"; };
 		E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				F7EE39E61BFC173300531983 /* LoginHelperTests.swift */,
 				F7EE3AAB1BFC9E6900531983 /* DataLoaderTests.swift */,
 				E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */,
+				E93D68CB1C4FDC6C00EB0932 /* PixivProviderTests.swift */,
 				F78DD6F01BF9DB7D003D3CB9 /* Info.plist */,
 			);
 			path = ehreaderTests;
@@ -480,6 +483,7 @@
 			files = (
 				E97999971C4D1DFC00003AF6 /* PhotoServiceTests.swift in Sources */,
 				F7EE3AAC1BFC9E6900531983 /* DataLoaderTests.swift in Sources */,
+				E93D68CC1C4FDC6C00EB0932 /* PixivProviderTests.swift in Sources */,
 				F78DD6EF1BF9DB7D003D3CB9 /* ehreaderTests.swift in Sources */,
 				F7EE39E71BFC173300531983 /* LoginHelperTests.swift in Sources */,
 			);
