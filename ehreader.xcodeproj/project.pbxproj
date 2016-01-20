@@ -20,6 +20,7 @@
 		E9DC51EC1C4699740053D331 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC51EB1C4699740053D331 /* Constants.swift */; };
 		E9FDED9C1C49385E00557D0A /* RatingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FDED9B1C49385E00557D0A /* RatingBar.swift */; };
 		E9FDEDA11C49478F00557D0A /* GalleryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FDEDA01C49478F00557D0A /* GalleryDetailViewController.swift */; };
+		F72B31E81C4F7C89007C6B21 /* PixivProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72B31E71C4F7C88007C6B21 /* PixivProvider.swift */; };
 		F730FDE61BFEF83500F44740 /* CollectionViewWaterfallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F730FDE51BFEF83500F44740 /* CollectionViewWaterfallLayout.swift */; };
 		F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F730FDE71BFEFA6000F44740 /* GalleryService.swift */; };
 		F78DD6DA1BF9DB7C003D3CB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78DD6D91BF9DB7C003D3CB9 /* AppDelegate.swift */; };
@@ -73,6 +74,7 @@
 		E9DC51EB1C4699740053D331 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E9FDED9B1C49385E00557D0A /* RatingBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingBar.swift; sourceTree = "<group>"; };
 		E9FDEDA01C49478F00557D0A /* GalleryDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryDetailViewController.swift; sourceTree = "<group>"; };
+		F72B31E71C4F7C88007C6B21 /* PixivProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivProvider.swift; sourceTree = "<group>"; };
 		F730FDE51BFEF83500F44740 /* CollectionViewWaterfallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewWaterfallLayout.swift; sourceTree = "<group>"; };
 		F730FDE71BFEFA6000F44740 /* GalleryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryService.swift; sourceTree = "<group>"; };
 		F78DD6D61BF9DB7C003D3CB9 /* ehreader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ehreader.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -224,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				F78DD6FE1BF9E56D003D3CB9 /* DataLoader.swift */,
+				F72B31E71C4F7C88007C6B21 /* PixivProvider.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -461,6 +464,7 @@
 				E9DC51EC1C4699740053D331 /* Constants.swift in Sources */,
 				E949A03A1C4899B600C6C674 /* GalleryTableViewCell.swift in Sources */,
 				F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */,
+				F72B31E81C4F7C89007C6B21 /* PixivProvider.swift in Sources */,
 				F7EE39E51BFC0E9E00531983 /* Extensions.swift in Sources */,
 				F78DD6FF1BF9E56D003D3CB9 /* DataLoader.swift in Sources */,
 				F7FAA4ED1BFACA6200E27E4A /* Photo.swift in Sources */,

@@ -70,3 +70,6 @@ let HATHDL_URL = "http://g.e-hentai.org/hathdler.php?gid=%d&t=%@"
 let THUMBNAIL_URL = "http://ehgt.org/t/%s/%s/%s_l.jpg"
 
 let PHOTO_PER_PAGE = 40
+
+
+let DefaultNetworkTimeInterval:NSTimeInterval = 20

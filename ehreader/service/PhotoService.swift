@@ -49,7 +49,9 @@ public class PhotoService: NSObject {
         let fileManager = NSFileManager.defaultManager()
         let directoryURL = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
         let path = directoryURL.URLByAppendingPathComponent(documentName)
-        try NSFileManager.defaultManager().createDirectoryAtURL(path, withIntermediateDirectories: true, attributes: nil)
+        if !fileManager.fileExistsAtPath(path.absoluteString) {
+            try NSFileManager.defaultManager().createDirectoryAtURL(path, withIntermediateDirectories: true, attributes: nil)
+        }
         return path
     }
     
@@ -62,17 +64,26 @@ public class PhotoService: NSObject {
         }catch let error as NSError {
             print("createGalleryDocument :" + error.localizedDescription)
         }
+        
         for page in 1...pageCount {
             dataLoader.getPhotoInfo(self.gallery, page: page, complete: { (photo, error) -> Void in
                 if let imageUri = photo?.src, pageNumber = photo?.page {
                     let ext = imageUri.pathExtension
                     let filename = galleryDocument.URLByAppendingPathComponent("\(pageNumber).\(ext)")
                     print("start loading filename:\(filename)")
-                    Alamofire.download(.GET, imageUri) { temporaryURL, response in
-                        let pathComponent = response.suggestedFilename
-                        print("loading filename:\(pathComponent)")
+                    
+                    do {
+                        let request = NSURLRequest(URL: NSURL(string: imageUri)!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringCacheData, timeoutInterval: DefaultNetworkTimeInterval)
+                        var response:NSURLResponse?
+                        let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
+                        print("loading filename:\(filename)")
+                        let document = galleryDocument.URLByAppendingPathComponent(filename.absoluteString)
+                        if data.writeToURL(document, atomically: true) {
+                            print("write image to path:\(document)")
+                        }
                         self.delegate?.onLoadingPagesProgress(self, gallery:self.gallery, currentPage: page, totoalPageCount: pageCount)
-                        return galleryDocument.URLByAppendingPathComponent(pathComponent!)
+                    }catch let error as NSError {
+                        print("PhotoService load error:\(error.localizedDescription)")
                     }
                 }
             })
