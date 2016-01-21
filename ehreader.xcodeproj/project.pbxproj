@@ -15,6 +15,9 @@
 		E949A03A1C4899B600C6C674 /* GalleryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E949A0391C4899B600C6C674 /* GalleryTableViewCell.swift */; };
 		E95C063F1C48C2A70081C9C3 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */; };
 		E95C06411C48C2F70081C9C3 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E95C06401C48C2F70081C9C3 /* Media.xcassets */; };
+		E967A4921C5079EF000C6DC2 /* PixivUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967A4911C5079EF000C6DC2 /* PixivUser.swift */; };
+		E967A4941C50C9B2000C6DC2 /* PixivIllust.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967A4931C50C9B2000C6DC2 /* PixivIllust.swift */; };
+		E967A4961C50D172000C6DC2 /* PixivIllustGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967A4951C50D172000C6DC2 /* PixivIllustGallery.swift */; };
 		E97999971C4D1DFC00003AF6 /* PhotoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */; };
 		E9B216F41C4A77AF0099CF54 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F31C4A77AF0099CF54 /* PhotoViewController.swift */; };
 		E9B216F61C4A84990099CF54 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F51C4A84990099CF54 /* PhotoService.swift */; };
@@ -70,6 +73,9 @@
 		E949A0391C4899B600C6C674 /* GalleryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryTableViewCell.swift; sourceTree = "<group>"; };
 		E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		E95C06401C48C2F70081C9C3 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		E967A4911C5079EF000C6DC2 /* PixivUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivUser.swift; sourceTree = "<group>"; };
+		E967A4931C50C9B2000C6DC2 /* PixivIllust.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivIllust.swift; sourceTree = "<group>"; };
+		E967A4951C50D172000C6DC2 /* PixivIllustGallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivIllustGallery.swift; sourceTree = "<group>"; };
 		E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoServiceTests.swift; sourceTree = "<group>"; };
 		E9B216F31C4A77AF0099CF54 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		E9B216F51C4A84990099CF54 /* PhotoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
@@ -293,6 +299,9 @@
 				F7FAA4EC1BFACA6200E27E4A /* Photo.swift */,
 				F7A556D11BFB2A1F00E7CBEB /* ImageSearch.swift */,
 				F7A556D31BFB2DAB00E7CBEB /* Download.swift */,
+				E967A4911C5079EF000C6DC2 /* PixivUser.swift */,
+				E967A4931C50C9B2000C6DC2 /* PixivIllust.swift */,
+				E967A4951C50D172000C6DC2 /* PixivIllustGallery.swift */,
 			);
 			path = db;
 			sourceTree = "<group>";
@@ -454,14 +463,17 @@
 				F7A556D21BFB2A1F00E7CBEB /* ImageSearch.swift in Sources */,
 				F7A556D41BFB2DAB00E7CBEB /* Download.swift in Sources */,
 				F7FAA4EB1BFAC43100E27E4A /* Gallery.swift in Sources */,
+				E967A4921C5079EF000C6DC2 /* PixivUser.swift in Sources */,
 				F730FDE61BFEF83500F44740 /* CollectionViewWaterfallLayout.swift in Sources */,
 				E942D5331C4754F600E595CC /* GalleryTableViewController.swift in Sources */,
 				E9FDEDA11C49478F00557D0A /* GalleryDetailViewController.swift in Sources */,
+				E967A4961C50D172000C6DC2 /* PixivIllustGallery.swift in Sources */,
 				F7EB13391BFDD01300538CC5 /* GalleryCell.swift in Sources */,
 				F78DD6DC1BF9DB7C003D3CB9 /* ViewController.swift in Sources */,
 				E9FDED9C1C49385E00557D0A /* RatingBar.swift in Sources */,
 				F78DD6DA1BF9DB7C003D3CB9 /* AppDelegate.swift in Sources */,
 				E9B216F41C4A77AF0099CF54 /* PhotoViewController.swift in Sources */,
+				E967A4941C50C9B2000C6DC2 /* PixivIllust.swift in Sources */,
 				E9B216F61C4A84990099CF54 /* PhotoService.swift in Sources */,
 				E92C26CF1C4E0787009FB297 /* BppDownloadFile.swift in Sources */,
 				E9DC51EC1C4699740053D331 /* Constants.swift in Sources */,

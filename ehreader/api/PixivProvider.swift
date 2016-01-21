@@ -32,6 +32,28 @@ public let PixivDefaultHeaders = [
     "Content-Type": "application/x-www-form-urlencoded"
 ]
 
+private let ErrorDomainPixivProvider = "PixivProvider"
+
+public enum PixivError:ErrorType {
+    case AccessTokenEmpty
+    case SessionEmpty
+    case ResultFormatInvalid
+}
+
+public enum PixivRankingMode:String {
+    case Daily = "daily"
+    case Weekly = "weekly"
+    case Monthly = "monthly"
+    case Male = "male"
+    case Female = "female"
+    case Rookie = "rookie"
+    case DailyR18 = "daily_r18"
+    case WeeklyR18 = "weekly_r18"
+    case MaleR18 = "male_r18"
+    case FemaleR18 = "female_r18"
+    case R18g = "r18g"
+}
+
 private struct ResponseWrapper {
     var header:[NSObject : AnyObject]
     var data:NSData?
@@ -71,9 +93,21 @@ private extension Dictionary {
 
 
 public class PixivProvider: NSObject {
-    public var accessToken:String?
+    public var accessToken:String? {
+        return self.user?.access_token
+    }
+    
+    public var refreshToken:String? {
+        return self.user?.refresh_token
+    }
+    
     public var session:String?
-    public var userId:Int = PixivIntInvalid
+    
+    public var userId:String? {
+        return self.user?.id
+    }
+    
+    public var user:PixivUser?
     
     private var loginRoot:String = PixivLoginRoot
     private var sapiRoot:String = PixivSAPIRoot
@@ -94,6 +128,12 @@ public class PixivProvider: NSObject {
         static let instance: PixivProvider = PixivProvider()
     }
     
+    override init() {
+        super.init()
+        self.user = PixivUser.currentLoginUser()
+        self.session = self.user?.session
+    }
+    
     /**
      Login to the server, use oauth2.0. the response example like:
      {"response":{"access_token":"P7xGYwAmksSI-ZLPteTESgT4SIH1NVWTctOf0kzSnGU","expires_in":3600,"token_type":"bearer","scope":"unlimited","refresh_token":"YHTOSLhPJTylNUyP6ntiI6CyNohlyd7AH-xhMasxs4o","user":{"profile_image_urls":{"px_16x16":"http:\\source.pixiv.net/common/images/no_profile_ss.png","px_50x50":"http:/\\/source.pixiv.net/common/images/no_profile_s.png","px_170x170":"http://source.pixiv.net/common/images/no_profile.png"},"id":"8701294","name":"zzycami","account":"zzycami"}}}
@@ -103,7 +143,7 @@ public class PixivProvider: NSObject {
      
      - returns: user information
      */
-    public func login(username:String, password:String)throws->[String:String]? {
+    public func login(username:String, password:String)throws->PixivUser? {
         let url = self.loginRoot
         let loginHeader:[String:String] = [
             "Referer": "http://www.pixiv.net/"
@@ -122,9 +162,95 @@ public class PixivProvider: NSObject {
         if !result.isValid() {
             return nil
         }
+        guard let jsonResult = try NSJSONSerialization.JSONObjectWithData(result.data!, options: NSJSONReadingOptions.AllowFragments) as? [NSObject:AnyObject] else{
+            return nil
+        }
+        
+        guard let response = jsonResult["response"] as? [NSObject:AnyObject] else {
+            return nil
+        }
+        
+        // from response.header["Set-Cookie"] get PHPSESSID, etc. PHPSESSID=8701294_6bb2ade181198118ee95e1f2217d56c6; expires=Thu, 21-Jan-2016 04:11:32 GMT; Max-Age=3600; path=/; domain=.pixiv.net; secure
+        let rawCookie = result.header["Set-Cookie"] as! String
+        let rawCookies = (rawCookie as NSString).componentsSeparatedByString("; ")
+        for cookie in rawCookies {
+            if let equalPos = cookie.rangeOfString("=") {
+                var key = cookie.substringToIndex(equalPos.startIndex)
+                key = key.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                
+                var value = cookie.substringFromIndex(equalPos.endIndex)
+                value = value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                if key == "PHPSESSID" {
+                    self.session = value
+                    
+                }
+            }
+        }
+        
+        self.user = PixivUser.createPixivUser(response, session: self.session)
         
         
-        return [String:String]()
+        
+        return self.user
+    }
+    
+    public func loginIfNeeded(username:String, password:String)throws->Bool {
+        if PixivUser.isLoginExpires(username) {
+            // Auth expired, call login:
+            let user = try login(username, password: password)
+            if user != nil {
+                return true
+            }else {
+                return false
+            }
+        }else {
+            // load auth success
+            return true
+        }
+    }
+    
+    public func getRankingAll(mode:PixivRankingMode, page:Int, complete:((illust:[PixivIllust]?, error:NSError?)->Void)?) {
+        guard let accessToken = self.accessToken else {
+            let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.AccessTokenEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
+            complete?(illust: nil, error: error)
+            return
+        }
+        
+        guard let session = self.session else {
+            let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.SessionEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
+            complete?(illust: nil, error: error)
+            return
+        }
+        
+        let apiUrl = PixivPAPIRoot + "ranking/all"
+        let parameters:[String:AnyObject] = [
+            "mode": mode.rawValue,
+            "page": page,
+            "per_page": 50,
+            "image_sizes": "px_128x128,px_480mw,large",
+            "profile_image_sizes": "px_170x170,px_50x50",
+            "include_stats": "true",
+            "include_sanity_level": "true"
+        ]
+        
+        var headers = PixivDefaultHeaders
+        headers["Authorization"] = "Bearer \(accessToken)"
+        headers["Cookie"] = "PHPSESSID=\(session)"
+        
+        request(.GET, apiUrl, parameters: parameters, encoding: ParameterEncoding.URL, headers: headers).responseJSON { (response:Response<AnyObject, NSError>) -> Void in
+            if response.result.error != nil {
+                complete?(illust: nil, error: response.result.error)
+                return
+            }
+            
+            guard let result = response.result.value as? [NSObject:AnyObject] else {
+                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                complete?(illust: nil, error: error)
+                return
+            }
+            
+            print(result)
+        }
     }
 }
 

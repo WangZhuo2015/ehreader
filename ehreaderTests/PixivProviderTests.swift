@@ -9,6 +9,9 @@
 import XCTest
 @testable import ehreader
 
+let username = "zzycami@foxmail.com"
+let password = "13968118472q"
+
 class PixivProviderTests: XCTestCase {
     private let pixivProvider:PixivProvider = {
         let provider = PixivProvider()
@@ -17,10 +20,31 @@ class PixivProviderTests: XCTestCase {
     
     func testLogin() {
         do {
-            try self.pixivProvider.login("zzycami@foxmail.com", password: "13968118472q")
+            let user = try self.pixivProvider.login(username, password: password)
+            XCTAssertNotNil(user)
+            XCTAssertNotEqual(user!.id, "")
+            XCTAssertNotNil(user?.access_token)
+            XCTAssertNotNil(self.pixivProvider.session)
         }catch let error as NSError {
             XCTAssert(false, error.localizedDescription)
         }
+    }
+    
+    func testGetRankingAll() {
+        do {
+            try self.pixivProvider.loginIfNeeded(username, password: password)
+        }catch let error as NSError {
+            XCTAssert(false, error.localizedDescription)
+        }
+        
+        let expectation = expectationWithDescription("")
+        
+        self.pixivProvider.getRankingAll(PixivRankingMode.Daily, page: 1) { (illust, error) -> Void in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
     
 }
