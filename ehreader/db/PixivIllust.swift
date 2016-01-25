@@ -68,4 +68,25 @@ public class PixivIllust: Object {
     public override static func primaryKey() -> String? {
         return "illust_id"
     }
+    
+    public static func createPixivIllust(source:NSDictionary, isWork:Bool)->PixivIllust? {
+        var data:NSDictionary?
+        if isWork {
+            data = source
+        }else {
+            if let work = source["work"] as? NSDictionary {
+                data = work
+            }
+        }
+        if data == nil {
+            print("unknow data: \(source)")
+            return nil
+        }
+        if data!["id"] == nil || data!["title"] == nil {
+            print("data.id or data.title not found")
+            return nil
+        }
+        let illust = PixivIllust()
+        return illust
+    }
 }

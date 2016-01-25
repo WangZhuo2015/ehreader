@@ -9,7 +9,7 @@
 import XCTest
 @testable import ehreader
 
-let username = "zzycami@foxmail.com"
+let username = "zzycami"
 let password = "13968118472q"
 
 class PixivProviderTests: XCTestCase {
@@ -17,7 +17,7 @@ class PixivProviderTests: XCTestCase {
         let provider = PixivProvider()
         return provider
     }()
-    
+
     func testLogin() {
         do {
             let user = try self.pixivProvider.login(username, password: password)

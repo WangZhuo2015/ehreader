@@ -70,11 +70,13 @@ public class PixivUser: Object {
             if user.session == nil || user.access_token == nil {
                 return true
             }
+            print(user.expires_in.timeIntervalSinceNow)
             if user.expires_in.timeIntervalSinceNow < 0 {
                 return true
             }
+            return false
         }
-        return false
+        return true
     }
     
     static func currentLoginUser()->PixivUser? {

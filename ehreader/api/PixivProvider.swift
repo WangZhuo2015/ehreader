@@ -209,16 +209,16 @@ public class PixivProvider: NSObject {
         }
     }
     
-    public func getRankingAll(mode:PixivRankingMode, page:Int, complete:((illust:[PixivIllust]?, error:NSError?)->Void)?) {
+    public func getRankingAll(mode:PixivRankingMode, page:Int, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
         guard let accessToken = self.accessToken else {
             let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.AccessTokenEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
-            complete?(illust: nil, error: error)
+            complete?(gallery: nil, error: error)
             return
         }
         
         guard let session = self.session else {
             let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.SessionEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
-            complete?(illust: nil, error: error)
+            complete?(gallery: nil, error: error)
             return
         }
         
@@ -239,18 +239,20 @@ public class PixivProvider: NSObject {
         
         request(.GET, apiUrl, parameters: parameters, encoding: ParameterEncoding.URL, headers: headers).responseJSON { (response:Response<AnyObject, NSError>) -> Void in
             if response.result.error != nil {
-                complete?(illust: nil, error: response.result.error)
+                complete?(gallery: nil, error: response.result.error)
                 return
             }
             
             guard let result = response.result.value as? [NSObject:AnyObject] else {
                 let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
-                complete?(illust: nil, error: error)
+                complete?(gallery: nil, error: error)
                 return
             }
             
-            print(result)
+            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: false)
+            complete?(gallery: gallery, error: nil)
         }
+
     }
 }
 
@@ -259,7 +261,6 @@ extension PixivProvider {
         let request = NSMutableURLRequest()
         request.HTTPMethod = method
         request.timeoutInterval = MaxPixivAPIFetchTimeout
-        request
         
         //headers
         for (key, value) in self.defaultHeaders {

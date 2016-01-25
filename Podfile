@@ -7,4 +7,5 @@ target ‘ehreader’ do
     pod 'RealmSwift'
     pod 'Kingfisher'
     pod 'CryptoSwift'
+    pod 'Zip'
 end
