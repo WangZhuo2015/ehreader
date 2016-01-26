@@ -31,7 +31,7 @@ func autoCalculateCapacity(capacity:Int)->String {
         let size = capacity/1024/1024
         return "\(size) M"
     }else {
-        let size = capacity/1024/1024
+        let size = capacity/1024/1024/1024
         return "\(size) G"
     }
 }
