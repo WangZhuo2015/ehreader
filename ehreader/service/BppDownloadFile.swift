@@ -331,7 +331,7 @@ extension BppDownloadFile:NSURLConnectionDataDelegate {
             if length != self.fileLength {
                 if self.retryCountCauseFileNotFull < 2 {
                     self.restartDownload()
-                    self.retryCountCauseFileNotFull++
+                    self.retryCountCauseFileNotFull += 1
                     return
                 }
             }else {
@@ -360,7 +360,7 @@ extension BppDownloadFile:NSURLConnectionDataDelegate {
             self.delegate?.onDownloadFileMD5Checking?(self)
             if fileMD5 != md5Value {
                 if self.retryCountCauseMD5Error < 1 {
-                    self.retryCountCauseMD5Error++
+                    self.retryCountCauseMD5Error += 1
                     try! NSFileManager.defaultManager().removeItemAtPath(self.tempFilePath)
                     self.restartDownload()
                     return
@@ -375,7 +375,7 @@ extension BppDownloadFile:NSURLConnectionDataDelegate {
     public func connection(connection: NSURLConnection, didFailWithError error: NSError) {
         if self.retryCount < 3 {
             self.restartDownload()
-            self.retryCount++
+            self.retryCount += 1
             return
         }
         self.stopDownload()

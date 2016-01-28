@@ -25,7 +25,7 @@ public class RegexHelper: NSObject {
         if matches.count > 0 {
             for result in matches {
                 var r:[String] = []
-                for var i = 0; i < result.numberOfRanges; i++ {
+                for i in 0 ..< result.numberOfRanges {
                     let range = result.rangeAtIndex(i)
                     let temp = string as NSString
                     r.append(temp.substringWithRange(range))
