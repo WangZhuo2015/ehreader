@@ -163,8 +163,8 @@ class DataLoaderTests: XCTestCase {
             let expectation = expectationWithDescription("The data result should not be null")
             dataLoader.getPhotoInfo(gallery, page: page, complete: { (photo, error) -> Void in
                 XCTAssertNotNil(photo)
-                XCTAssertNotNil(photo!.src)
-                XCTAssertNotNil(photo!.filename)
+                XCTAssertNotNil(photo?.src)
+                XCTAssertNotNil(photo?.filename)
                 XCTAssertNil(error)
                 expectation.fulfill()
             })

@@ -19,6 +19,10 @@
 		E967A4941C50C9B2000C6DC2 /* PixivIllust.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967A4931C50C9B2000C6DC2 /* PixivIllust.swift */; };
 		E967A4961C50D172000C6DC2 /* PixivIllustGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967A4951C50D172000C6DC2 /* PixivIllustGallery.swift */; };
 		E97999971C4D1DFC00003AF6 /* PhotoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */; };
+		E98AB13F1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13B1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework */; };
+		E98AB1401C7456C500291F27 /* RAMAnimatedTabBarController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13C1C7456C500291F27 /* RAMAnimatedTabBarController.framework */; };
+		E98AB1411C7456C500291F27 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13D1C7456C500291F27 /* Realm.framework */; };
+		E98AB1421C7456C500291F27 /* Zip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13E1C7456C500291F27 /* Zip.framework */; };
 		E9B216F41C4A77AF0099CF54 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F31C4A77AF0099CF54 /* PhotoViewController.swift */; };
 		E9B216F61C4A84990099CF54 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F51C4A84990099CF54 /* PhotoService.swift */; };
 		E9DC51EC1C4699740053D331 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC51EB1C4699740053D331 /* Constants.swift */; };
@@ -77,6 +81,10 @@
 		E967A4931C50C9B2000C6DC2 /* PixivIllust.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivIllust.swift; sourceTree = "<group>"; };
 		E967A4951C50D172000C6DC2 /* PixivIllustGallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivIllustGallery.swift; sourceTree = "<group>"; };
 		E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoServiceTests.swift; sourceTree = "<group>"; };
+		E98AB13B1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AXStretchableHeaderTabViewController.framework; path = "Pods/../build/Debug-iphoneos/AXStretchableHeaderTabViewController.framework"; sourceTree = "<group>"; };
+		E98AB13C1C7456C500291F27 /* RAMAnimatedTabBarController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RAMAnimatedTabBarController.framework; path = "../../Library/Developer/Xcode/DerivedData/ehreader-bsawwpbfimnubodhgkvnncxpxovf/Build/Products/Debug-iphoneos/RAMAnimatedTabBarController.framework"; sourceTree = "<group>"; };
+		E98AB13D1C7456C500291F27 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = "../../Library/Developer/Xcode/DerivedData/ehreader-bsawwpbfimnubodhgkvnncxpxovf/Build/Products/Debug-iphoneos/Realm.framework"; sourceTree = "<group>"; };
+		E98AB13E1C7456C500291F27 /* Zip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Zip.framework; path = "../../Library/Developer/Xcode/DerivedData/ehreader-bsawwpbfimnubodhgkvnncxpxovf/Build/Products/Debug-iphoneos/Zip.framework"; sourceTree = "<group>"; };
 		E9B216F31C4A77AF0099CF54 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		E9B216F51C4A84990099CF54 /* PhotoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
 		E9DC51EB1C4699740053D331 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -119,6 +127,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E98AB13F1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework in Frameworks */,
+				E98AB1401C7456C500291F27 /* RAMAnimatedTabBarController.framework in Frameworks */,
+				E98AB1411C7456C500291F27 /* Realm.framework in Frameworks */,
+				E98AB1421C7456C500291F27 /* Zip.framework in Frameworks */,
 				E92C26D11C4E091D009FB297 /* CryptoSwift.framework in Frameworks */,
 				F7EB133B1BFDDC4300538CC5 /* Kingfisher.framework in Frameworks */,
 				F7FAA4E91BFABCCD00E27E4A /* SnapKit.framework in Frameworks */,
@@ -142,6 +154,10 @@
 		21DD57ACF2F65B9C647D2B90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E98AB13B1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework */,
+				E98AB13C1C7456C500291F27 /* RAMAnimatedTabBarController.framework */,
+				E98AB13D1C7456C500291F27 /* Realm.framework */,
+				E98AB13E1C7456C500291F27 /* Zip.framework */,
 				E92C26D01C4E091D009FB297 /* CryptoSwift.framework */,
 				F7EB133A1BFDDC4300538CC5 /* Kingfisher.framework */,
 				F7EB13331BFDB1A100538CC5 /* Alamofire.framework */,

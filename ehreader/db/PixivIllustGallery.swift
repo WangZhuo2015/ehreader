@@ -47,17 +47,17 @@ public class PixivIllustGallery: Object {
         }else {
             responseList = response
         }
-        if let illustGallery = responseList {
-            for value in illustGallery {
-                if let illust = PixivIllust.createPixivIllust(value, isWork: isWork) {
-                    gallery.illusts.append(illust)
-                }
-            }
-        }
         
         let realm = try! Realm()
         try! realm.write { () -> Void in
             realm.create(PixivIllustGallery.self, value: gallery, update: false)
+            if let illustGallery = responseList {
+                for value in illustGallery {
+                    if let illust = PixivIllust.createPixivIllust(value, isWork: isWork) {
+                        gallery.illusts.append(illust)
+                    }
+                }
+            }
         }
         
         return gallery

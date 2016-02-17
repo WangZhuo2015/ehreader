@@ -8,4 +8,6 @@ target ‘ehreader’ do
     pod 'Kingfisher'
     pod 'CryptoSwift'
     pod 'Zip'
+    pod 'AXStretchableHeaderTabViewController'
+    pod 'RAMAnimatedTabBarController'
 end

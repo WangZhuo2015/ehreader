@@ -84,18 +84,24 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-ehreader/AXStretchableHeaderTabViewController.framework"
   install_framework "Pods-ehreader/Alamofire.framework"
   install_framework "Pods-ehreader/CryptoSwift.framework"
   install_framework "Pods-ehreader/Kingfisher.framework"
+  install_framework "Pods-ehreader/RAMAnimatedTabBarController.framework"
   install_framework "Pods-ehreader/Realm.framework"
   install_framework "Pods-ehreader/RealmSwift.framework"
   install_framework "Pods-ehreader/SnapKit.framework"
+  install_framework "Pods-ehreader/Zip.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-ehreader/AXStretchableHeaderTabViewController.framework"
   install_framework "Pods-ehreader/Alamofire.framework"
   install_framework "Pods-ehreader/CryptoSwift.framework"
   install_framework "Pods-ehreader/Kingfisher.framework"
+  install_framework "Pods-ehreader/RAMAnimatedTabBarController.framework"
   install_framework "Pods-ehreader/Realm.framework"
   install_framework "Pods-ehreader/RealmSwift.framework"
   install_framework "Pods-ehreader/SnapKit.framework"
+  install_framework "Pods-ehreader/Zip.framework"
 fi

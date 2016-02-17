@@ -1,27 +1,36 @@
 PODS:
-  - Alamofire (3.1.5)
-  - CryptoSwift (0.2.2)
-  - Kingfisher (1.9.2)
-  - Realm (0.97.0):
-    - Realm/Headers (= 0.97.0)
-  - Realm/Headers (0.97.0)
-  - RealmSwift (0.97.0):
-    - Realm (= 0.97.0)
-  - SnapKit (0.18.0)
+  - Alamofire (3.2.0)
+  - AXStretchableHeaderTabViewController (0.2.0)
+  - CryptoSwift (0.2.3)
+  - Kingfisher (2.0.2)
+  - RAMAnimatedTabBarController (1.1.1)
+  - Realm (0.98.1):
+    - Realm/Headers (= 0.98.1)
+  - Realm/Headers (0.98.1)
+  - RealmSwift (0.98.1):
+    - Realm (= 0.98.1)
+  - SnapKit (0.19.1)
+  - Zip (0.2.0)
 
 DEPENDENCIES:
   - Alamofire
+  - AXStretchableHeaderTabViewController
   - CryptoSwift
   - Kingfisher
+  - RAMAnimatedTabBarController
   - RealmSwift
   - SnapKit
+  - Zip
 
 SPEC CHECKSUMS:
-  Alamofire: 5f730ba29fd113b7ddd71c1e65d0c630acf5d7b0
-  CryptoSwift: d382228d6301c09474132417878a741c2a2e68cd
-  Kingfisher: 7b6df0fa9d211807152c32c46494f9bc08f0e07b
-  Realm: b498a6fb9d288b171ff98d0e2d4384c295be8990
-  RealmSwift: d014810dec75c9a3f1a33926d2dabfed855c582c
-  SnapKit: e1f090a6d47b1dd4bd89b73f72b6746a7835ef3c
+  Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
+  AXStretchableHeaderTabViewController: 37c56211c98d3e823ecf7493d68f5ee8fa7028e1
+  CryptoSwift: b2bf37b8e7cc6d682ef3365cb966bc5ae5174aa5
+  Kingfisher: d6aec1c72f14cd03dc52c5a88f1a66732b180f7d
+  RAMAnimatedTabBarController: 41ccdc3592ec154b869262d876eff60b03574943
+  Realm: ca4a4122e939e228e10694fc49011386cb2ecb07
+  RealmSwift: 7d3c7033427816a2c3417ba0d004d694987e503a
+  SnapKit: eff58d6e3451bf2f482db2eccf86aecf371dc62d
+  Zip: 4ab1ce7c9d4afc2d04d79fbbc4d774df00e78321
 
 COCOAPODS: 0.39.0
