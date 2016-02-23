@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10102" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9gY-AK-bh7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9gY-AK-bh7">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10080"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -353,10 +353,10 @@
             </objects>
             <point key="canvasLocation" x="2646" y="2850"/>
         </scene>
-        <!--View Controller-->
+        <!--Gallery Collection View Controller-->
         <scene sceneID="nZ7-aT-KGP">
             <objects>
-                <viewController id="DrB-Dh-sHf" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="DrB-Dh-sHf" customClass="GalleryCollectionViewController" customModule="ehreader" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UFA-2J-jXL"/>
                         <viewControllerLayoutGuide type="bottom" id="zv9-HS-oRW"/>
@@ -364,18 +364,70 @@
                     <view key="view" contentMode="scaleToFill" id="Qgu-2P-mnn">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6ce-Lv-yjW">
+                                <rect key="frame" x="5" y="69" width="590" height="477"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="cgW-39-okU">
+                                    <size key="itemSize" width="100" height="100"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GalleryCollectionViewCellIdentifer" id="nGS-ED-ZEy" customClass="GalleryCollectionViewCell" customModule="ehreader" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QKL-aw-BLE">
+                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="QKL-aw-BLE" secondAttribute="trailing" id="71y-ie-1kb"/>
+                                            <constraint firstItem="QKL-aw-BLE" firstAttribute="top" secondItem="nGS-ED-ZEy" secondAttribute="top" id="Y4Z-ec-Tl6"/>
+                                            <constraint firstAttribute="bottom" secondItem="QKL-aw-BLE" secondAttribute="bottom" id="aUb-Gg-MDt"/>
+                                            <constraint firstItem="QKL-aw-BLE" firstAttribute="leading" secondItem="nGS-ED-ZEy" secondAttribute="leading" id="i1b-Kw-a2s"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageView" destination="QKL-aw-BLE" id="nPo-lj-U2r"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="6ce-Lv-yjW" secondAttribute="trailing" constant="5" id="1Tq-k8-i02"/>
+                            <constraint firstItem="zv9-HS-oRW" firstAttribute="top" secondItem="6ce-Lv-yjW" secondAttribute="bottom" constant="5" id="NdU-pK-AL3"/>
+                            <constraint firstItem="6ce-Lv-yjW" firstAttribute="top" secondItem="UFA-2J-jXL" secondAttribute="bottom" id="ZvC-rn-NdA"/>
+                            <constraint firstItem="6ce-Lv-yjW" firstAttribute="top" secondItem="UFA-2J-jXL" secondAttribute="bottom" constant="5" id="czh-5s-szZ"/>
+                            <constraint firstItem="6ce-Lv-yjW" firstAttribute="leading" secondItem="Qgu-2P-mnn" secondAttribute="leading" constant="5" id="rl8-94-pEL"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="ZvC-rn-NdA"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="igD-OJ-UKx"/>
+                    <connections>
+                        <outlet property="collectionView" destination="6ce-Lv-yjW" id="8aJ-0x-CYH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nHJ-WZ-Uwu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2646" y="2189"/>
         </scene>
-        <!--Animated Tab Bar Controller-->
+        <!--Tab Bar Controller-->
         <scene sceneID="YEl-Rj-SaR">
             <objects>
-                <tabBarController id="9gY-AK-bh7" customClass="RAMAnimatedTabBarController" customModule="RAMAnimatedTabBarController" sceneMemberID="viewController">
+                <tabBarController id="9gY-AK-bh7" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="V4R-SY-AEK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
