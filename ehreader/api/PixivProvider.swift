@@ -227,7 +227,7 @@ public class PixivProvider: NSObject {
             "mode": mode.rawValue,
             "page": page,
             "per_page": 50,
-            "image_sizes": "px_128x128,px_480mw,large",
+            "image_sizes": "medium,small,px_128x128,px_480mw,large",
             "profile_image_sizes": "px_170x170,px_50x50",
             "include_stats": "true",
             "include_sanity_level": "true"

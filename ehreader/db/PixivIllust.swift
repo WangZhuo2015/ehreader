@@ -69,6 +69,7 @@ public class PixivIllust: Object {
     
     public static func createPixivIllust(source:NSDictionary, isWork:Bool)->PixivIllust? {
         var data:NSDictionary?
+        print(source)
         if isWork {
             data = source
         }else {
@@ -145,16 +146,17 @@ public class PixivIllust: Object {
                 let firstObject = pages.firstObject as? NSDictionary
                 let imageUrls = firstObject?.objectForKey("image_urls") as? NSDictionary
                 illust.true_url_large = imageUrls?.objectForKey("large") as? String
-            }else {
-                if illust.page_count > 0 {
-                    if let url = illust.url_large {
-                        if url.containsString("_p0") {
-                            illust.true_url_large = illust.url_large
-                        }else {
-                            let ext = NSURL(string: url)!.pathExtension
-                            let base = NSURL(string: url)!.URLByDeletingPathExtension?.absoluteString
-                            illust.true_url_large = "\(base!)_p0\(ext!)"
-                        }
+            }
+        }
+        if illust.true_url_large == nil {
+            if illust.page_count > 0 {
+                if let url = illust.url_large {
+                    if url.containsString("_p0") {
+                        illust.true_url_large = illust.url_large
+                    }else {
+                        let ext = NSURL(string: url)!.pathExtension
+                        let base = NSURL(string: url)!.URLByDeletingPathExtension?.absoluteString
+                        illust.true_url_large = "\(base!)_p0\(ext!)"
                     }
                 }
             }

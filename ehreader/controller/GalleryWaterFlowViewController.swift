@@ -13,16 +13,8 @@ import Alamofire
 import Kingfisher
 
 class GalleryWaterFlowViewController: UIViewController {
-    var collectionView:UICollectionView!
-    var collectionWaterfallLayout:CollectionViewWaterfallLayout = CollectionViewWaterfallLayout()
-    var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-    
-    let galleryService = GalleryService()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.title = "Gallery"
-        
+    var collectionView:UICollectionView = {
+        let collectionWaterfallLayout:CollectionViewWaterfallLayout = CollectionViewWaterfallLayout()
         collectionWaterfallLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         collectionWaterfallLayout.headerInset = UIEdgeInsetsMake(20, 0, 0, 0)
         collectionWaterfallLayout.headerHeight = 10
@@ -30,53 +22,91 @@ class GalleryWaterFlowViewController: UIViewController {
         collectionWaterfallLayout.minimumColumnSpacing = 10
         collectionWaterfallLayout.minimumInteritemSpacing = 10
         
-        self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: collectionWaterfallLayout)
-        self.collectionView.dataSource = self
-        self.collectionView.delegate = self
-        self.collectionView.collectionViewLayout = collectionWaterfallLayout
-        self.collectionView.backgroundColor = UIColor.whiteColor()
-        self.collectionView.registerClass(GalleryCell.self, forCellWithReuseIdentifier: GalleryCellIdentifier)
+        let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: collectionWaterfallLayout)
+        collectionView.collectionViewLayout = collectionWaterfallLayout
+        collectionView.backgroundColor = UIColor.createColor(220, green: 220, blue: 224, alpha: 1)
+        collectionView.registerClass(GalleryCell.self, forCellWithReuseIdentifier: GalleryCellIdentifier)
+        return collectionView
+    }()
+    
+    private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
+    
+    let galleryService = GalleryService()
+    private lazy var pixivProvider:PixivProvider = PixivProvider.getInstance()
+    private var gallery:PixivIllustGallery?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "Gallery"
         
-        self.view.addSubview(self.activityIndicator)
-        self.activityIndicator.snp_makeConstraints { (make) -> Void in
-            make.center.equalTo(self.view)
-        }
-        self.activityIndicator.startAnimating()
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        self.view.addSubview(collectionView)
+        backgroundView.status = BackgroundViewStatus.Loading
+        backgroundView.addTarget(self, action: #selector(GalleryCollectionViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(backgroundView)
+        
+        addConstraints()
+        startLoading()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func startLoading() {
+        do {
+            try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
+        }catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        pixivProvider.getRankingAll(PixivRankingMode.Daily, page: 1) { (gallery, error) in
+            if error != nil || gallery == nil{
+                print("loading choice data failed:\(error!.localizedDescription)")
+                self.backgroundView.status = BackgroundViewStatus.Failed
+                return
+            }
+            
+            self.gallery = gallery
+            
+            self.collectionView.reloadData()
+            self.backgroundView.status = BackgroundViewStatus.Hidden
+        }
+    }
+    
+    private func addConstraints() {
+        backgroundView.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(self.view)
+        }
+        
+        self.collectionView.snp_makeConstraints { (make) in
+            make.top.equalTo(self.view)
+            make.leading.trailing.bottom.equalTo(self.view)
+        }
+    }
 }
 
 extension GalleryWaterFlowViewController: UICollectionViewDataSource {
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return galleryService.count()
+        return self.gallery?.illusts.count ?? 0
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(GalleryCellIdentifier, forIndexPath: indexPath) as! GalleryCell
-        let gallery = galleryService.getGallery(indexPath)
-        cell.configCell(gallery, collectionView: collectionView)
+        let illust = self.gallery!.illusts[indexPath.row]
+        cell.configCellWithPxiv(illust)
         return cell
     }
 }
 
 extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionViewWaterfallLayoutDelegate {
     func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let gallery = galleryService.getGallery(indexPath)
-        var size = CGSizeZero
-        if let thumbImage = gallery.image {
-            size = thumbImage.size
-        }else {
-            size = CGSizeMake(CellWidth, 150)
-        }
-        size.height = size.height + CellFooterContainerViewHeight
+        let illust = self.gallery!.illusts[indexPath.row]
+        let size = CGSizeMake(CGFloat(illust.width), CGFloat(illust.height))
         return size
     }
 }
+

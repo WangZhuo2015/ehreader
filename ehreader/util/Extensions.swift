@@ -35,14 +35,15 @@ public extension CGRect {
     }
 }
 
-public extension UIViewController {
+public extension UIView {
     
     /**
     Add the keyboard notification to current view that when keyboard showing, the view will shift to make the first responder view can be seen.
     */
     public func bindKeyboardNotification() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UIView.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UIView.keyboardWillShow(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UIView.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil);
     }
     
     /**
@@ -51,7 +52,7 @@ public extension UIViewController {
     - parameter notification:
     */
     func keyboardWillShow(notification:NSNotification) {
-        let firstResponder = self.view.findFirstResponderView();
+        let firstResponder = self.findFirstResponderView();
         if firstResponder == nil {
             return;
         }
@@ -101,7 +102,7 @@ public extension UIViewController {
         }
         
         let rect = CGRectMake(x, y, width, height);
-        view.layoutIfNeeded();
+        self.layoutIfNeeded();
         
         UIView.animateWithDuration(animationDuration, animations: { () -> Void in
             window!.frame = rect;
@@ -114,26 +115,25 @@ public extension UIViewController {
     - parameter notification:
     */
     func keyboardWillHide(notification:NSNotification) {
-        let window = UIApplication.sharedApplication().keyWindow;
-        if window == nil {
-            return;
-        }
+        let window = self;
         var userInfo = notification.userInfo!;
         let animationDurationValue:NSValue = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSValue;
         var animationDuration:NSTimeInterval = 0;
         animationDurationValue.getValue(&animationDuration);
-        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-            window!.frame = CGRectMake(0, 0, window!.frame.width, window!.frame.height)
-        });
+        UIView.animateWithDuration(animationDuration, animations: { 
+            window.frame = CGRectMake(0, 0, window.frame.width, window.frame.height)
+        }) { (finished:Bool) in
+            window.layoutIfNeeded()
+        }
     }
 }
 
 public extension UIScrollView {
-    public func bindKeyboardNotification() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil);
+    public override func bindKeyboardNotification() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UIScrollView.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil);
     }
     
-    func keyboardWillShow(notification:NSNotification) {
+    override func keyboardWillShow(notification:NSNotification) {
         let firstResponder = self.findFirstResponderView();
         if firstResponder == nil {
             return;

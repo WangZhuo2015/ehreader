@@ -23,10 +23,8 @@ class GalleryCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         backgroundView.status = BackgroundViewStatus.Loading
-        backgroundView.addTarget(self, action: "startLoading", forControlEvents: UIControlEvents.TouchUpInside)
+        backgroundView.addTarget(self, action: #selector(GalleryCollectionViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(backgroundView)
         
         let flowLayout = UICollectionViewFlowLayout()
@@ -70,17 +68,6 @@ class GalleryCollectionViewController: UIViewController {
             make.edges.equalTo(self.view)
         }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
@@ -109,4 +96,12 @@ extension GalleryCollectionViewController: UICollectionViewDelegate, UICollectio
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return GalleryPadding*2
     }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let photoViewController = PhotoViewController()
+        let illust = self.gallery!.illusts[indexPath.row]
+        photoViewController.startLoading(illust.url_px_480mw!, thumbUrl: illust.url_px_128x128!)
+        self.navigationController?.pushViewController(photoViewController, animated: true)
+    }
 }
+

@@ -9,22 +9,51 @@
 import UIKit
 import SnapKit
 import Kingfisher
+import Alamofire
 
 let GalleryCellIdentifier = "GalleryCell"
 typealias TouchEventClosure = (sender:UIButton)->Void
 
 let CellWidth:CGFloat = 200
-let CellFooterContainerViewHeight:CGFloat = 40
+let AvatarWidth:CGFloat = 24
+let CellFooterContainerViewHeight:CGFloat = 20 + AvatarWidth + 0.5 + 80 + 10
 
 class GalleryCell: UICollectionViewCell {
     
-    var imageView:UIImageView = UIImageView(frame: CGRectZero)
-    var footerContainerView:UIView = UIView(frame: CGRectZero)
-    var titleLabel:UILabel = UILabel(frame: CGRectZero)
-    var subTitleLabel:UILabel = UILabel(frame: CGRectZero)
-    var downloadButton:UIButton = UIButton(frame: CGRectZero)
+    lazy var imageView:UIImageView = {
+        let imageView = UIImageView(frame: CGRectZero)
+        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.backgroundColor = UIColor.createColor(130, green: 187, blue: 220, alpha: 1)
+        return imageView
+    }()
     
-    var onDownloadButtonClicked: TouchEventClosure?
+    lazy var titleLabel:UILabel = {
+        let label = UILabel(frame: CGRectZero)
+        label.font = UIFont.systemFontOfSize(12)
+        label.textColor = UIColor.createColor(100, green: 100, blue: 100, alpha: 1)
+        label.numberOfLines = -1
+        return label
+    }()
+    
+    lazy var lineView:UIView = {
+        let line = UIView(frame:CGRectZero)
+        line.backgroundColor = UIColor.createColor(220, green: 220, blue: 224, alpha: 1)
+        return line
+    }()
+    
+    lazy var avatarImageView:UIImageView = {
+        let imageView = UIImageView(frame: CGRectZero)
+        imageView.layer.cornerRadius = AvatarWidth/2
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    lazy var usernameLabel:UILabel = {
+        let label = UILabel(frame: CGRectZero)
+        label.font = UIFont.systemFontOfSize(12)
+        label.textColor = UIColor.lightGrayColor()
+        return label
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,71 +66,100 @@ class GalleryCell: UICollectionViewCell {
     }
     
     func setupGalleryCell() {
-        // Add some shadow to self
-        self.layer.shadowColor = UIColor.purpleColor().CGColor
-        self.layer.shadowOffset = CGSizeMake(2, 3)
-        self.layer.shadowOpacity = 0.4
-        self.layer.shadowRadius = 2
+        self.backgroundColor = UIColor.whiteColor()
+        layer.cornerRadius = 5
+        self.clipsToBounds = true
         
-        self.addSubview(imageView)
+        addSubview(imageView)
+        addSubview(self.titleLabel)
+        addSubview(lineView)
+        addSubview(avatarImageView)
+        addSubview(usernameLabel)
+        
+        setConstraints()
+    }
+    
+    private func setConstraints() {
         imageView.snp_makeConstraints { (make) -> Void in
             make.leading.trailing.top.equalTo(self)
         }
         
-        self.addSubview(footerContainerView)
-        footerContainerView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(imageView.snp_bottom)
-            make.bottom.leading.trailing.equalTo(self)
-            make.height.equalTo(CellFooterContainerViewHeight)
+        titleLabel.snp_makeConstraints { (make) in
+            make.top.equalTo(self.imageView.snp_bottom).offset(10)
+            make.leading.equalTo(self).offset(8)
+            make.trailing.equalTo(self).offset(-8)
         }
         
-        footerContainerView.addSubview(downloadButton)
-        downloadButton.setTitle("DOWNLOAD", forState: UIControlState.Normal)
-        downloadButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        downloadButton.titleLabel?.font = UIFont.systemFontOfSize(10)
-        downloadButton.addTarget(self, action: "downloadButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
-        downloadButton.snp_makeConstraints { (make) -> Void in
-            make.width.equalTo(60)
-            make.height.equalTo(footerContainerView)
-            make.trailing.equalTo(footerContainerView).offset(-5)
-            make.bottom.equalTo(footerContainerView).offset(-5)
+        lineView.snp_makeConstraints { (make) in
+            make.leading.trailing.equalTo(self)
+            make.height.equalTo(0.5)
+            make.top.equalTo(self.titleLabel.snp_bottom).offset(10)
         }
         
-        footerContainerView.addSubview(titleLabel)
-        titleLabel.font = UIFont.systemFontOfSize(13)
-        titleLabel.textAlignment = NSTextAlignment.Left
-        titleLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(footerContainerView)
-            make.leading.equalTo(footerContainerView)
-            make.trailing.equalTo(downloadButton.snp_leading)
+        avatarImageView.snp_makeConstraints { (make) in
+            make.leading.equalTo(self).offset(8)
+            make.width.height.equalTo(AvatarWidth)
+            make.bottom.equalTo(self).offset(-10)
+            make.top.equalTo(self.lineView.snp_bottom).offset(10)
         }
         
-        footerContainerView.addSubview(subTitleLabel)
-        subTitleLabel.font = UIFont.systemFontOfSize(12)
-        subTitleLabel.textAlignment = NSTextAlignment.Left
-        subTitleLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(titleLabel).offset(5)
-            make.leading.equalTo(footerContainerView)
-            make.bottom.equalTo(footerContainerView)
-            make.trailing.equalTo(downloadButton.snp_leading)
+        usernameLabel.snp_makeConstraints { (make) in
+            make.leading.equalTo(self.avatarImageView.snp_trailing).offset(10)
+            make.centerY.equalTo(self.avatarImageView)
+            make.trailing.equalTo(self)
         }
     }
     
     func configCell(gallery:Gallery, collectionView:UICollectionView) {
-//        if let thumbUri = gallery.thumbnail {
-//            imageView.kf_setImageWithURL(NSURL(string: thumbUri)!, placeholderImage: nil, optionsInfo: nil, completionHandler: { (image, error, cacheType, imageURL) -> () in
-//                gallery.image = image
-//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                    collectionView.reloadData()
-//                })
-//            })
-//        }
         imageView.image = gallery.image
         titleLabel.text = gallery.title
-        subTitleLabel.text = gallery.subtitle
     }
     
-    func downloadButtonClicked(sender:UIButton) {
-        self.onDownloadButtonClicked?(sender: sender)
+    func configCellWithPxiv(illust:PixivIllust) -> Void {
+        self.titleLabel.text = illust.title
+        self.avatarImageView.kf_setImageWithURL(NSURL(string: illust.profile_url_px_50x50!)!, placeholderImage: nil)
+        self.usernameLabel.text = illust.name
+        
+        
+//        let parameters:[String:String] = [
+//            "Referer": "http://www.pixiv.net/member_illust.php?mode=medium&illust_id=\(illust.illust_id)",
+//            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Ubuntu/12.10 Chromium/22.0.1229.94 Chrome/22.0.1229.94 Safari/537.4"
+//        ]
+//        
+//        let imageUrl = NSURL(string: illust.url_medium!)!
+//        let fileManager = NSFileManager.defaultManager()
+//        let directoryURL = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+//        let ext = imageUrl.pathExtension!
+//        let filename = directoryURL.URLByAppendingPathComponent("\(illust.illust_id).\(ext)")
+//        
+//        download(.POST, illust.url_medium!, parameters: nil, encoding: ParameterEncoding.URL, headers: parameters, destination: { (url:NSURL, response:NSHTTPURLResponse) -> NSURL in
+//            return filename
+//        }).progress({ (bytesRead:Int64, totalBytesRead:Int64, totalBytesExpectedToRead:Int64) in
+//            print(totalBytesRead)
+//        }).response(completionHandler: { (request:NSURLRequest?, response:NSHTTPURLResponse?, data:NSData?, error:NSError?) in
+//            print(request)
+//            print(response)
+//            print(data)
+//            print(error)
+//            if let image = UIImage(contentsOfFile: filename.path!) {
+//                self.imageView.image = image
+//            }
+//        })
+        
+        KingfisherManager.sharedManager.downloader.requestModifier = {(request:NSMutableURLRequest)->Void in
+            let refrer = "http://www.pixiv.net/member_illust.php?mode=medium&illust_id=\(illust.illust_id)"
+            let agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Ubuntu/12.10 Chromium/22.0.1229.94 Chrome/22.0.1229.94 Safari/537.4"
+            request.setValue(refrer, forHTTPHeaderField: "Referer")
+            request.setValue(agent, forHTTPHeaderField: "User-Agent")
+        }
+        
+        self.imageView.kf_setImageWithURL(NSURL(string: illust.url_medium!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
+            
+        }) { (image, error, cacheType, imageURL) in
+//            let scale = image!.size.width/image!.size.height
+//            let myScale = self.frame.width/self.frame.height
+//            let paScale = Float(illust.width)/Float(illust.height)
+//            print("image scale: \(scale), image size:\(image!.size), self scale:\(myScale), self size:\(self.frame), pa scale:\(paScale), pa width:\(illust.width), height:\(illust.height)")
+        }
     }
 }

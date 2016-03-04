@@ -199,7 +199,7 @@ public class CollectionViewWaterfallLayout: UICollectionViewLayout {
                 if itemSize?.height > 0 && itemSize?.width > 0 {
                     itemHeight = Float(itemSize!.height) * itemWidth / Float(itemSize!.width)
                 }
-                
+                itemHeight = itemHeight + 80
                 attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
                 attributes.frame = CGRect(x: CGFloat(xOffset), y: CGFloat(yOffset), width: CGFloat(itemWidth), height: CGFloat(itemHeight))
                 itemAttributes.append(attributes)

@@ -28,7 +28,7 @@ private let userInfoKey = "userInfo"
 
 
 @objc
-public protocol BppDownloadFileDeletgate {
+public protocol BppDownloadFileDeletgate:NSObjectProtocol {
     /**
      文件下载进度 (timer线程通知)
      
@@ -67,7 +67,7 @@ public class BppDownloadFile: NSObject {
     
     public var fileMD5:String?
     
-    public var delegate:BppDownloadFileDeletgate?
+    public weak var delegate:BppDownloadFileDeletgate?
     
     /// 最终保存的文件路径
     public var filePath:String
@@ -101,6 +101,7 @@ public class BppDownloadFile: NSObject {
     private var tempBeginReceiveDataTime:NSTimeInterval = 0
     private var tempCurrentReceiveDateTime:NSTimeInterval = 0
     private var downloadRunLoopRef:CFRunLoopRef?
+    private var timerRunLoopRef:CFRunLoopRef?
     private var timer:NSTimer?
     private var recursiveLock:NSRecursiveLock = NSRecursiveLock()
     
@@ -132,8 +133,8 @@ public class BppDownloadFile: NSObject {
         }
         
         // 开始一条后台的执行的异步线程来进行下载以及发送进度跟新
-        self.performSelectorInBackground("onThreadMainMethod", withObject: nil)
-        self.performSelectorInBackground("onThreadTimerMethod", withObject: nil)
+        self.performSelectorInBackground(#selector(BppDownloadFile.onThreadMainMethod), withObject: nil)
+        self.performSelectorInBackground(#selector(BppDownloadFile.onThreadTimerMethod), withObject: nil)
     }
     
     public func restartDownload() {
@@ -167,6 +168,13 @@ public class BppDownloadFile: NSObject {
             CFRunLoopStop(downloadRunLoopRef)
             self.downloadRunLoopRef = nil
         }
+        
+        self.timer?.invalidate()
+        self.timer = nil
+        if let timerRunLoopRef = self.timerRunLoopRef {
+            CFRunLoopStop(timerRunLoopRef)
+            self.timerRunLoopRef = nil
+        }
     }
     
     private func fileSize(filename:String)throws->UInt64 {
@@ -195,9 +203,10 @@ public class BppDownloadFile: NSObject {
     
     func onThreadTimerMethod() {
         NSThread.currentThread().name = "timer"
-        self.timer = NSTimer(timeInterval: 1, target: self, selector: "onTimerTick", userInfo: nil, repeats: true)
+        self.timer = NSTimer(timeInterval: 0.01, target: self, selector: #selector(BppDownloadFile.onTimerTick), userInfo: nil, repeats: true)
         NSRunLoop.currentRunLoop().addTimer(self.timer!, forMode: NSDefaultRunLoopMode)
         self.timer?.fire()
+        self.timerRunLoopRef = NSRunLoop.currentRunLoop().getCFRunLoop()
         NSRunLoop.currentRunLoop().run()
     }
     
@@ -209,8 +218,8 @@ public class BppDownloadFile: NSObject {
         if self.fileLength != 0 {
             progress = Float(self.downloadFileLength)/Float(self.fileLength)
         }
-        if velocity > 0 {
-            remainTime = Float(self.downloadFileLength - self.fileLength)/1024.0/velocity
+        if velocity > 0 && self.fileLength > self.downloadFileLength {
+            remainTime = fabs(Float(self.fileLength - self.downloadFileLength))/1024.0/velocity
         }
         self.delegate?.onDownloadFileProgress?(self, progress: progress, velocity: velocity, remainTime: remainTime, totalLength: self.fileLength)
         self.recursiveLock.unlock()
@@ -240,9 +249,33 @@ public class BppDownloadFile: NSObject {
         return request
     }
     
-    private func getFileMD5Value(filename:String)->String? {
-        let data = NSData(contentsOfFile: filename)
-        return data?.md5().toHexString()
+    func getFileMD5Value(filename:String)->String? {
+        guard let handle = NSFileHandle(forReadingAtPath: filename) else {
+            return nil
+        }
+        
+        let context = UnsafeMutablePointer<CC_MD5_CTX>.alloc(sizeof(CC_MD5_CTX))
+        CC_MD5_Init(context);
+        
+        var done = false
+        while !done {
+            let fileData = handle.readDataOfLength(1024*1024*1)
+            CC_MD5_Update(context, fileData.bytes, UInt32(fileData.length));
+            if fileData.length <= 0 {
+                done = true
+            }
+        }
+        
+        let length = Int(CC_MD5_DIGEST_LENGTH) * sizeof(UInt8)
+        let output = UnsafeMutablePointer<UInt8>.alloc(length)
+        CC_MD5_Final(output, context);
+        
+        let outData = NSData(bytes: output, length: Int(CC_MD5_DIGEST_LENGTH))
+        output.destroy()
+        context.destroy()
+        
+        //withUnsafePointer
+        return outData.toHexString()
     }
 }
 
@@ -300,14 +333,14 @@ extension BppDownloadFile:NSURLConnectionDataDelegate {
         }
         
         //兼容CDN，没有Content-Length时，expectedContentLength 返回-1, "Content-Range" = "bytes 1035276-198225938/198225939";
-        var expectedContentLength:UInt64 = UInt64(httpResponse.expectedContentLength)
+        var expectedContentLength:Int64 = Int64(httpResponse.expectedContentLength)
         if expectedContentLength < 0 {
             let contentRange = httpResponse.allHeaderFields["Content-Range"]
             let values = contentRange?.componentsSeparatedByString("/")
-            let totalLength = UInt64(values![1])
-            expectedContentLength = totalLength! - self.downloadFileLength
+            let totalLength = Int64(values![1])
+            expectedContentLength = totalLength! - Int64(self.downloadFileLength)
         }
-        self.fileLength = expectedContentLength + self.downloadFileLength
+        self.fileLength = UInt64(expectedContentLength) + self.downloadFileLength
         
         //判断文件是否已经下载， 通过大小判断
         do {
@@ -324,6 +357,7 @@ extension BppDownloadFile:NSURLConnectionDataDelegate {
     }
     
     public func connectionDidFinishLoading(connection: NSURLConnection) {
+        self.stopDownload()
         var downloadSuccess = true
         //检测下载是否完整
         do {
@@ -333,43 +367,55 @@ extension BppDownloadFile:NSURLConnectionDataDelegate {
                     self.restartDownload()
                     self.retryCountCauseFileNotFull += 1
                     return
+                }else {
+                    self.delegate?.onDidDownloadFileError?(self, downloadError: DownloadError.FileLengthException, error: nil)
+                    downloadSuccess = false
+                    return
                 }
-            }else {
-                downloadSuccess = false
-                self.stopDownload()
-                self.delegate?.onDidDownloadFileError?(self, downloadError: DownloadError.FileLengthException, error: nil)
-                return
             }
         }catch let error as NSError {
             print(error.localizedDescription)
         }
         
-        guard let md5Value = self.getFileMD5Value(self.tempFilePath) else {
-            self.stopDownload()
-            self.delegate?.onDidDownloadFileError?(self, downloadError: DownloadError.FileMd5Exception, error: nil)
-            return
-        }
         
-        guard let fileMD5 = self.fileMD5 else {
-            self.stopDownload()
-            self.delegate?.onDidDownloadFileError?(self, downloadError: DownloadError.FileMd5Exception, error: nil)
-            return
-        }
-        
-        if downloadSuccess && md5Value.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
+        if let fileMD5 = self.fileMD5 {
             self.delegate?.onDownloadFileMD5Checking?(self)
-            if fileMD5 != md5Value {
-                if self.retryCountCauseMD5Error < 1 {
-                    self.retryCountCauseMD5Error += 1
-                    try! NSFileManager.defaultManager().removeItemAtPath(self.tempFilePath)
-                    self.restartDownload()
-                    return
-                }else {
-                    self.stopDownload()
-                    self.delegate?.onDidDownloadFileError?(self, downloadError: DownloadError.FileMd5Exception, error: nil)
+            guard let md5Value = self.getFileMD5Value(self.tempFilePath) else {
+                self.stopDownload()
+                self.delegate?.onDidDownloadFileError?(self, downloadError: DownloadError.FileMd5Exception, error: nil)
+                return
+            }
+            
+            
+            if downloadSuccess && md5Value.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
+                if fileMD5 != md5Value {
+                    if self.retryCountCauseMD5Error < 1 {
+                        self.retryCountCauseMD5Error += 1
+                        try! NSFileManager.defaultManager().removeItemAtPath(self.tempFilePath)
+                        self.restartDownload()
+                        return
+                    }else {
+                        self.stopDownload()
+                        self.delegate?.onDidDownloadFileError?(self, downloadError: DownloadError.FileMd5Exception, error: nil)
+                        return
+                    }
                 }
             }
         }
+        
+        let fileManager = NSFileManager.defaultManager()
+        do {
+            if fileManager.fileExistsAtPath(self.filePath) {
+                try fileManager.removeItemAtPath(self.filePath)
+            }
+            try fileManager.moveItemAtPath(self.tempFilePath, toPath: self.filePath)
+        }catch let error as NSError {
+            print(error.localizedDescription)
+            self.delegate?.onDidDownloadFileError?(self, downloadError: DownloadError.FileException, error: error)
+            return
+        }
+        
+        self.delegate?.onDidDownloadFileFinished?(self)
     }
     
     public func connection(connection: NSURLConnection, didFailWithError error: NSError) {

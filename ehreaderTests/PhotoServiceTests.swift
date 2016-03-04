@@ -27,18 +27,28 @@ class PhotoServiceTests: XCTestCase, PhotoServiceProtocol {
     func testLoading() {
         self.expectation = expectationWithDescription("start loading pages")
         
-        self.photoService.startLoadingPhotoes()
-        
-        self.waitForExpectationsWithTimeout(defaultTimeout) { (error:NSError?) -> Void in
-            XCTAssertNil(error)
-        }
-        
-        //Check the documents
+        self.photoService.startLoadingPhoto(1, delegate: self)
+        waitForExpectationsWithTimeout(1000, handler: nil)
     }
     
     func onLoadingPagesProgress(photoService: PhotoService, gallery: Gallery, currentPage: Int, totoalPageCount: Int) {
         if currentPage == totoalPageCount {
             self.expectation?.fulfill()
         }
+    }
+}
+
+extension PhotoServiceTests: BppDownloadFileDeletgate {
+    func onDownloadFileProgress(downloadFile: BppDownloadFile, progress: Float, velocity: Float, remainTime: Float, totalLength: UInt64) {
+        print("progress:\(progress), velocity:\(velocity), remainTime:\(remainTime), totoalLength:\(totalLength)")
+    }
+    
+    func onDidDownloadFileFinished(downloadFile: BppDownloadFile) {
+        self.expectation?.fulfill()
+    }
+    
+    func onDidDownloadFileError(downloadFile: BppDownloadFile, downloadError: DownloadError, error: NSError?) {
+        print(error)
+        self.expectation?.fulfill()
     }
 }

@@ -26,7 +26,7 @@ class GalleryTableViewController: UIViewController {
         tableView.dataSource = self
         
         backgroundView.status = BackgroundViewStatus.Loading
-        backgroundView.addTarget(self, action: "startLoading", forControlEvents: UIControlEvents.TouchUpInside)
+        backgroundView.addTarget(self, action: #selector(GalleryTableViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(backgroundView)
         startLoading()
         addConstraints()

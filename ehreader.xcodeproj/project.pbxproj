@@ -28,6 +28,10 @@
 		E9B216F41C4A77AF0099CF54 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F31C4A77AF0099CF54 /* PhotoViewController.swift */; };
 		E9B216F61C4A84990099CF54 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F51C4A84990099CF54 /* PhotoService.swift */; };
 		E9DC51EC1C4699740053D331 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC51EB1C4699740053D331 /* Constants.swift */; };
+		E9E1D3121C89321B0062A65E /* MainTabbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E1D30F1C89321B0062A65E /* MainTabbar.swift */; };
+		E9E1D3131C89321B0062A65E /* MainTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E1D3101C89321B0062A65E /* MainTabBarButton.swift */; };
+		E9E1D3141C89321B0062A65E /* MainTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E1D3111C89321B0062A65E /* MainTabbarController.swift */; };
+		E9E1D3161C8932300062A65E /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E1D3151C8932300062A65E /* CustomNavigationController.swift */; };
 		E9FDED9C1C49385E00557D0A /* RatingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FDED9B1C49385E00557D0A /* RatingBar.swift */; };
 		E9FDEDA11C49478F00557D0A /* GalleryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FDEDA01C49478F00557D0A /* GalleryDetailViewController.swift */; };
 		F72B31E81C4F7C89007C6B21 /* PixivProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72B31E71C4F7C88007C6B21 /* PixivProvider.swift */; };
@@ -74,6 +78,7 @@
 		C546FD883CD238072C87AC87 /* Pods-ehreader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.release.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.release.xcconfig"; sourceTree = "<group>"; };
 		E92C26CE1C4E0787009FB297 /* BppDownloadFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BppDownloadFile.swift; sourceTree = "<group>"; };
 		E92C26D01C4E091D009FB297 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = "Pods/../build/Debug-iphoneos/CryptoSwift.framework"; sourceTree = "<group>"; };
+		E93872CF1C848C930034B465 /* ehreader-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ehreader-Bridging-Header.h"; sourceTree = "<group>"; };
 		E93D68CB1C4FDC6C00EB0932 /* PixivProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivProviderTests.swift; sourceTree = "<group>"; };
 		E942D5321C4754F600E595CC /* GalleryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryTableViewController.swift; sourceTree = "<group>"; };
 		E949A0391C4899B600C6C674 /* GalleryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryTableViewCell.swift; sourceTree = "<group>"; };
@@ -92,6 +97,10 @@
 		E9B216F31C4A77AF0099CF54 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		E9B216F51C4A84990099CF54 /* PhotoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
 		E9DC51EB1C4699740053D331 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		E9E1D30F1C89321B0062A65E /* MainTabbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbar.swift; sourceTree = "<group>"; };
+		E9E1D3101C89321B0062A65E /* MainTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarButton.swift; sourceTree = "<group>"; };
+		E9E1D3111C89321B0062A65E /* MainTabbarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbarController.swift; sourceTree = "<group>"; };
+		E9E1D3151C8932300062A65E /* CustomNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		E9FDED9B1C49385E00557D0A /* RatingBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingBar.swift; sourceTree = "<group>"; };
 		E9FDEDA01C49478F00557D0A /* GalleryDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryDetailViewController.swift; sourceTree = "<group>"; };
 		F72B31E71C4F7C88007C6B21 /* PixivProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivProvider.swift; sourceTree = "<group>"; };
@@ -190,6 +199,16 @@
 			path = Photo;
 			sourceTree = "<group>";
 		};
+		E9E1D30E1C89321B0062A65E /* Tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				E9E1D30F1C89321B0062A65E /* MainTabbar.swift */,
+				E9E1D3101C89321B0062A65E /* MainTabBarButton.swift */,
+				E9E1D3111C89321B0062A65E /* MainTabbarController.swift */,
+			);
+			path = Tabbar;
+			sourceTree = "<group>";
+		};
 		E9FDED9F1C4946F200557D0A /* Gallery */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +262,7 @@
 				F78DD6E01BF9DB7D003D3CB9 /* Assets.xcassets */,
 				F78DD6E21BF9DB7D003D3CB9 /* LaunchScreen.storyboard */,
 				F78DD6E51BF9DB7D003D3CB9 /* Info.plist */,
+				E93872CF1C848C930034B465 /* ehreader-Bridging-Header.h */,
 			);
 			path = ehreader;
 			sourceTree = "<group>";
@@ -272,12 +292,14 @@
 		F78DD6FA1BF9E4E1003D3CB9 /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				E9E1D30E1C89321B0062A65E /* Tabbar */,
 				E98AB1431C74631100291F27 /* GalleryCollection */,
 				E9B216F21C4A6FD50099CF54 /* Photo */,
 				E9FDED9F1C4946F200557D0A /* Gallery */,
 				F7EB13351BFDCF2C00538CC5 /* GalleryWaterFlowViewController.swift */,
 				E942D5321C4754F600E595CC /* GalleryTableViewController.swift */,
 				E949A0391C4899B600C6C674 /* GalleryTableViewCell.swift */,
+				E9E1D3151C8932300062A65E /* CustomNavigationController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -383,7 +405,7 @@
 		F78DD6CE1BF9DB7B003D3CB9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = bravedefault;
 				TargetAttributes = {
@@ -490,15 +512,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9E1D3161C8932300062A65E /* CustomNavigationController.swift in Sources */,
 				E95C063F1C48C2A70081C9C3 /* BackgroundView.swift in Sources */,
 				F7A556D21BFB2A1F00E7CBEB /* ImageSearch.swift in Sources */,
 				F7A556D41BFB2DAB00E7CBEB /* Download.swift in Sources */,
 				F7FAA4EB1BFAC43100E27E4A /* Gallery.swift in Sources */,
+				E9E1D3131C89321B0062A65E /* MainTabBarButton.swift in Sources */,
 				E967A4921C5079EF000C6DC2 /* PixivUser.swift in Sources */,
 				F730FDE61BFEF83500F44740 /* CollectionViewWaterfallLayout.swift in Sources */,
 				E98AB1471C746E6E00291F27 /* GalleryCollectionViewCell.swift in Sources */,
 				E942D5331C4754F600E595CC /* GalleryTableViewController.swift in Sources */,
 				E9FDEDA11C49478F00557D0A /* GalleryDetailViewController.swift in Sources */,
+				E9E1D3141C89321B0062A65E /* MainTabbarController.swift in Sources */,
 				E967A4961C50D172000C6DC2 /* PixivIllustGallery.swift in Sources */,
 				F7EB13391BFDD01300538CC5 /* GalleryCell.swift in Sources */,
 				F78DD6DC1BF9DB7C003D3CB9 /* ViewController.swift in Sources */,
@@ -514,6 +539,7 @@
 				F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */,
 				F72B31E81C4F7C89007C6B21 /* PixivProvider.swift in Sources */,
 				F7EE39E51BFC0E9E00531983 /* Extensions.swift in Sources */,
+				E9E1D3121C89321B0062A65E /* MainTabbar.swift in Sources */,
 				F78DD6FF1BF9E56D003D3CB9 /* DataLoader.swift in Sources */,
 				F7FAA4ED1BFACA6200E27E4A /* Photo.swift in Sources */,
 				F7EB13361BFDCF2C00538CC5 /* GalleryWaterFlowViewController.swift in Sources */,
@@ -652,6 +678,7 @@
 			baseConfigurationReference = A18FFB26088383633394625A /* Pods-ehreader.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -663,6 +690,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bravedefault.ehreader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "ehreader/ehreader-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -671,6 +700,7 @@
 			baseConfigurationReference = C546FD883CD238072C87AC87 /* Pods-ehreader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -682,6 +712,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bravedefault.ehreader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "ehreader/ehreader-Bridging-Header.h";
 			};
 			name = Release;
 		};

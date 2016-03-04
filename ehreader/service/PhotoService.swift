@@ -49,10 +49,31 @@ public class PhotoService: NSObject {
         let fileManager = NSFileManager.defaultManager()
         let directoryURL = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
         let path = directoryURL.URLByAppendingPathComponent(documentName)
-        if !fileManager.fileExistsAtPath(path.absoluteString) {
+        if !fileManager.fileExistsAtPath(path.path!) {
             try NSFileManager.defaultManager().createDirectoryAtURL(path, withIntermediateDirectories: true, attributes: nil)
         }
         return path
+    }
+    
+    public func startLoadingPhoto(page:Int, delegate:BppDownloadFileDeletgate ) {
+        //first you should fill all the information of this gallery
+        var galleryDocument:NSURL!
+        do {
+            galleryDocument = try self.createGalleryDocument()
+        }catch let error as NSError {
+            print("createGalleryDocument :" + error.localizedDescription)
+        }
+        dataLoader.getPhotoInfo(self.gallery, page: page, complete: { (photo, error) -> Void in
+            if let imageUri = photo?.src, pageNumber = photo?.page {
+                let ext = imageUri.pathExtension
+                let filename = galleryDocument.URLByAppendingPathComponent("\(pageNumber).\(ext)")
+                print("start loading filename:\(filename)")
+                
+                let downloaderFile = BppDownloadFile(url: NSURL(string: imageUri)!, savePath: filename.path!)
+                downloaderFile.delegate = delegate
+                downloaderFile.startDownload()
+            }
+        })
     }
     
     public func startLoadingPhotoes() {
