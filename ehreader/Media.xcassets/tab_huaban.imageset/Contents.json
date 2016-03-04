@@ -2,16 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Rank_24.244897959184px_1141912_easyicon.net.png",
+      "filename" : "tab_huaban.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Rank_48.489795918367px_1141912_easyicon.net.png",
+      "filename" : "tab_huaban@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "tab_huaban@3x.png",
       "scale" : "3x"
     }
   ],
