@@ -14,9 +14,10 @@ import Alamofire
 private let ProgressHeight:CGFloat = 1
 
 class PhotoViewController: UIViewController {
-    private lazy var imageView:UIImageView = {
+    var imageSize:CGSize = CGSizeZero
+    
+    internal lazy var imageView:UIImageView = {
         let imageView = UIImageView(frame: CGRectZero)
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
         return imageView
     }()
     
@@ -44,9 +45,37 @@ class PhotoViewController: UIViewController {
         addConstraints()
     }
     
+    private var originalNaivgationControllerDelegate:UINavigationControllerDelegate?
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        print(self.imageView.frame)
+        
+        self.originalNaivgationControllerDelegate = self.navigationController?.delegate
+        self.navigationController?.delegate = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        print(self.imageView.frame)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        super.navigationController?.delegate = self.originalNaivgationControllerDelegate
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+    }
+    
     private func addConstraints() {
+        let scale = self.imageSize.width/self.view.frame.width
+        let height = self.imageSize.height/scale
         self.imageView.snp_makeConstraints { (make) in
-            make.edges.equalTo(self.view)
+            make.top.equalTo(self.progressView.snp_bottom)
+            make.leading.trailing.equalTo(self.view)
+            make.height.equalTo(height)
         }
         
         self.progressView.snp_makeConstraints { (make) in
@@ -65,13 +94,25 @@ class PhotoViewController: UIViewController {
     func onBookmark(sender:UIBarButtonItem) {
     }
     
-    func startLoading(photoUrl:String, thumbUrl:String) {
+    func startLoading(photoUrl:String, thumbUrl:String, imageSize:CGSize) {
+        self.imageSize = imageSize
         self.photoUrl = photoUrl
         self.imageView.kf_setImageWithURL(NSURL(string:photoUrl)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
             let progress = Float(receivedSize)/Float(totalSize)
             self.progressView.progress = progress
         }) { (image, error, cacheType, imageURL) in
             //TODO: save the image
+        }
+    }
+}
+
+extension PhotoViewController: UINavigationControllerDelegate {
+    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if toVC.isKindOfClass(GalleryWaterFlowViewController) {
+            let popTransition = PopTransition()
+            return popTransition
+        }else {
+            return nil
         }
     }
 }

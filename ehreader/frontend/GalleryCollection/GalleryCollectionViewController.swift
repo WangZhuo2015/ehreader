@@ -100,7 +100,7 @@ extension GalleryCollectionViewController: UICollectionViewDelegate, UICollectio
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let photoViewController = PhotoViewController()
         let illust = self.gallery!.illusts[indexPath.row]
-        photoViewController.startLoading(illust.url_px_480mw!, thumbUrl: illust.url_px_128x128!)
+        photoViewController.startLoading(illust.url_px_480mw!, thumbUrl: illust.url_px_128x128!, imageSize: CGSizeZero)
         self.navigationController?.pushViewController(photoViewController, animated: true)
     }
 }

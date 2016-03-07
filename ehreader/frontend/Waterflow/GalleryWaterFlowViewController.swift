@@ -50,6 +50,19 @@ class GalleryWaterFlowViewController: UIViewController {
         addConstraints()
         startLoading()
     }
+    
+    private var originalNaivgationControllerDelegate:UINavigationControllerDelegate?
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.originalNaivgationControllerDelegate = self.navigationController?.delegate
+        self.navigationController?.delegate = self
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        super.navigationController?.delegate = self.originalNaivgationControllerDelegate
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -122,6 +135,24 @@ extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionVi
             return Float(titleHeight + normalHeight)
         }
         return Float(normalHeight) + 24
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let photoViewController = PhotoViewController()
+        let illust = self.gallery!.illusts[indexPath.row]
+        photoViewController.startLoading(illust.url_medium!, thumbUrl: illust.url_px_128x128!, imageSize: CGSizeMake(CGFloat(illust.width), CGFloat(illust.height)))
+        self.navigationController?.pushViewController(photoViewController, animated: true)
+    }
+}
+
+extension GalleryWaterFlowViewController: UINavigationControllerDelegate {
+    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if toVC.isKindOfClass(PhotoViewController) {
+            let pushTransition = PushTransition()
+            return pushTransition
+        }else {
+            return nil
+        }
     }
 }
 

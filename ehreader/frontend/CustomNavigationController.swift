@@ -64,7 +64,7 @@ public class CustomNavigationController: UINavigationController {
 //        }
         //screenshoots.append(viewController.view.screenshotImage())
         if self.viewControllers.count > 0 {
-            viewController.hidesBottomBarWhenPushed = true
+            //viewController.hidesBottomBarWhenPushed = true
         }
         super.pushViewController(viewController, animated: animated)
     }

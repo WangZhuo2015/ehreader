@@ -17,6 +17,8 @@
 		E967A4941C50C9B2000C6DC2 /* PixivIllust.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967A4931C50C9B2000C6DC2 /* PixivIllust.swift */; };
 		E967A4961C50D172000C6DC2 /* PixivIllustGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967A4951C50D172000C6DC2 /* PixivIllustGallery.swift */; };
 		E97999971C4D1DFC00003AF6 /* PhotoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */; };
+		E97D61D11C8D4B5800E12AEF /* PushTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97D61D01C8D4B5800E12AEF /* PushTransition.swift */; };
+		E97D61D31C8D58A700E12AEF /* PopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97D61D21C8D58A700E12AEF /* PopTransition.swift */; };
 		E98AB13F1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13B1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework */; };
 		E98AB1401C7456C500291F27 /* RAMAnimatedTabBarController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13C1C7456C500291F27 /* RAMAnimatedTabBarController.framework */; };
 		E98AB1411C7456C500291F27 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13D1C7456C500291F27 /* Realm.framework */; };
@@ -86,6 +88,8 @@
 		E967A4931C50C9B2000C6DC2 /* PixivIllust.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivIllust.swift; sourceTree = "<group>"; };
 		E967A4951C50D172000C6DC2 /* PixivIllustGallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivIllustGallery.swift; sourceTree = "<group>"; };
 		E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoServiceTests.swift; sourceTree = "<group>"; };
+		E97D61D01C8D4B5800E12AEF /* PushTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTransition.swift; sourceTree = "<group>"; };
+		E97D61D21C8D58A700E12AEF /* PopTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTransition.swift; sourceTree = "<group>"; };
 		E98AB13B1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AXStretchableHeaderTabViewController.framework; path = "Pods/../build/Debug-iphoneos/AXStretchableHeaderTabViewController.framework"; sourceTree = "<group>"; };
 		E98AB13C1C7456C500291F27 /* RAMAnimatedTabBarController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RAMAnimatedTabBarController.framework; path = "../../Library/Developer/Xcode/DerivedData/ehreader-bsawwpbfimnubodhgkvnncxpxovf/Build/Products/Debug-iphoneos/RAMAnimatedTabBarController.framework"; sourceTree = "<group>"; };
 		E98AB13D1C7456C500291F27 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = "../../Library/Developer/Xcode/DerivedData/ehreader-bsawwpbfimnubodhgkvnncxpxovf/Build/Products/Debug-iphoneos/Realm.framework"; sourceTree = "<group>"; };
@@ -331,6 +335,8 @@
 				E9DC51EB1C4699740053D331 /* Constants.swift */,
 				F7A556D51BFB485000E7CBEB /* LoginHelper.swift */,
 				F7EB132B1BFD5F0E00538CC5 /* RegexHelper.swift */,
+				E97D61D01C8D4B5800E12AEF /* PushTransition.swift */,
+				E97D61D21C8D58A700E12AEF /* PopTransition.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -522,6 +528,7 @@
 				E967A4921C5079EF000C6DC2 /* PixivUser.swift in Sources */,
 				E98B07401C89C2E100EE44B7 /* CustomNavigationController.swift in Sources */,
 				E967A4961C50D172000C6DC2 /* PixivIllustGallery.swift in Sources */,
+				E97D61D11C8D4B5800E12AEF /* PushTransition.swift in Sources */,
 				E98B07491C89C2E100EE44B7 /* MainTabbarController.swift in Sources */,
 				F78DD6DC1BF9DB7C003D3CB9 /* ViewController.swift in Sources */,
 				E98B07411C89C2E100EE44B7 /* GalleryDetailViewController.swift in Sources */,
@@ -540,6 +547,7 @@
 				E98B07471C89C2E100EE44B7 /* MainTabbar.swift in Sources */,
 				E98B07431C89C2E100EE44B7 /* GalleryCollectionViewController.swift in Sources */,
 				F78DD6FF1BF9E56D003D3CB9 /* DataLoader.swift in Sources */,
+				E97D61D31C8D58A700E12AEF /* PopTransition.swift in Sources */,
 				E98B074A1C89C2E100EE44B7 /* CollectionViewWaterfallLayout.swift in Sources */,
 				E98B074B1C89C2E100EE44B7 /* GalleryCell.swift in Sources */,
 				F7FAA4ED1BFACA6200E27E4A /* Photo.swift in Sources */,
