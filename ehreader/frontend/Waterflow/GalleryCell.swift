@@ -30,7 +30,7 @@ class GalleryCell: UICollectionViewCell {
         let label = UILabel(frame: CGRectZero)
         label.font = UIFont.systemFontOfSize(12)
         label.textColor = UIColor.createColor(100, green: 100, blue: 100, alpha: 1)
-        label.numberOfLines = -1
+        label.numberOfLines = 0
         return label
     }()
     
@@ -119,34 +119,10 @@ class GalleryCell: UICollectionViewCell {
     
     func configCellWithPxiv(illust:PixivIllust) -> Void {
         self.titleLabel.text = illust.title
+        self.titleLabel.numberOfLines = 0
         self.avatarImageView.kf_setImageWithURL(NSURL(string: illust.profile_url_px_50x50!)!, placeholderImage: nil)
         self.usernameLabel.text = illust.name
         
-        
-//        let parameters:[String:String] = [
-//            "Referer": "http://www.pixiv.net/member_illust.php?mode=medium&illust_id=\(illust.illust_id)",
-//            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Ubuntu/12.10 Chromium/22.0.1229.94 Chrome/22.0.1229.94 Safari/537.4"
-//        ]
-//        
-//        let imageUrl = NSURL(string: illust.url_medium!)!
-//        let fileManager = NSFileManager.defaultManager()
-//        let directoryURL = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-//        let ext = imageUrl.pathExtension!
-//        let filename = directoryURL.URLByAppendingPathComponent("\(illust.illust_id).\(ext)")
-//        
-//        download(.POST, illust.url_medium!, parameters: nil, encoding: ParameterEncoding.URL, headers: parameters, destination: { (url:NSURL, response:NSHTTPURLResponse) -> NSURL in
-//            return filename
-//        }).progress({ (bytesRead:Int64, totalBytesRead:Int64, totalBytesExpectedToRead:Int64) in
-//            print(totalBytesRead)
-//        }).response(completionHandler: { (request:NSURLRequest?, response:NSHTTPURLResponse?, data:NSData?, error:NSError?) in
-//            print(request)
-//            print(response)
-//            print(data)
-//            print(error)
-//            if let image = UIImage(contentsOfFile: filename.path!) {
-//                self.imageView.image = image
-//            }
-//        })
         
         KingfisherManager.sharedManager.downloader.requestModifier = {(request:NSMutableURLRequest)->Void in
             let refrer = "http://www.pixiv.net/member_illust.php?mode=medium&illust_id=\(illust.illust_id)"

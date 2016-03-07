@@ -29,6 +29,8 @@ class GalleryWaterFlowViewController: UIViewController {
         return collectionView
     }()
     
+    private var lastPosition:CGFloat = 0
+    
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
     let galleryService = GalleryService()
@@ -47,8 +49,20 @@ class GalleryWaterFlowViewController: UIViewController {
         backgroundView.addTarget(self, action: #selector(GalleryCollectionViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(backgroundView)
         
-        addConstraints()
         startLoading()
+    }
+    
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        
+        backgroundView.snp_remakeConstraints { (make) -> Void in
+            make.edges.equalTo(self.view)
+        }
+        
+        self.collectionView.snp_remakeConstraints { (make) in
+            make.top.equalTo(self.view)
+            make.leading.trailing.bottom.equalTo(self.view)
+        }
     }
     
     private var originalNaivgationControllerDelegate:UINavigationControllerDelegate?
@@ -89,17 +103,6 @@ class GalleryWaterFlowViewController: UIViewController {
             self.backgroundView.status = BackgroundViewStatus.Hidden
         }
     }
-    
-    private func addConstraints() {
-        backgroundView.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(self.view)
-        }
-        
-        self.collectionView.snp_makeConstraints { (make) in
-            make.top.equalTo(self.view)
-            make.leading.trailing.bottom.equalTo(self.view)
-        }
-    }
 }
 
 extension GalleryWaterFlowViewController: UICollectionViewDataSource {
@@ -130,7 +133,7 @@ extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionVi
         let illust = self.gallery!.illusts[indexPath.row]
         let normalHeight = 20 + AvatarWidth + 0.5 + 20
         if let text = illust.title {
-            let titleWidth = calculateSize.width
+            let titleWidth = calculateSize.width - 16
             let titleHeight = text.contentRect(UIFont.systemFontOfSize(12), maxSize: CGSizeMake(titleWidth, CGFloat(MAXFLOAT))).height
             return Float(titleHeight + normalHeight)
         }
@@ -142,6 +145,20 @@ extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionVi
         let illust = self.gallery!.illusts[indexPath.row]
         photoViewController.startLoading(illust.url_medium!, thumbUrl: illust.url_px_128x128!, imageSize: CGSizeMake(CGFloat(illust.width), CGFloat(illust.height)))
         self.navigationController?.pushViewController(photoViewController, animated: true)
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        guard let mainTabbarController = self.tabBarController as? MainTabbarController else {
+            return
+        }
+        let currentPosition = scrollView.contentOffset.y
+        if currentPosition - lastPosition > 20 && currentPosition > 0 {
+            lastPosition = currentPosition
+            mainTabbarController.hideTabbar(true)
+        }else if (lastPosition - currentPosition > 20) && (currentPosition < scrollView.contentSize.height - scrollView.bounds.height - 20) {
+            lastPosition = currentPosition
+            mainTabbarController.displayTabbar(true)
+        }
     }
 }
 

@@ -42,8 +42,7 @@ public class PushTransition: NSObject, UIViewControllerAnimatedTransitioning {
         cell.imageView.hidden = true
         
         let finalFrame = transitionContext.finalFrameForViewController(toViewController)
-        var finalImageViewFrame = containerView.convertRect(toViewController.imageView.frame, fromView: toViewController.view)
-        finalImageViewFrame.y = finalImageViewFrame.y + 63;
+        let finalImageViewFrame = toViewController.imageViewContentRect
         toViewController.view.frame = finalFrame
         toViewController.view.alpha = 0
         toViewController.imageView.hidden = true
@@ -57,7 +56,7 @@ public class PushTransition: NSObject, UIViewControllerAnimatedTransitioning {
         }) { (finished:Bool) in
             snapshootView.removeFromSuperview()
             toViewController.imageView.hidden = false
-            transitionContext.completeTransition(true)
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
         }
     }
 }

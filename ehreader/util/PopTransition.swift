@@ -38,7 +38,7 @@ public class PopTransition: NSObject, UIViewControllerAnimatedTransitioning {
         
         // take snapshoot
         let snapshootView = fromViewController.imageView.snapshotViewAfterScreenUpdates(false)
-        snapshootView.frame = containerView.convertRect(fromViewController.imageView.frame, fromView: fromViewController.view)
+        snapshootView.frame = containerView.convertRect(fromViewController.imageView.frame, fromView: fromViewController.imageView.superview)
         snapshootView.backgroundColor = UIColor.clearColor()
         fromViewController.imageView.hidden = true
         
@@ -53,7 +53,7 @@ public class PopTransition: NSObject, UIViewControllerAnimatedTransitioning {
             snapshootView.removeFromSuperview()
             fromViewController.imageView.hidden = false
             cell.imageView.hidden = false
-            transitionContext.completeTransition(true)
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
         }
     }
 }

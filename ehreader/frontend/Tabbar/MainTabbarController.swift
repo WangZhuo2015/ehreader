@@ -16,6 +16,7 @@ class MainTabbarController: UITabBarController,MainTabbarDeleaget {
     private var appVc3:GalleryWaterFlowViewController!
     private var appVc4:GalleryWaterFlowViewController!
     private var downloadManagerViewController:GalleryWaterFlowViewController!
+    private var tabbarHeight:CGFloat = 50
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +27,9 @@ class MainTabbarController: UITabBarController,MainTabbarDeleaget {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         removeSystemTabbar()
+        self.tabbarHeight = self.tabBar.frame.height
     }
+    
     
     func removeSystemTabbar () {
         var onceToken:dispatch_once_t = 0
@@ -41,19 +44,32 @@ class MainTabbarController: UITabBarController,MainTabbarDeleaget {
     }
     
     func hideTabbar(animated:Bool) {
-        UIView.animateWithDuration(0.3, animations: {
-            self.customTabBar?.frame = CGRectZero
-        }) { (finished:Bool) in
+        if tabbarHeight <= 0 {
+            return
+        }
+        if animated {
+            UIView.animateWithDuration(0.3, animations: {
+                self.tabBar.frame = CGRectMake(0, self.view.frame.height, self.view.frame.width, self.tabbarHeight)
+            }) { (finished:Bool) in
+                self.tabBar.hidden = true
+            }
+        }else {
             self.tabBar.hidden = true
         }
     }
     
     func  displayTabbar(animated:Bool) {
+        if tabbarHeight <= 0 {
+            return
+        }
         self.tabBar.hidden = false
-        UIView.animateWithDuration(0.3, animations: { 
-            self.customTabBar?.frame = self.tabBar.bounds
-        }) { (finished:Bool) in
-            //self.tabBar.hidden = false
+        if animated {
+            UIView.animateWithDuration(0.3, animations: {
+                self.tabBar.frame = CGRectMake(0, self.view.frame.height - self.tabbarHeight, self.view.frame.width, self.tabbarHeight)
+            }) { (finished:Bool) in
+            }
+        }else {
+            self.tabBar.frame = CGRectMake(0, self.view.frame.height - self.tabbarHeight, self.view.frame.width, self.tabbarHeight)
         }
     }
     
@@ -74,7 +90,7 @@ class MainTabbarController: UITabBarController,MainTabbarDeleaget {
         addChildViewController(appVc3, titles: "搜索", image: "tab_explore", selectImage: "tab_explore_selected")
         
         appVc4 = GalleryWaterFlowViewController()
-        addChildViewController(appVc4, titles: "我的页面", image: "tab_me", selectImage: "tab_me_selected")
+        addChildViewController(appVc4, titles: "我的", image: "tab_me", selectImage: "tab_me_selected")
         
     }
     
@@ -93,4 +109,15 @@ class MainTabbarController: UITabBarController,MainTabbarDeleaget {
     func tabBar(tabBar: MainTabbar, didSelectButton from: Int, to: Int) {
         self.selectedIndex = to
     }
+    
+    func findScrollView(rootView:UIView)->UIScrollView? {
+        if rootView.isKindOfClass(UIScrollView) {
+            return rootView as? UIScrollView
+        }
+        for subview in rootView.subviews {
+            return findScrollView(subview)
+        }
+        return nil
+    }
 }
+
