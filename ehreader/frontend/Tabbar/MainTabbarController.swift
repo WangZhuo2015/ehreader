@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SnapKit
 
-class MainTabbarController: UITabBarController,MainTabbarDeleaget {
+class MainTabbarController: UITabBarController {
 
     private var customTabBar:MainTabbar?
     private var waterFlowViewController:GalleryWaterFlowViewController!
@@ -20,14 +21,15 @@ class MainTabbarController: UITabBarController,MainTabbarDeleaget {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addTabbar()
-        addChildVc()
+        addTabbars()
+        addChildViewControllers()
 
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         removeSystemTabbar()
         self.tabbarHeight = self.tabBar.frame.height
+        self.customTabBar?.reloadData()
     }
     
     
@@ -73,13 +75,17 @@ class MainTabbarController: UITabBarController,MainTabbarDeleaget {
         }
     }
     
-    func addTabbar(){
-        customTabBar = MainTabbar.init(frame: self.tabBar.bounds)
+    func addTabbars(){
+        customTabBar = MainTabbar(frame: self.tabBar.bounds)
         customTabBar?.delegate = self
+        customTabBar?.dataSource = self
         self.tabBar.addSubview(customTabBar!)
+        customTabBar?.snp_makeConstraints(closure: { (make) in
+            make.edges.equalTo(self.tabBar)
+        })
     }
     
-    func addChildVc(){
+    func addChildViewControllers(){
         waterFlowViewController = GalleryWaterFlowViewController()
         addChildViewController(waterFlowViewController, titles: "排行", image: "tab_huaban", selectImage: "tab_huaban_selected")
         
@@ -102,22 +108,21 @@ class MainTabbarController: UITabBarController,MainTabbarDeleaget {
         
         let navigationController = CustomNavigationController(rootViewController: child)
         self.addChildViewController(navigationController)
-    
-        customTabBar?.addTabBarButtonWithItem(child.tabBarItem)
     }
-   
+}
+
+extension MainTabbarController:MainTabbarDelegate, MainTabbarDataSource {
     func tabBar(tabBar: MainTabbar, didSelectButton from: Int, to: Int) {
         self.selectedIndex = to
     }
     
-    func findScrollView(rootView:UIView)->UIScrollView? {
-        if rootView.isKindOfClass(UIScrollView) {
-            return rootView as? UIScrollView
-        }
-        for subview in rootView.subviews {
-            return findScrollView(subview)
-        }
-        return nil
+    func numberOfTabbarItem(tabbar: MainTabbar) -> Int {
+        return self.childViewControllers.count
+    }
+    
+    func mainTabbar(tabbar: MainTabbar, tabbarItemForIndex index: Int) -> UITabBarItem {
+        let navigationController = self.childViewControllers[index] as! UINavigationController
+        return navigationController.topViewController!.tabBarItem
     }
 }
 

@@ -39,7 +39,6 @@ class GalleryWaterFlowViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Gallery"
         
         collectionView.dataSource = self
         collectionView.delegate = self

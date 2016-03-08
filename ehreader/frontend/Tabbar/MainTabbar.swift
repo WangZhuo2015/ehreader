@@ -7,47 +7,73 @@
 //
 
 import UIKit
+import SnapKit
 
-@objc
-public protocol MainTabbarDeleaget:NSObjectProtocol {
+@objc public protocol MainTabbarDelegate:NSObjectProtocol {
     func tabBar(tabBar:MainTabbar, didSelectButton from:Int, to:Int) ->Void
 }
 
+@objc public protocol MainTabbarDataSource:NSObjectProtocol {
+    func numberOfTabbarItem(tabbar:MainTabbar)->Int
+    func mainTabbar(tabbar:MainTabbar, tabbarItemForIndex index:Int)->UITabBarItem
+}
+
 public class MainTabbar: UIView {
-    public weak var delegate:MainTabbarDeleaget?
-    private var tabBarButtonCount:Int = 0
+    public weak var delegate:MainTabbarDelegate?
+    
+    public weak var dataSource:MainTabbarDataSource?
+    
     private var selectBtn:MainTabBarButton?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-      
     }
+    
+    
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    public func addTabBarButtonWithItem(item:UITabBarItem){
-        if tabBarButtonCount >= 4{
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        reloadData()
+    }
+    
+    func reloadData() {
+        guard let dataSource = self.dataSource else {
             return
         }
-        let btn:MainTabBarButton = MainTabBarButton()
-        
-        let btnH = self.frame.size.height
-        let btnW = self.frame.size.width/4
-        let btnX = btnW * CGFloat(tabBarButtonCount)
-        
-        btn.frame = CGRectMake(btnX, 0, btnW, btnH);
-        
-        btn.item = item
-        
-        btn.addTarget(self, action:#selector(MainTabbar.btnClick(_:)), forControlEvents: UIControlEvents.TouchDown);
-        
-        btn.tag = tabBarButtonCount
-        if btn.tag == 0{
-            btnClick(btn)
+        for subView in self.subviews {
+            subView.removeFromSuperview()
         }
-        addSubview(btn)
-        tabBarButtonCount += 1
+        
+        let tabBarButtonCount = dataSource.numberOfTabbarItem(self)
+        var prevView:UIView?
+        for index in 0..<tabBarButtonCount {
+            let tabbarItem = dataSource.mainTabbar(self, tabbarItemForIndex: index)
+            let tabbarButton = MainTabBarButton(frame: CGRectZero)
+            tabbarButton.item = tabbarItem
+            tabbarButton.addTarget(self, action:#selector(MainTabbar.btnClick(_:)), forControlEvents: UIControlEvents.TouchDown)
+            tabbarButton.tag = index
+            if index == 0 {
+                btnClick(tabbarButton)
+            }
+            addSubview(tabbarButton)
+            tabbarButton.snp_makeConstraints(closure: { (make) in
+                if let view = prevView {
+                    make.leading.equalTo(view.snp_trailing)
+                    make.width.equalTo(view)
+                }else {
+                    make.leading.equalTo(self)
+                }
+                
+                make.top.bottom.equalTo(self)
+                if index == tabBarButtonCount - 1 {
+                    make.trailing.equalTo(self)
+                }
+            })
+            prevView = tabbarButton
+        }
     }
     
     func btnClick(sender:MainTabBarButton){
