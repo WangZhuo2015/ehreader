@@ -29,7 +29,13 @@ class GalleryWaterFlowViewController: UIViewController {
         return collectionView
     }()
     
-    private var lastPosition:CGFloat = 0
+    private lazy var arrowTitleView:UIArrowTitleView = {
+        let titleView = UIArrowTitleView(frame: CGRectZero)
+        titleView.addTarget(self, action: #selector(GalleryWaterFlowViewController.onPresentPixivRanking(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        return titleView
+    }()
+    
+    private lazy var pixivRankingViewController:PixivRankingViewController = PixivRankingViewController()
     
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
@@ -47,12 +53,25 @@ class GalleryWaterFlowViewController: UIViewController {
         backgroundView.status = BackgroundViewStatus.Loading
         backgroundView.addTarget(self, action: #selector(GalleryCollectionViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(backgroundView)
-        
+        self.arrowTitleView.titleLabel.text = self.title
+        self.navigationItem.titleView = self.arrowTitleView
         startLoading()
+        
+        addViewConstraints()
     }
     
-    override func updateViewConstraints() {
-        super.updateViewConstraints()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let navigationBar = self.navigationController?.navigationBar {
+            let width = self.arrowTitleView.arrowTitleViewWidth
+            let startX = (navigationBar.frame.width - width)/2
+            let frame = CGRectMake(startX, 0, width, navigationBar.frame.height)
+            arrowTitleView.frame = frame
+        }
+        
+    }
+    
+    func addViewConstraints() {
         
         backgroundView.snp_remakeConstraints { (make) -> Void in
             make.edges.equalTo(self.view)
@@ -102,6 +121,20 @@ class GalleryWaterFlowViewController: UIViewController {
             self.backgroundView.status = BackgroundViewStatus.Hidden
         }
     }
+    
+    func onPresentPixivRanking(sender:UIArrowTitleView) {
+        if sender.arrowStatus == UIArrowTitleViewState.Down {
+            presentDropdownController(self.pixivRankingViewController, height: self.view.frame.height, foldControl: sender, animated: false)
+            if let mainTabbarController = self.tabBarController as? MainTabbarController {
+                mainTabbarController.hideTabbar(true)
+            }
+        }else {
+            dismissDropdownController(self.pixivRankingViewController, height: self.view.frame.height, foldControl: sender, animated: true)
+            if let mainTabbarController = self.tabBarController as? MainTabbarController {
+                mainTabbarController.displayTabbar(true)
+            }
+        }
+    }
 }
 
 extension GalleryWaterFlowViewController: UICollectionViewDataSource {
@@ -147,17 +180,7 @@ extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionVi
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        guard let mainTabbarController = self.tabBarController as? MainTabbarController else {
-            return
-        }
-        let currentPosition = scrollView.contentOffset.y
-        if currentPosition - lastPosition > 20 && currentPosition > 0 {
-            lastPosition = currentPosition
-            mainTabbarController.hideTabbar(true)
-        }else if (lastPosition - currentPosition > 20) && (currentPosition < scrollView.contentSize.height - scrollView.bounds.height - 20) {
-            lastPosition = currentPosition
-            mainTabbarController.displayTabbar(true)
-        }
+        self.onScrollViewScrollingWithTabbar(scrollView)
     }
 }
 

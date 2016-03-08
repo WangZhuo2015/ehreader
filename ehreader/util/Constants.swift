@@ -73,3 +73,33 @@ let PHOTO_PER_PAGE = 40
 
 
 let DefaultNetworkTimeInterval:NSTimeInterval = 20
+
+extension UIViewController {
+    private struct AssociatedKeys {
+        static var lastPositionKey = "UIViewController.lastPosition"
+    }
+
+    private var lastPosition:CGFloat {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedKeys.lastPositionKey) as? CGFloat ?? 0
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.lastPositionKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    func onScrollViewScrollingWithTabbar(scrollView:UIScrollView) {
+        guard let mainTabbarController = self.tabBarController as? MainTabbarController else {
+            return
+        }
+        let currentPosition = scrollView.contentOffset.y
+        if currentPosition - lastPosition > 20 && currentPosition > 0 {
+            lastPosition = currentPosition
+            mainTabbarController.hideTabbar(true)
+        }else if (lastPosition - currentPosition > 20) && (currentPosition < scrollView.contentSize.height - scrollView.bounds.height - 20) {
+            lastPosition = currentPosition
+            mainTabbarController.displayTabbar(true)
+        }
+    }
+}

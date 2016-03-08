@@ -19,6 +19,8 @@ class MainTabbarController: UITabBarController {
     private var downloadManagerViewController:GalleryWaterFlowViewController!
     private var tabbarHeight:CGFloat = 50
     
+    private var tabbarItems:[UITabBarItem] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addTabbars()
@@ -50,7 +52,7 @@ class MainTabbarController: UITabBarController {
             return
         }
         if animated {
-            UIView.animateWithDuration(0.3, animations: {
+            UIView.animateWithDuration(0.2, animations: {
                 self.tabBar.frame = CGRectMake(0, self.view.frame.height, self.view.frame.width, self.tabbarHeight)
             }) { (finished:Bool) in
                 self.tabBar.hidden = true
@@ -66,7 +68,7 @@ class MainTabbarController: UITabBarController {
         }
         self.tabBar.hidden = false
         if animated {
-            UIView.animateWithDuration(0.3, animations: {
+            UIView.animateWithDuration(0.2, animations: {
                 self.tabBar.frame = CGRectMake(0, self.view.frame.height - self.tabbarHeight, self.view.frame.width, self.tabbarHeight)
             }) { (finished:Bool) in
             }
@@ -105,6 +107,7 @@ class MainTabbarController: UITabBarController {
         child.tabBarItem.image = UIImage(named: image)
         child.tabBarItem.selectedImage = UIImage(named: selectImage)?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         child.title = titles as String
+        self.tabbarItems.append(child.tabBarItem)
         
         let navigationController = CustomNavigationController(rootViewController: child)
         self.addChildViewController(navigationController)
@@ -117,12 +120,11 @@ extension MainTabbarController:MainTabbarDelegate, MainTabbarDataSource {
     }
     
     func numberOfTabbarItem(tabbar: MainTabbar) -> Int {
-        return self.childViewControllers.count
+        return self.tabbarItems.count
     }
     
     func mainTabbar(tabbar: MainTabbar, tabbarItemForIndex index: Int) -> UITabBarItem {
-        let navigationController = self.childViewControllers[index] as! UINavigationController
-        return navigationController.topViewController!.tabBarItem
+        return tabbarItems[index]
     }
 }
 

@@ -30,6 +30,7 @@ class PhotoViewController: UIViewController {
     internal lazy var scrollView:UIScrollView = {
         let scrollView = UIScrollView(frame: CGRectZero)
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.delegate = self
         return scrollView
     }()
     
@@ -171,5 +172,11 @@ extension PhotoViewController: UINavigationControllerDelegate {
         }else {
             return nil
         }
+    }
+}
+
+extension PhotoViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        onScrollViewScrollingWithTabbar(scrollView)
     }
 }

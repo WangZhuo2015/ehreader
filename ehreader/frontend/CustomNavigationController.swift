@@ -48,9 +48,6 @@ public class CustomNavigationController: UINavigationController {
         super.viewDidLoad()
         
         self.navigationBar.tintColor = UIColor.redColor()
-//        self.recognizer.delaysTouchesBegan = true
-//        self.view.addGestureRecognizer(self.recognizer)
-//        view.addSubview(self.shadowImageView)
     }
 
     override public func didReceiveMemoryWarning() {
@@ -59,10 +56,6 @@ public class CustomNavigationController: UINavigationController {
     }
     
     public override func pushViewController(viewController: UIViewController, animated: Bool) {
-//        if let tabViewController = self.parentViewController as? MainTabbarController {
-//            tabViewController.hideTabbar(true)
-//        }
-        //screenshoots.append(viewController.view.screenshotImage())
         if self.viewControllers.count > 0 {
             //viewController.hidesBottomBarWhenPushed = true
         }
@@ -70,17 +63,6 @@ public class CustomNavigationController: UINavigationController {
     }
     
     public override func popViewControllerAnimated(animated: Bool) -> UIViewController? {
-//        if !screenshoots.isEmpty {
-//            screenshoots.removeLast()
-//        }
-
-//        if self.viewControllers.last == self.topViewController {
-//            if let tabViewController = self.parentViewController as? MainTabbarController {
-//                tabViewController.displayTabbar(true)
-//            }
-//        }
-//        
-        
         return super.popViewControllerAnimated(animated)
     }
 }
