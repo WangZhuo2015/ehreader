@@ -68,6 +68,7 @@ class GalleryWaterFlowViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
         if let navigationBar = self.navigationController?.navigationBar {
             let width = self.arrowTitleView.arrowTitleViewWidth
             let startX = (navigationBar.frame.width - width)/2
@@ -205,6 +206,7 @@ extension GalleryWaterFlowViewController: PixivRankingViewControllerDelegate {
         self.arrowTitleView.arrowStatus = .Up
         self.arrowTitleView.titleLabel.text = rankingName
         self.arrowTitleView.triggerButtonEvent()
+        self.viewDidLayoutSubviews()
         self.startLoading(rankingMode)
     }
 }

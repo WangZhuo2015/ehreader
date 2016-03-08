@@ -33,7 +33,7 @@ public class UIArrowTitleView: UIControl {
     public var arrowTitleViewWidth:CGFloat {
         if let title = self.titleLabel.text {
             let height = self.frame.height
-            return title.contentRect(UIFont.boldSystemFontOfSize(17), maxSize: CGSizeMake(CGFloat(MAXFLOAT), height)).width + 20 + 10
+            return title.contentRect(UIFont.boldSystemFontOfSize(17), maxSize: CGSizeMake(CGFloat(MAXFLOAT), height)).width + 20 + 30
         }
         return 0
     }
