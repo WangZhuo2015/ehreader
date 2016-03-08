@@ -35,7 +35,11 @@ class GalleryWaterFlowViewController: UIViewController {
         return titleView
     }()
     
-    private lazy var pixivRankingViewController:PixivRankingViewController = PixivRankingViewController()
+    private lazy var pixivRankingViewController:PixivRankingViewController = {
+        let viewController = PixivRankingViewController()
+        viewController.delegate = self
+        return viewController
+    }()
     
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
@@ -48,6 +52,8 @@ class GalleryWaterFlowViewController: UIViewController {
         
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+        self.title = rankingTypes[PixivRankingMode.Daily]
         
         self.view.addSubview(collectionView)
         backgroundView.status = BackgroundViewStatus.Loading
@@ -72,7 +78,6 @@ class GalleryWaterFlowViewController: UIViewController {
     }
     
     func addViewConstraints() {
-        
         backgroundView.snp_remakeConstraints { (make) -> Void in
             make.edges.equalTo(self.view)
         }
@@ -101,14 +106,14 @@ class GalleryWaterFlowViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func startLoading() {
+    func startLoading(rankingMode:PixivRankingMode = PixivRankingMode.Daily, page:Int = 1) {
         do {
             try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
         }catch let error as NSError {
             print(error.localizedDescription)
         }
         
-        pixivProvider.getRankingAll(PixivRankingMode.Daily, page: 1) { (gallery, error) in
+        pixivProvider.getRankingAll(rankingMode, page: page) { (gallery, error) in
             if error != nil || gallery == nil{
                 print("loading choice data failed:\(error!.localizedDescription)")
                 self.backgroundView.status = BackgroundViewStatus.Failed
@@ -192,6 +197,15 @@ extension GalleryWaterFlowViewController: UINavigationControllerDelegate {
         }else {
             return nil
         }
+    }
+}
+
+extension GalleryWaterFlowViewController: PixivRankingViewControllerDelegate {
+    func pixivRankingViewController(viewController: PixivRankingViewController, didSelectRankingMode rankingMode: PixivRankingMode,rankingName:String?) {
+        self.arrowTitleView.arrowStatus = .Up
+        self.arrowTitleView.titleLabel.text = rankingName
+        self.arrowTitleView.triggerButtonEvent()
+        self.startLoading(rankingMode)
     }
 }
 

@@ -10,19 +10,27 @@ import UIKit
 
 let PixivRankingViewTableViewCellIdentifier = "PixivRankingViewTableViewCell"
 
+var rankingTypes:[PixivRankingMode:String] = [
+    PixivRankingMode.Daily: "每日",
+    PixivRankingMode.Weekly:"每周",
+    PixivRankingMode.Monthly:"每月",
+    PixivRankingMode.Male:"最受男生欢迎",
+    PixivRankingMode.Female:"最受女生欢迎",
+    PixivRankingMode.Rookie:"Rookie",
+    PixivRankingMode.DailyR18:"每日R18",
+    PixivRankingMode.WeeklyR18:"每周R18",
+    PixivRankingMode.MaleR18:"最受男生欢迎R18",
+    PixivRankingMode.FemaleR18:"最受女生欢迎R18",
+    PixivRankingMode.R18g:"R18g"]
+
+protocol PixivRankingViewControllerDelegate:NSObjectProtocol {
+    func pixivRankingViewController(viewController:PixivRankingViewController, didSelectRankingMode rankingMode:PixivRankingMode, rankingName:String?)
+}
+
 class PixivRankingViewController: UIViewController {
-    private var rankingTypes:[String] = ["每日",//PixivRankingMode.Daily.rawValue,
-                                         "每周",//PixivRankingMode.Weekly.rawValue,
-                                         "每月",//PixivRankingMode.Monthly.rawValue,
-                                         "最受男生欢迎",//PixivRankingMode.Male.rawValue,
-                                         "最受女生欢迎",//PixivRankingMode.Female.rawValue,
-                                         "Rookie",//PixivRankingMode.Rookie.rawValue,
-                                         "每日R18",//PixivRankingMode.DailyR18.rawValue,
-                                         "每周R18",//PixivRankingMode.WeeklyR18.rawValue,
-                                         "最受男生欢迎R18",//PixivRankingMode.MaleR18.rawValue,
-                                         "最受女生欢迎R18",//PixivRankingMode.FemaleR18.rawValue,
-                                         "R18g"//PixivRankingMode.R18g.rawValue
-                                            ]
+    weak var delegate:PixivRankingViewControllerDelegate?
+    
+    private var rankingKeys:[PixivRankingMode] = [PixivRankingMode.Daily, PixivRankingMode.Weekly, PixivRankingMode.Monthly, PixivRankingMode.Male, PixivRankingMode.Female, PixivRankingMode.Rookie, PixivRankingMode.DailyR18, PixivRankingMode.WeeklyR18, PixivRankingMode.MaleR18, PixivRankingMode.FemaleR18, PixivRankingMode.R18g]
     
     private lazy var tableView:UITableView = {
         let tableView = UITableView(frame: CGRectZero)
@@ -73,13 +81,19 @@ class PixivRankingViewController: UIViewController {
 
 extension PixivRankingViewController:UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rankingTypes.count
+        return rankingKeys.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(PixivRankingViewTableViewCellIdentifier)
-        cell!.textLabel?.text = rankingTypes[indexPath.row]
+        let key = rankingKeys[indexPath.row]
+        cell!.textLabel?.text = rankingTypes[key]
         cell?.backgroundColor = UIColor.clearColor()
         return cell!
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let key = rankingKeys[indexPath.row]
+        self.delegate?.pixivRankingViewController(self, didSelectRankingMode: key, rankingName: rankingTypes[key])
     }
 }

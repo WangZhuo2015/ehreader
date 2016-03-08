@@ -36,7 +36,7 @@ public class PixivIllustGallery: Object {
         let gallery = PixivIllustGallery()
         gallery.count = count
         gallery.per_page = pagination["per_page"] as? Int ?? 0
-        gallery.total = pagination["totoal"] as? Int ?? 0
+        gallery.total = pagination["total"] as? Int ?? 0
         gallery.current = pagination["current"] as? Int ?? 0
         gallery.next = pagination["next"] as? Int ?? 0
         gallery.previous = pagination["previous"] as? Int ?? 0
@@ -54,6 +54,7 @@ public class PixivIllustGallery: Object {
             if let illustGallery = responseList {
                 for value in illustGallery {
                     if let illust = PixivIllust.createPixivIllust(value, isWork: isWork) {
+                        realm.create(PixivIllust.self, value: illust, update: true)
                         gallery.illusts.append(illust)
                     }
                 }

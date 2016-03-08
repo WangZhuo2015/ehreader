@@ -64,11 +64,7 @@ public class UIArrowTitleView: UIControl {
         }
     }
     
-    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        UIView.animateWithDuration(0.3) { 
-            self.arrowImageView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
-        }
-        
+    public func triggerButtonEvent() {
         if self.arrowStatus == .Down {
             UIView.animateWithDuration(0.3, animations: {
                 self.arrowImageView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
@@ -84,6 +80,9 @@ public class UIArrowTitleView: UIControl {
         }
         
         sendActionsForControlEvents(UIControlEvents.TouchUpInside)
-        
+    }
+    
+    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        triggerButtonEvent()
     }
 }
