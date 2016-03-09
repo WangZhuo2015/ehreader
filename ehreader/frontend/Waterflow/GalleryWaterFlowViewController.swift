@@ -41,6 +41,16 @@ class GalleryWaterFlowViewController: UIViewController {
         return viewController
     }()
     
+    private lazy var headerView:CurveRefreshHeaderView = {
+        let headerView = CurveRefreshHeaderView(associatedScrollView: self.collectionView, withNavigationBar: true)
+        return headerView
+    }()
+    
+    private lazy var footerView:CurveRefreshFooterView = {
+        let footerView = CurveRefreshFooterView(associatedScrollView: self.collectionView, withNavigationBar: true)
+        return footerView
+    }()
+    
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
     let galleryService = GalleryService()
@@ -62,6 +72,15 @@ class GalleryWaterFlowViewController: UIViewController {
         self.arrowTitleView.titleLabel.text = self.title
         self.navigationItem.titleView = self.arrowTitleView
         startLoading()
+        
+//        headerView.refreshingBlock = { ()->() in
+//            self.startLoading(self.rankingMode, page: self.currentPage)
+//        }
+        
+        footerView.refreshingBlock = { ()->() in
+            self.currentPage += 1
+            self.startLoading(self.rankingMode, page: self.currentPage)
+        }
         
         addViewConstraints()
     }
@@ -95,6 +114,8 @@ class GalleryWaterFlowViewController: UIViewController {
         super.viewWillAppear(animated)
         self.originalNaivgationControllerDelegate = self.navigationController?.delegate
         self.navigationController?.delegate = self
+        
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -106,6 +127,9 @@ class GalleryWaterFlowViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    var rankingMode:PixivRankingMode = PixivRankingMode.Daily
+    var currentPage:Int = 0
     
     func startLoading(rankingMode:PixivRankingMode = PixivRankingMode.Daily, page:Int = 1) {
         do {
@@ -121,10 +145,16 @@ class GalleryWaterFlowViewController: UIViewController {
                 return
             }
             
-            self.gallery = gallery
+            if self.gallery == nil {
+                self.gallery = gallery
+            }else {
+                self.gallery?.addIllusts(gallery!)
+            }
             
             self.collectionView.reloadData()
             self.backgroundView.status = BackgroundViewStatus.Hidden
+            //self.headerView.stopRefreshing()
+            self.footerView.stopRefreshing()
         }
     }
     
@@ -208,6 +238,7 @@ extension GalleryWaterFlowViewController: PixivRankingViewControllerDelegate {
         self.arrowTitleView.triggerButtonEvent()
         self.viewDidLayoutSubviews()
         self.startLoading(rankingMode)
+        self.rankingMode = rankingMode
     }
 }
 

@@ -7,18 +7,29 @@
 //
 
 import UIKit
-import RealmSwift
 
-public class PixivIllustGallery: Object {
-    public dynamic var count:Int = 0
-    public let illusts = List<PixivIllust>()
+public class PixivIllustGallery: NSObject {
+    public var count:Int = 0
+    public var illusts:[PixivIllust] = []
     
-    public dynamic var per_page:Int = 0
-    public dynamic var total:Int = 0
-    public dynamic var pages:Int = 0
-    public dynamic var current:Int = 0
-    public dynamic var next:Int = 0
-    public dynamic var previous:Int = 0
+    public var per_page:Int = 0
+    public var total:Int = 0
+    public var pages:Int = 0
+    public var current:Int = 0
+    public var next:Int = 0
+    public var previous:Int = 0
+    public var mergePages:[Int] = []
+    
+    public func addIllusts(gallery:PixivIllustGallery) {
+        if self.current == gallery.current {
+            return
+        }
+        if self.mergePages.contains(gallery.current) {
+            return
+        }
+        self.illusts.appendContentsOf(gallery.illusts)
+        self.mergePages.append(gallery.current)
+    }
     
     public static func createPixivIllustGallery(source:NSDictionary, isWork:Bool)->PixivIllustGallery? {
         guard let count = source["count"] as? Int else {
@@ -40,6 +51,7 @@ public class PixivIllustGallery: Object {
         gallery.current = pagination["current"] as? Int ?? 0
         gallery.next = pagination["next"] as? Int ?? 0
         gallery.previous = pagination["previous"] as? Int ?? 0
+        gallery.mergePages.append(gallery.current)
         
         let responseList:[NSDictionary]?
         if let list = response.first?.objectForKey("works") as? [NSDictionary]{
@@ -48,15 +60,10 @@ public class PixivIllustGallery: Object {
             responseList = response
         }
         
-        let realm = try! Realm()
-        try! realm.write { () -> Void in
-            realm.create(PixivIllustGallery.self, value: gallery, update: false)
-            if let illustGallery = responseList {
-                for value in illustGallery {
-                    if let illust = PixivIllust.createPixivIllust(value, isWork: isWork) {
-                        realm.create(PixivIllust.self, value: illust, update: true)
-                        gallery.illusts.append(illust)
-                    }
+        if let illustGallery = responseList {
+            for value in illustGallery {
+                if let illust = PixivIllust.createPixivIllust(value, isWork: isWork) {
+                    gallery.illusts.append(illust)
                 }
             }
         }
