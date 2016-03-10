@@ -123,13 +123,14 @@ class GalleryCell: UICollectionViewCell {
         self.avatarImageView.kf_setImageWithURL(NSURL(string: illust.profile_url_px_50x50!)!, placeholderImage: nil)
         self.usernameLabel.text = illust.name
         
-        
+        KingfisherManager.sharedManager.cache.clearMemoryCache()
         KingfisherManager.sharedManager.downloader.requestModifier = {(request:NSMutableURLRequest)->Void in
             let refrer = "http://www.pixiv.net/member_illust.php?mode=medium&illust_id=\(illust.illust_id)"
             let agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Ubuntu/12.10 Chromium/22.0.1229.94 Chrome/22.0.1229.94 Safari/537.4"
             request.setValue(refrer, forHTTPHeaderField: "Referer")
             request.setValue(agent, forHTTPHeaderField: "User-Agent")
         }
+        
         
         self.imageView.kf_setImageWithURL(NSURL(string: illust.url_medium!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
         }) { (image, error, cacheType, imageURL) in
