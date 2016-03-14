@@ -18,12 +18,11 @@ class CurveRefreshFooterView: UIView {
     private var progress: CGFloat = 0.0 {
         didSet{
             if !_associatedScrollView.tracking {
-                labelView.loading = true
+                //labelView.loading = true
             }
             
             if !willEnd && !loading {
-                curveView.progress =  progress
-                labelView.progress =  progress
+                //labelView.progress =  progress
             }
             
             let diff =  _associatedScrollView.contentOffset.y - (_associatedScrollView.contentSize.height - _associatedScrollView.frame.height) - pullDistance + 10.0;
@@ -36,7 +35,7 @@ class CurveRefreshFooterView: UIView {
                         print("旋转")
                         
                         //旋转...
-                        curveView.startInfiniteRotation()
+                        curveView.startAnimating()
                         UIView.animateWithDuration(0.3, animations: { [weak self] () -> Void in
                             if let strongSelf = self {
                                 strongSelf._associatedScrollView.contentInset = UIEdgeInsetsMake(strongSelf.originOffset, 0, strongSelf.pullDistance, 0)
@@ -50,26 +49,20 @@ class CurveRefreshFooterView: UIView {
                     
                 }
                 
-                if (!loading) {
-                    curveView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI) * (diff*2/180))
-                }
-                
             }else{
-                labelView.loading = false
-                curveView.transform = CGAffineTransformIdentity
+                curveView.stopAnimating()
             }
         }
         
     }
     private var _associatedScrollView: UIScrollView!
     
-    private var labelView: LabelView!
-    private var curveView: CurveView!
+    private var curveView: UIActivityIndicatorView!
     private var contentSize: CGSize?
     private var originOffset: CGFloat!
     private var willEnd: Bool = false
     private var notTracking: Bool = false
-    private var loading: Bool = false
+    private(set) var loading: Bool = false
     
     init(associatedScrollView: UIScrollView, withNavigationBar: Bool) {
         super.init(frame: CGRectMake(associatedScrollView.frame.width/2-200/2, associatedScrollView.frame.height, 200, 100))
@@ -110,7 +103,6 @@ class CurveRefreshFooterView: UIView {
                     strongSelf.willEnd = false
                     strongSelf.notTracking = false
                     strongSelf.loading = false
-                    strongSelf.labelView.loading = false
                     strongSelf.curveView.stopInfiniteRotation()
                 }
         }
@@ -123,11 +115,9 @@ class CurveRefreshFooterView: UIView {
 extension CurveRefreshFooterView {
     private func setUp() {
         pullDistance = 99;
-        curveView = CurveView(frame: CGRectMake(20, 0, 30, frame.height))
+        curveView = UIActivityIndicatorView(frame: CGRectMake((frame.width - 20)/2, 0, 20, frame.height))
+        curveView.tintColor = UIColor.redColor()
         insertSubview(curveView, atIndex: 0)
-        labelView = LabelView(frame: CGRectMake(curveView.frame.origin.x + curveView.frame.width + 10.0, curveView.frame.origin.y, 150, curveView.frame.height))
-        labelView.state = .UP
-        insertSubview(labelView, aboveSubview: curveView)
     }
 }
 

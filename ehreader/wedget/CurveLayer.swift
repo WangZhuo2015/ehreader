@@ -8,9 +8,9 @@
 
 import UIKit
 
-let Radius:CGFloat =  10.0
+let Radius:CGFloat =  6.0
 let Space:CGFloat  =  1.0
-let LineLength:CGFloat = 30.0
+let LineLength:CGFloat = 20.0
 let Degree:CGFloat = CGFloat(M_PI / 3)
 
 class CurveLayer: CALayer {
@@ -97,7 +97,7 @@ class CurveLayer: CALayer {
         CGContextSaveGState(context)
         CGContextRestoreGState(context)
         
-        UIColor.blackColor().setStroke()
+        UIColor.redColor().setStroke()
         arrowPath.stroke()
         curvePath1.stroke()
         curvePath2.stroke()

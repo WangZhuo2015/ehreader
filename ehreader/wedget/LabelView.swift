@@ -62,7 +62,8 @@ class LabelView: UIView {
         state = .DOWN
         titleLabel = UILabel(frame: CGRectMake(0, frame.size.height/2-LabelHeight/2, frame.size.width, LabelHeight))
         titleLabel.text = kPullingString
-        titleLabel.textColor = UIColor.blackColor()
+        titleLabel.textColor = UIColor.redColor()
+        titleLabel.font = UIFont.systemFontOfSize(12)
         titleLabel.adjustsFontSizeToFitWidth = true
         addSubview(titleLabel)
     }

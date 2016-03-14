@@ -73,14 +73,7 @@ class GalleryWaterFlowViewController: UIViewController {
         self.navigationItem.titleView = self.arrowTitleView
         startLoading()
         
-//        headerView.refreshingBlock = { ()->() in
-//            self.startLoading(self.rankingMode, page: self.currentPage)
-//        }
         
-        footerView.refreshingBlock = { ()->() in
-            self.currentPage += 1
-            self.startLoading(self.rankingMode, page: self.currentPage)
-        }
         
         addViewConstraints()
     }
@@ -114,8 +107,18 @@ class GalleryWaterFlowViewController: UIViewController {
         super.viewWillAppear(animated)
         self.originalNaivgationControllerDelegate = self.navigationController?.delegate
         self.navigationController?.delegate = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        headerView.refreshingBlock = { ()->() in
+            self.startLoading(self.rankingMode, page: self.currentPage)
+        }
         
-        
+        footerView.refreshingBlock = { ()->() in
+            self.currentPage += 1
+            self.startLoading(self.rankingMode, page: self.currentPage)
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -129,7 +132,7 @@ class GalleryWaterFlowViewController: UIViewController {
     }
     
     var rankingMode:PixivRankingMode = PixivRankingMode.Daily
-    var currentPage:Int = 0
+    var currentPage:Int = 1
     
     func startLoading(rankingMode:PixivRankingMode = PixivRankingMode.Daily, page:Int = 1) {
         do {
@@ -153,8 +156,14 @@ class GalleryWaterFlowViewController: UIViewController {
             
             self.collectionView.reloadData()
             self.backgroundView.status = BackgroundViewStatus.Hidden
-            //self.headerView.stopRefreshing()
-            self.footerView.stopRefreshing()
+
+            if self.footerView.loading {
+                self.footerView.stopRefreshing()
+            }
+            
+            if self.headerView.loading {
+                self.headerView.stopRefreshing()
+            }
         }
     }
     
@@ -180,8 +189,9 @@ extension GalleryWaterFlowViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(GalleryCellIdentifier, forIndexPath: indexPath) as! GalleryCell
-        let illust = self.gallery!.illusts[indexPath.row]
-        cell.configCellWithPxiv(illust)
+        if let illust = self.gallery?.illusts[indexPath.row] {
+            cell.configCellWithPxiv(illust)
+        }
         return cell
     }
 }
@@ -233,6 +243,8 @@ extension GalleryWaterFlowViewController: UINavigationControllerDelegate {
 
 extension GalleryWaterFlowViewController: PixivRankingViewControllerDelegate {
     func pixivRankingViewController(viewController: PixivRankingViewController, didSelectRankingMode rankingMode: PixivRankingMode,rankingName:String?) {
+        self.gallery = nil
+        self.collectionView.contentOffset = CGPointZero
         self.arrowTitleView.arrowStatus = .Up
         self.arrowTitleView.titleLabel.text = rankingName
         self.arrowTitleView.triggerButtonEvent()

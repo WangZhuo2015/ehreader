@@ -20,10 +20,13 @@ class CurveRefreshHeaderView: UIView {
         didSet{
             if !_associatedScrollView.tracking {
                 labelView.loading = true
+                labelView.hidden = false
             }
             
             if !willEnd && !loading {
+                labelView.hidden = false
                 curveView.progress = progress
+                curveView.alpha = progress
                 labelView.progress = progress
             }
             
@@ -70,7 +73,7 @@ class CurveRefreshHeaderView: UIView {
     private var originOffset: CGFloat!
     private var willEnd: Bool = false
     private var notTracking: Bool = false
-    private var loading: Bool = false
+    private(set) var loading: Bool = false
     
     init(associatedScrollView: UIScrollView, withNavigationBar: Bool) {
         super.init(frame: CGRectMake(associatedScrollView.frame.width/2-200/2, -100, 200, 100))
@@ -114,6 +117,8 @@ class CurveRefreshHeaderView: UIView {
                     strongSelf.loading = false
                     strongSelf.labelView.loading = false
                     strongSelf.curveView.stopInfiniteRotation()
+                    strongSelf.curveView.alpha = 0
+                    strongSelf.labelView.hidden = true
                 }
         }
     }
