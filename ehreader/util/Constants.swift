@@ -102,4 +102,18 @@ extension UIViewController {
             mainTabbarController.displayTabbar(true)
         }
     }
+    
+    func hideMainTabbar(animated:Bool) {
+        guard let mainTabbarController = self.tabBarController as? MainTabbarController else {
+            return
+        }
+        mainTabbarController.hideTabbar(animated)
+    }
+    
+    func displayMainTabbar(animated:Bool) {
+        guard let mainTabbarController = self.tabBarController as? MainTabbarController else {
+            return
+        }
+        mainTabbarController.displayTabbar(animated)
+    }
 }

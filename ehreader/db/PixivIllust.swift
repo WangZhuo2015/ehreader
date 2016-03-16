@@ -67,6 +67,14 @@ public class PixivIllust: Object {
         return "illust_id"
     }
     
+    public func imageSize()->CGSize {
+        return CGSizeMake(CGFloat(self.width), CGFloat(self.height))
+    }
+    
+    public func getTags()->[String] {
+        return self.tags?.componentsSeparatedByString(",") ?? []
+    }
+    
     public static func createPixivIllust(source:NSDictionary, isWork:Bool)->PixivIllust? {
         var data:NSDictionary?
         print(source)

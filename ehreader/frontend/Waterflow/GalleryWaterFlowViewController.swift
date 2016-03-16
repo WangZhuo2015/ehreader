@@ -221,7 +221,7 @@ extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionVi
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let photoViewController = PhotoViewController()
         let illust = self.gallery!.illusts[indexPath.row]
-        photoViewController.startLoading(illust.url_medium!, thumbUrl: illust.url_px_128x128!, imageSize: CGSizeMake(CGFloat(illust.width), CGFloat(illust.height)))
+        photoViewController.startLoading(illust)
         self.navigationController?.pushViewController(photoViewController, animated: true)
     }
     

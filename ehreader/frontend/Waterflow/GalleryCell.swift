@@ -26,6 +26,12 @@ class GalleryCell: UICollectionViewCell {
         return imageView
     }()
     
+    lazy var imageBackgroundView:UIView = {
+        let view = UIView(frame: CGRectZero)
+        view.backgroundColor = UIColor.createColor(130, green: 187, blue: 220, alpha: 1)
+        return view
+    }()
+    
     lazy var titleLabel:UILabel = {
         let label = UILabel(frame: CGRectZero)
         label.font = UIFont.systemFontOfSize(12)
@@ -56,6 +62,12 @@ class GalleryCell: UICollectionViewCell {
         return label
     }()
     
+    lazy var progressView:UIProgressView = {
+        let progressView = UIProgressView(frame: CGRectZero)
+        progressView.progressTintColor = UIColor.redColor()
+        return progressView
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupGalleryCell()
@@ -71,11 +83,13 @@ class GalleryCell: UICollectionViewCell {
         layer.cornerRadius = 5
         self.clipsToBounds = true
         
+        addSubview(imageBackgroundView)
         addSubview(imageView)
         addSubview(self.titleLabel)
         addSubview(lineView)
         addSubview(avatarImageView)
         addSubview(usernameLabel)
+        addSubview(progressView)
         
         setConstraints()
     }
@@ -83,6 +97,10 @@ class GalleryCell: UICollectionViewCell {
     private func setConstraints() {
         imageView.snp_makeConstraints { (make) -> Void in
             make.leading.trailing.top.equalTo(self)
+        }
+        
+        imageBackgroundView.snp_makeConstraints { (make) in
+            make.edges.equalTo(self.imageView)
         }
         
         titleLabel.snp_makeConstraints { (make) in
@@ -109,6 +127,13 @@ class GalleryCell: UICollectionViewCell {
             make.centerY.equalTo(self.avatarImageView)
             make.trailing.equalTo(self)
         }
+        
+        progressView.snp_makeConstraints { (make) in
+            make.top.equalTo(self.imageView.snp_bottom)
+            make.leading.equalTo(self.imageView)
+            make.trailing.equalTo(self.imageView)
+            make.height.equalTo(1)
+        }
     }
     
     func configCell(gallery:Gallery, collectionView:UICollectionView) {
@@ -118,6 +143,9 @@ class GalleryCell: UICollectionViewCell {
     
     
     func configCellWithPxiv(illust:PixivIllust) -> Void {
+        self.imageView.alpha = 0
+        self.progressView.hidden = false
+        self.progressView.progress = 0
         self.titleLabel.text = illust.title
         self.titleLabel.numberOfLines = 0
         self.avatarImageView.kf_setImageWithURL(NSURL(string: illust.profile_url_px_50x50!)!, placeholderImage: nil)
@@ -133,7 +161,14 @@ class GalleryCell: UICollectionViewCell {
         
         
         self.imageView.kf_setImageWithURL(NSURL(string: illust.url_medium!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
+            let progress = Float(receivedSize)/Float(totalSize)
+            self.progressView.progress = progress
         }) { (image, error, cacheType, imageURL) in
+            self.progressView.progress = 0
+            self.progressView.hidden = true
+            UIView.animateWithDuration(0.5, animations: {
+                self.imageView.alpha = 1
+            })
         }
     }
 }
