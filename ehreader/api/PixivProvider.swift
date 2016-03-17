@@ -54,6 +54,19 @@ public enum PixivRankingMode:String {
     case R18g = "r18g"
 }
 
+public enum PixivSearchMode:String {
+    case ExactTag = "exact_tag"
+    case Text = "text"
+    case Title = "title"
+}
+
+public enum PixivRankingType:String {
+    case All = "all"
+    case Illust = "illust"
+    case Manga = "manga"
+    case Ugoira = "ugoira"
+}
+
 private struct ResponseWrapper {
     var header:[NSObject : AnyObject]
     var data:NSData?
@@ -209,7 +222,17 @@ public class PixivProvider: NSObject {
         }
     }
     
-    public func getRankingAll(mode:PixivRankingMode, page:Int, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+    /**
+     Fetch the ranking for now or past
+     
+     - parameter mode:  [daily, weekly, monthly, rookie, original, male, female, daily_r18, weekly_r18, male_r18, female_r18, r18g]
+                        for 'illust' & 'manga': [daily, weekly, monthly, rookie, daily_r18, weekly_r18, r18g]
+                        for 'ugoira': [daily, weekly, daily_r18, weekly_r18],
+     - parameter rankingType: [all, illust, manga, ugoira]
+     - parameter page:        [1-n]
+     - parameter complete:
+     */
+    public func getRankingAll(mode:PixivRankingMode, rankingType:PixivRankingType = PixivRankingType.All, page:Int, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
         guard let accessToken = self.accessToken else {
             let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.AccessTokenEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
             complete?(gallery: nil, error: error)
@@ -222,7 +245,7 @@ public class PixivProvider: NSObject {
             return
         }
         
-        let apiUrl = PixivPAPIRoot + "ranking/all"
+        let apiUrl = PixivPAPIRoot + "ranking/\(rankingType.rawValue).json"
         let parameters:[String:AnyObject] = [
             "mode": mode.rawValue,
             "page": page,
@@ -232,6 +255,11 @@ public class PixivProvider: NSObject {
             "include_stats": "true",
             "include_sanity_level": "true"
         ]
+        
+//        if date != nil {
+//            //date: '2015-04-01' (仅过去排行榜)
+//            parameters["date"] = date
+//        }
         
         var headers = PixivDefaultHeaders
         headers["Authorization"] = "Bearer \(accessToken)"
@@ -276,6 +304,56 @@ public class PixivProvider: NSObject {
             "profile_image_sizes": "px_170x170,px_50x50",
             "include_stats": includeStatus ? "true" : "false",
             "include_sanity_level": includeSanityLevel ? "true" : "false"
+        ]
+        
+        var headers = PixivDefaultHeaders
+        headers["Authorization"] = "Bearer \(accessToken)"
+        headers["Cookie"] = "PHPSESSID=\(session)"
+        
+        request(.GET, apiUrl, parameters: parameters, encoding: ParameterEncoding.URL, headers: headers).responseJSON { (response:Response<AnyObject, NSError>) -> Void in
+            if response.result.error != nil {
+                complete?(gallery: nil, error: response.result.error)
+                return
+            }
+            
+            guard let result = response.result.value as? [NSObject:AnyObject] else {
+                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                complete?(gallery: nil, error: error)
+                return
+            }
+            
+            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
+            complete?(gallery: gallery, error: nil)
+        }
+    }
+    
+    public func searchWorks(query:String, page:Int = 1, perPage:Int = 30, mode:PixivSearchMode = PixivSearchMode.ExactTag, period:String = "all", order:String = "desc", sort:String = "date", complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+        
+        guard let accessToken = self.accessToken else {
+            let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.AccessTokenEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
+            complete?(gallery: nil, error: error)
+            return
+        }
+        
+        guard let session = self.session else {
+            let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.SessionEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
+            complete?(gallery: nil, error: error)
+            return
+        }
+        
+        let apiUrl = PixivPAPIRoot + "works.json"
+        let parameters:[String:AnyObject] = [
+            "q": query,
+            "page": page,
+            "per_page": perPage,
+            "period": period,
+            "order": order,
+            "sort": sort,
+            "mode": mode.rawValue,
+            "types": "illustration,manga,ugoira",
+            "include_stats": "true",
+            "include_sanity_level": "true",
+            "image_sizes": "medium,small,px_128x128,px_480mw,large",
         ]
         
         var headers = PixivDefaultHeaders
