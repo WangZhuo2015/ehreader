@@ -29,33 +29,22 @@ class GalleryWaterFlowViewController: UIViewController {
         return collectionView
     }()
     
-    private lazy var arrowTitleView:UIArrowTitleView = {
-        let titleView = UIArrowTitleView(frame: CGRectZero)
-        titleView.addTarget(self, action: #selector(GalleryWaterFlowViewController.onPresentPixivRanking(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-        return titleView
-    }()
     
-    private lazy var pixivRankingViewController:PixivRankingViewController = {
-        let viewController = PixivRankingViewController()
-        viewController.delegate = self
-        return viewController
-    }()
-    
-    private lazy var headerView:CurveRefreshHeaderView = {
+    lazy var headerView:CurveRefreshHeaderView = {
         let headerView = CurveRefreshHeaderView(associatedScrollView: self.collectionView, withNavigationBar: true)
         return headerView
     }()
     
-    private lazy var footerView:CurveRefreshFooterView = {
+    lazy var footerView:CurveRefreshFooterView = {
         let footerView = CurveRefreshFooterView(associatedScrollView: self.collectionView, withNavigationBar: true)
         return footerView
     }()
     
-    private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
+    lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
     let galleryService = GalleryService()
-    private lazy var pixivProvider:PixivProvider = PixivProvider.getInstance()
-    private var gallery:PixivIllustGallery?
+    lazy var pixivProvider:PixivProvider = PixivProvider.getInstance()
+    var gallery:PixivIllustGallery?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,27 +56,9 @@ class GalleryWaterFlowViewController: UIViewController {
         
         self.view.addSubview(collectionView)
         backgroundView.status = BackgroundViewStatus.Loading
-        backgroundView.addTarget(self, action: #selector(GalleryCollectionViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(backgroundView)
-        self.arrowTitleView.titleLabel.text = self.title
-        self.navigationItem.titleView = self.arrowTitleView
-        startLoading()
-        
-        
-        
+
         addViewConstraints()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if let navigationBar = self.navigationController?.navigationBar {
-            let width = self.arrowTitleView.arrowTitleViewWidth
-            let startX = (navigationBar.frame.width - width)/2
-            let frame = CGRectMake(startX, 0, width, navigationBar.frame.height)
-            arrowTitleView.frame = frame
-        }
-        
     }
     
     func addViewConstraints() {
@@ -109,18 +80,6 @@ class GalleryWaterFlowViewController: UIViewController {
         self.navigationController?.delegate = self
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        headerView.refreshingBlock = { ()->() in
-            self.startLoading(self.rankingMode, page: self.currentPage)
-        }
-        
-        footerView.refreshingBlock = { ()->() in
-            self.currentPage += 1
-            self.startLoading(self.rankingMode, page: self.currentPage)
-        }
-    }
-    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         super.navigationController?.delegate = self.originalNaivgationControllerDelegate
@@ -134,52 +93,6 @@ class GalleryWaterFlowViewController: UIViewController {
     var rankingMode:PixivRankingMode = PixivRankingMode.Daily
     var currentPage:Int = 1
     
-    func startLoading(rankingMode:PixivRankingMode = PixivRankingMode.Daily, page:Int = 1) {
-        do {
-            try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
-        }catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        
-        pixivProvider.getRankingAll(rankingMode, page: page) { (gallery, error) in
-            if error != nil || gallery == nil{
-                print("loading choice data failed:\(error!.localizedDescription)")
-                self.backgroundView.status = BackgroundViewStatus.Failed
-                return
-            }
-            
-            if self.gallery == nil {
-                self.gallery = gallery
-            }else {
-                self.gallery?.addIllusts(gallery!)
-            }
-            
-            self.collectionView.reloadData()
-            self.backgroundView.status = BackgroundViewStatus.Hidden
-
-            if self.footerView.loading {
-                self.footerView.stopRefreshing()
-            }
-            
-            if self.headerView.loading {
-                self.headerView.stopRefreshing()
-            }
-        }
-    }
-    
-    func onPresentPixivRanking(sender:UIArrowTitleView) {
-        if sender.arrowStatus == UIArrowTitleViewState.Down {
-            presentDropdownController(self.pixivRankingViewController, height: self.view.frame.height, foldControl: sender, animated: false)
-            if let mainTabbarController = self.tabBarController as? MainTabbarController {
-                mainTabbarController.hideTabbar(true)
-            }
-        }else {
-            dismissDropdownController(self.pixivRankingViewController, height: self.view.frame.height, foldControl: sender, animated: true)
-            if let mainTabbarController = self.tabBarController as? MainTabbarController {
-                mainTabbarController.displayTabbar(true)
-            }
-        }
-    }
 }
 
 extension GalleryWaterFlowViewController: UICollectionViewDataSource {
@@ -241,16 +154,4 @@ extension GalleryWaterFlowViewController: UINavigationControllerDelegate {
     }
 }
 
-extension GalleryWaterFlowViewController: PixivRankingViewControllerDelegate {
-    func pixivRankingViewController(viewController: PixivRankingViewController, didSelectRankingMode rankingMode: PixivRankingMode,rankingName:String?) {
-        self.gallery = nil
-        self.collectionView.contentOffset = CGPointZero
-        self.arrowTitleView.arrowStatus = .Up
-        self.arrowTitleView.titleLabel.text = rankingName
-        self.arrowTitleView.triggerButtonEvent()
-        self.viewDidLayoutSubviews()
-        self.startLoading(rankingMode)
-        self.rankingMode = rankingMode
-    }
-}
 

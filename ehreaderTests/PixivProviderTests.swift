@@ -40,10 +40,26 @@ class PixivProviderTests: XCTestCase {
         let expectation = expectationWithDescription("")
         
         self.pixivProvider.getRankingAll(PixivRankingMode.Daily, page: 1) { (illust, error) -> Void in
-            XCTAssertNotNil(error)
+            XCTAssertNil(error)
             expectation.fulfill()
         }
         
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+    }
+    
+    func testGetLastWorks() {
+        do {
+            try self.pixivProvider.loginIfNeeded(username, password: password)
+        }catch let error as NSError {
+            XCTAssert(false, error.localizedDescription)
+        }
+        let expectation = expectationWithDescription("")
+        self.pixivProvider.getLastWorks { (gallery, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(gallery)
+            XCTAssertGreaterThan(gallery!.illusts.count, 0)
+            expectation.fulfill()
+        }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
     

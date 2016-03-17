@@ -254,6 +254,50 @@ public class PixivProvider: NSObject {
         }
 
     }
+    
+    public func getLastWorks(page:Int = 1, perPage:Int = 30, includeStatus:Bool = true, includeSanityLevel:Bool = true, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+        guard let accessToken = self.accessToken else {
+            let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.AccessTokenEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
+            complete?(gallery: nil, error: error)
+            return
+        }
+        
+        guard let session = self.session else {
+            let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.SessionEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
+            complete?(gallery: nil, error: error)
+            return
+        }
+        
+        let apiUrl = PixivPAPIRoot + "works.json"
+        let parameters:[String:AnyObject] = [
+            "page": page,
+            "per_page": perPage,
+            "image_sizes": "medium,small,px_128x128,px_480mw,large",
+            "profile_image_sizes": "px_170x170,px_50x50",
+            "include_stats": includeStatus ? "true" : "false",
+            "include_sanity_level": includeSanityLevel ? "true" : "false"
+        ]
+        
+        var headers = PixivDefaultHeaders
+        headers["Authorization"] = "Bearer \(accessToken)"
+        headers["Cookie"] = "PHPSESSID=\(session)"
+        
+        request(.GET, apiUrl, parameters: parameters, encoding: ParameterEncoding.URL, headers: headers).responseJSON { (response:Response<AnyObject, NSError>) -> Void in
+            if response.result.error != nil {
+                complete?(gallery: nil, error: response.result.error)
+                return
+            }
+            
+            guard let result = response.result.value as? [NSObject:AnyObject] else {
+                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                complete?(gallery: nil, error: error)
+                return
+            }
+            
+            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
+            complete?(gallery: gallery, error: nil)
+        }
+    }
 }
 
 extension PixivProvider {

@@ -25,6 +25,8 @@ public class MainTabbar: UIView {
     
     private var selectBtn:MainTabBarButton?
     
+    public var buttons:[MainTabBarButton] = []
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -36,7 +38,7 @@ public class MainTabbar: UIView {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        reloadData()
+        //reloadData()
     }
     
     func reloadData() {
@@ -48,6 +50,7 @@ public class MainTabbar: UIView {
         }
         
         let tabBarButtonCount = dataSource.numberOfTabbarItem(self)
+        buttons.removeAll()
         var prevView:UIView?
         for index in 0..<tabBarButtonCount {
             let tabbarItem = dataSource.mainTabbar(self, tabbarItemForIndex: index)
@@ -55,9 +58,6 @@ public class MainTabbar: UIView {
             tabbarButton.item = tabbarItem
             tabbarButton.addTarget(self, action:#selector(MainTabbar.btnClick(_:)), forControlEvents: UIControlEvents.TouchDown)
             tabbarButton.tag = index
-            if index == 0 {
-                btnClick(tabbarButton)
-            }
             addSubview(tabbarButton)
             tabbarButton.snp_makeConstraints(closure: { (make) in
                 if let view = prevView {
@@ -72,6 +72,7 @@ public class MainTabbar: UIView {
                     make.trailing.equalTo(self)
                 }
             })
+            buttons.append(tabbarButton)
             prevView = tabbarButton
         }
     }

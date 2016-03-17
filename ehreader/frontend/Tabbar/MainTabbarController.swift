@@ -12,8 +12,8 @@ import SnapKit
 class MainTabbarController: UITabBarController {
 
     private var customTabBar:MainTabbar?
-    private var waterFlowViewController:GalleryWaterFlowViewController!
-    private var installedApplicationsViewController:GalleryWaterFlowViewController!
+    private var rankGalleryViewController:RankGalleryViewController!
+    private var latestGalleryViewController:LatestGalleryViewController!
     private var appVc3:GalleryWaterFlowViewController!
     private var appVc4:GalleryWaterFlowViewController!
     private var downloadManagerViewController:GalleryWaterFlowViewController!
@@ -25,13 +25,16 @@ class MainTabbarController: UITabBarController {
         super.viewDidLoad()
         addTabbars()
         addChildViewControllers()
-
     }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         removeSystemTabbar()
         self.tabbarHeight = self.tabBar.frame.height
         self.customTabBar?.reloadData()
+        if let firstButton =  self.customTabBar?.buttons.first {
+            self.customTabBar?.btnClick(firstButton)
+        }
     }
     
     
@@ -88,11 +91,11 @@ class MainTabbarController: UITabBarController {
     }
     
     func addChildViewControllers(){
-        waterFlowViewController = GalleryWaterFlowViewController()
-        addChildViewController(waterFlowViewController, titles: "排行", image: "tab_huaban", selectImage: "tab_huaban_selected")
+        rankGalleryViewController = RankGalleryViewController()
+        addChildViewController(rankGalleryViewController, titles: "排行", image: "tab_huaban", selectImage: "tab_huaban_selected")
         
-        installedApplicationsViewController = GalleryWaterFlowViewController()
-        addChildViewController(installedApplicationsViewController, titles: "新作", image: "tab_info", selectImage: "tab_info_selected")
+        latestGalleryViewController = LatestGalleryViewController()
+        addChildViewController(latestGalleryViewController, titles: "新作", image: "tab_info", selectImage: "tab_info_selected")
         
         appVc3 = GalleryWaterFlowViewController()
         addChildViewController(appVc3, titles: "搜索", image: "tab_explore", selectImage: "tab_explore_selected")

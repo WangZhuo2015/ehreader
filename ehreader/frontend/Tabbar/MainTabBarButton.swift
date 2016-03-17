@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainTabBarButton: UIButton {
+public class MainTabBarButton: UIButton {
     var item:UITabBarItem! {
         didSet {
             self.addObserver(self, forKeyPath: "title", options: NSKeyValueObservingOptions.New, context:nil)
@@ -26,7 +26,7 @@ class MainTabBarButton: UIButton {
         self.removeObserver(self, forKeyPath: "badgeValue");
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         self.setTitle(item.title, forState: .Normal)
         self.setImage(item.image, forState: .Normal)
         self.setImage(item.selectedImage, forState: .Selected)
@@ -38,11 +38,11 @@ class MainTabBarButton: UIButton {
         createUI()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override func titleRectForContentRect(contentRect: CGRect) -> CGRect {
+    override public func titleRectForContentRect(contentRect: CGRect) -> CGRect {
         if let image:UIImage = self.imageForState(.Normal){
             let titleY = image.size.height
             let titleHeight = self.bounds.size.height - titleY
@@ -52,7 +52,7 @@ class MainTabBarButton: UIButton {
         }
     }
     
-    override func imageRectForContentRect(contentRect: CGRect) -> CGRect {
+    override public func imageRectForContentRect(contentRect: CGRect) -> CGRect {
         if let image:UIImage = self.imageForState(.Normal) {
             return CGRectMake(0, 0, contentRect.size.width, image.size.height + 5);
         }else {
