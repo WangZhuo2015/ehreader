@@ -192,6 +192,19 @@ public final class Results<T: Object>: ResultsBase {
     }
 
     /**
+     Returns an Array containing the results of invoking `valueForKeyPath(_:)` using keyPath on each of the
+     collection's objects.
+
+     - parameter keyPath: The key path to the property.
+
+     - returns: Array containing the results of invoking `valueForKeyPath(_:)` using keyPath on each of the
+     collection's objects.
+     */
+    public override func valueForKeyPath(keyPath: String) -> AnyObject? {
+        return rlmResults.valueForKeyPath(keyPath)
+    }
+
+    /**
     Invokes `setValue(_:forKey:)` on each of the collection's objects using the specified value and key.
 
     - warning: This method can only be called during a write transaction.
@@ -338,6 +351,7 @@ public final class Results<T: Object>: ResultsBase {
      - parameter block: The block to be called with the evaluated results.
      - returns: A token which must be held for as long as you want query results to be delivered.
      */
+    @warn_unused_result(message="You must hold on to the NotificationToken returned from addNotificationBlock")
     public func addNotificationBlock(block: (Results<T>?, NSError?) -> ()) -> NotificationToken {
         return rlmResults.addNotificationBlock { results, error in
             if results != nil {

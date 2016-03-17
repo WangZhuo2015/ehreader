@@ -52,10 +52,14 @@ extension RAMAnimatedTabBarItem {
 public class RAMAnimatedTabBarItem: UITabBarItem {
     
    @IBOutlet public var animation: RAMItemAnimation!
-    
+
+    public var textFont: UIFont = UIFont.systemFontOfSize(10)
     @IBInspectable public var textColor: UIColor = UIColor.blackColor()
     @IBInspectable public var iconColor: UIColor = UIColor.clearColor() // if alpha color is 0 color ignoring
-    
+  
+    @IBInspectable var bgDefaultColor: UIColor = UIColor.clearColor() // background color
+    @IBInspectable var bgSelectedColor: UIColor = UIColor.clearColor()
+
     public var badge: RAMBadge? // use badgeValue to show badge
     
     public var iconView: (icon: UIImageView, textLabel: UILabel)?
@@ -176,9 +180,11 @@ public class RAMAnimatedTabBarController: UITabBarController {
             textLabel.text = item.title
             textLabel.backgroundColor = UIColor.clearColor()
             textLabel.textColor = item.textColor
-            textLabel.font = UIFont.systemFontOfSize(10)
+            textLabel.font = item.textFont
             textLabel.textAlignment = NSTextAlignment.Center
             textLabel.translatesAutoresizingMaskIntoConstraints = false
+
+            container.backgroundColor = (items as [RAMAnimatedTabBarItem])[index].bgDefaultColor
             
             container.addSubview(icon)
             createConstraints(icon, container: container, size: itemImage.size, yOffset: -5)
@@ -191,6 +197,7 @@ public class RAMAnimatedTabBarController: UITabBarController {
             
             if 0 == index { // selected first elemet
                 item.selectedState()
+                container.backgroundColor = (items as [RAMAnimatedTabBarItem])[index].bgSelectedColor
             }
             
             item.image = nil
@@ -319,13 +326,20 @@ public class RAMAnimatedTabBarController: UITabBarController {
             where !shouldSelect {
             return
         }
-        
+
         if selectedIndex != currentIndex {
             let animationItem : RAMAnimatedTabBarItem = items[currentIndex]
             animationItem.playAnimation()
             
             let deselectItem = items[selectedIndex]
+
+            let containerPrevious : UIView = deselectItem.iconView!.icon.superview!
+            containerPrevious.backgroundColor = items[currentIndex].bgDefaultColor
+
             deselectItem.deselectAnimation()
+
+            let container : UIView = animationItem.iconView!.icon.superview!
+            container.backgroundColor = items[currentIndex].bgSelectedColor
             
             selectedIndex = gestureView.tag
             delegate?.tabBarController?(self, didSelectViewController: self)

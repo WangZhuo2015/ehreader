@@ -10,4 +10,5 @@ target ‘ehreader’ do
     pod 'Zip'
     pod 'AXStretchableHeaderTabViewController'
     pod 'RAMAnimatedTabBarController'
+    pod 'ViewPagerSwift'
 end

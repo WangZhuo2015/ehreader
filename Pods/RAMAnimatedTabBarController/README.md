@@ -1,3 +1,4 @@
+![header](header.png)
 # RAMAnimatedTabBarController
 [![CocoaPods](https://img.shields.io/cocoapods/p/RAMAnimatedTabBarController.svg)](http://cocoapods.org/pods/RAMAnimatedTabBarController)
 [![CocoaPods](https://img.shields.io/cocoapods/v/RAMAnimatedTabBarController.svg)](http://cocoapods.org/pods/RAMAnimatedTabBarController)
@@ -29,7 +30,7 @@ Just add the RAMAnimatedTabBarController folder to your project.
 
 or use [CocoaPods](https://cocoapods.org) with Podfile:
 ``` ruby
-pod 'RAMAnimatedTabBarController', '~> 1.1'
+pod 'RAMAnimatedTabBarController', '~> 1.2.1'
 ```
 
 ## Usage

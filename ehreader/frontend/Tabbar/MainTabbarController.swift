@@ -15,7 +15,7 @@ class MainTabbarController: UITabBarController {
     private var rankGalleryViewController:RankGalleryViewController!
     private var latestGalleryViewController:LatestGalleryViewController!
     private var searchViewController:SearchViewController!
-    private var appVc4:GalleryWaterFlowViewController!
+    private var profileViewController:ProfileViewController!
     private var downloadManagerViewController:GalleryWaterFlowViewController!
     private var tabbarHeight:CGFloat = 50
     
@@ -100,8 +100,8 @@ class MainTabbarController: UITabBarController {
         searchViewController = SearchViewController()
         addChildViewController(searchViewController, titles: "搜索", image: "tab_explore", selectImage: "tab_explore_selected")
         
-        appVc4 = GalleryWaterFlowViewController()
-        addChildViewController(appVc4, titles: "我的", image: "tab_me", selectImage: "tab_me_selected")
+        profileViewController = ProfileViewController()
+        addChildViewController(profileViewController, titles: "我的", image: "tab_me", selectImage: "tab_me_selected")
         
     }
     

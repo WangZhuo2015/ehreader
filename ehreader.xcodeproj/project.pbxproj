@@ -46,6 +46,8 @@
 		E9F1FD231C8EAF5D0029BD17 /* PixivRankingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F1FD221C8EAF5D0029BD17 /* PixivRankingViewController.swift */; };
 		E9F1FD251C8EBD270029BD17 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F1FD241C8EBD270029BD17 /* BlurView.swift */; };
 		E9F1FD271C8EE15E0029BD17 /* RefreshManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F1FD261C8EE15E0029BD17 /* RefreshManager.swift */; };
+		E9F6CB831C9AB8D000D26534 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6CB821C9AB8D000D26534 /* ProfileViewController.swift */; };
+		E9F6CB851C9ABBB900D26534 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6CB841C9ABBB900D26534 /* ProfileView.swift */; };
 		E9FB948B1C8FBDF50076E01D /* CurveRefreshFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FB948A1C8FBDF50076E01D /* CurveRefreshFooterView.swift */; };
 		E9FB948D1C8FBDFB0076E01D /* LabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FB948C1C8FBDFB0076E01D /* LabelView.swift */; };
 		E9FB948F1C8FBE060076E01D /* CurveRefreshHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FB948E1C8FBE060076E01D /* CurveRefreshHeaderView.swift */; };
@@ -130,6 +132,8 @@
 		E9F1FD221C8EAF5D0029BD17 /* PixivRankingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivRankingViewController.swift; sourceTree = "<group>"; };
 		E9F1FD241C8EBD270029BD17 /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		E9F1FD261C8EE15E0029BD17 /* RefreshManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshManager.swift; sourceTree = "<group>"; };
+		E9F6CB821C9AB8D000D26534 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		E9F6CB841C9ABBB900D26534 /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		E9FB948A1C8FBDF50076E01D /* CurveRefreshFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurveRefreshFooterView.swift; sourceTree = "<group>"; };
 		E9FB948C1C8FBDFB0076E01D /* LabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelView.swift; sourceTree = "<group>"; };
 		E9FB948E1C8FBE060076E01D /* CurveRefreshHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurveRefreshHeaderView.swift; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 				E98B07361C89C2E100EE44B7 /* Photo */,
 				E98B07381C89C2E100EE44B7 /* Tabbar */,
 				E98B073C1C89C2E100EE44B7 /* Waterflow */,
+				E9F6CB811C9AB8B300D26534 /* User */,
 			);
 			path = frontend;
 			sourceTree = "<group>";
@@ -283,6 +288,15 @@
 				E9F1FD221C8EAF5D0029BD17 /* PixivRankingViewController.swift */,
 			);
 			path = Waterflow;
+			sourceTree = "<group>";
+		};
+		E9F6CB811C9AB8B300D26534 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				E9F6CB821C9AB8D000D26534 /* ProfileViewController.swift */,
+				E9F6CB841C9ABBB900D26534 /* ProfileView.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		F5F315960448DE3ADCF35C26 /* Pods */ = {
@@ -598,6 +612,8 @@
 				E9FB948F1C8FBE060076E01D /* CurveRefreshHeaderView.swift in Sources */,
 				E92C26CF1C4E0787009FB297 /* BppDownloadFile.swift in Sources */,
 				E9DC51EC1C4699740053D331 /* Constants.swift in Sources */,
+				E9F6CB851C9ABBB900D26534 /* ProfileView.swift in Sources */,
+				E9F6CB831C9AB8D000D26534 /* ProfileViewController.swift in Sources */,
 				F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */,
 				E98B07451C89C2E100EE44B7 /* GalleryTableViewController.swift in Sources */,
 				F72B31E81C4F7C89007C6B21 /* PixivProvider.swift in Sources */,
