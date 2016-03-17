@@ -81,6 +81,8 @@ public class PixivUser: Object {
     
     static func currentLoginUser()->PixivUser? {
         let realm = try! Realm()
-        return realm.objects(PixivUser).first
+        
+        let users = realm.objects(PixivUser)
+        return users[0]
     }
 }

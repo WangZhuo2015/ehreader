@@ -61,7 +61,7 @@ class RankGalleryViewController: GalleryWaterFlowViewController {
         
         pixivProvider.getRankingAll(rankingMode, page: page) { (gallery, error) in
             if error != nil || gallery == nil{
-                print("loading choice data failed:\(error!.localizedDescription)")
+                print("loading choice data failed:\(error?.localizedDescription)")
                 self.backgroundView.status = BackgroundViewStatus.Failed
                 return
             }

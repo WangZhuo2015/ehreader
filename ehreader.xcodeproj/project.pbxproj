@@ -39,6 +39,7 @@
 		E98B074A1C89C2E100EE44B7 /* CollectionViewWaterfallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B073D1C89C2E100EE44B7 /* CollectionViewWaterfallLayout.swift */; };
 		E98B074B1C89C2E100EE44B7 /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B073E1C89C2E100EE44B7 /* GalleryCell.swift */; };
 		E98B074C1C89C2E100EE44B7 /* GalleryWaterFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B073F1C89C2E100EE44B7 /* GalleryWaterFlowViewController.swift */; };
+		E98F53F41C9AE64F003B5093 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98F53F31C9AE64F003B5093 /* PageControl.swift */; };
 		E9B216F61C4A84990099CF54 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F51C4A84990099CF54 /* PhotoService.swift */; };
 		E9DC51EC1C4699740053D331 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC51EB1C4699740053D331 /* Constants.swift */; };
 		E9F1FD1F1C8E816D0029BD17 /* UIArrowTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F1FD1E1C8E816D0029BD17 /* UIArrowTitleView.swift */; };
@@ -125,6 +126,7 @@
 		E98B073D1C89C2E100EE44B7 /* CollectionViewWaterfallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewWaterfallLayout.swift; sourceTree = "<group>"; };
 		E98B073E1C89C2E100EE44B7 /* GalleryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
 		E98B073F1C89C2E100EE44B7 /* GalleryWaterFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryWaterFlowViewController.swift; sourceTree = "<group>"; };
+		E98F53F31C9AE64F003B5093 /* PageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
 		E9B216F51C4A84990099CF54 /* PhotoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
 		E9DC51EB1C4699740053D331 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E9F1FD1E1C8E816D0029BD17 /* UIArrowTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIArrowTitleView.swift; sourceTree = "<group>"; };
@@ -221,13 +223,13 @@
 			children = (
 				E91B7BD21C9AA248007ED39F /* SearchViewController.swift */,
 			);
-			name = Search;
-			path = frontend/Search;
+			path = Search;
 			sourceTree = "<group>";
 		};
 		E98B072D1C89C2E100EE44B7 /* frontend */ = {
 			isa = PBXGroup;
 			children = (
+				E91B7BD11C9AA237007ED39F /* Search */,
 				E98B072E1C89C2E100EE44B7 /* CustomNavigationController.swift */,
 				E98B072F1C89C2E100EE44B7 /* Gallery */,
 				E98B07311C89C2E100EE44B7 /* GalleryCollection */,
@@ -332,7 +334,6 @@
 			isa = PBXGroup;
 			children = (
 				E98B072D1C89C2E100EE44B7 /* frontend */,
-				E91B7BD11C9AA237007ED39F /* Search */,
 				F7FAA4E31BFABC9000E27E4A /* db */,
 				F78DD6F91BF9E4E1003D3CB9 /* api */,
 				F78DD6FB1BF9E4E1003D3CB9 /* service */,
@@ -399,6 +400,7 @@
 		F78DD6FD1BF9E4E1003D3CB9 /* wedget */ = {
 			isa = PBXGroup;
 			children = (
+				E98F53F31C9AE64F003B5093 /* PageControl.swift */,
 				E9FB948A1C8FBDF50076E01D /* CurveRefreshFooterView.swift */,
 				E9FB94921C8FBE3D0076E01D /* CurveView.swift */,
 				E9FB948C1C8FBDFB0076E01D /* LabelView.swift */,
@@ -612,6 +614,7 @@
 				E9FB948F1C8FBE060076E01D /* CurveRefreshHeaderView.swift in Sources */,
 				E92C26CF1C4E0787009FB297 /* BppDownloadFile.swift in Sources */,
 				E9DC51EC1C4699740053D331 /* Constants.swift in Sources */,
+				E98F53F41C9AE64F003B5093 /* PageControl.swift in Sources */,
 				E9F6CB851C9ABBB900D26534 /* ProfileView.swift in Sources */,
 				E9F6CB831C9AB8D000D26534 /* ProfileViewController.swift in Sources */,
 				F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */,

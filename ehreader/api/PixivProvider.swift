@@ -202,8 +202,6 @@ public class PixivProvider: NSObject {
         
         self.user = PixivUser.createPixivUser(response, session: self.session)
         
-        
-        
         return self.user
     }
     
