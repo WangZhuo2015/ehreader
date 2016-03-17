@@ -96,6 +96,28 @@ class PhotoViewController: UIViewController {
         return tableView
     }()
     
+    lazy var avatarImageView:UIImageView = {
+        let imageView = UIImageView(frame: CGRectZero)
+        imageView.layer.cornerRadius = AvatarWidth/2
+        imageView.clipsToBounds = true
+        imageView.layer.borderColor = UIColor.createColor(220, green: 220, blue: 224, alpha: 1).CGColor
+        imageView.layer.borderWidth = 0.5
+        return imageView
+    }()
+    
+    lazy var usernameLabel:UILabel = {
+        let label = UILabel(frame: CGRectZero)
+        label.font = UIFont.systemFontOfSize(12)
+        label.textColor = UIColor.lightGrayColor()
+        return label
+    }()
+    
+    lazy var lineView:UIView = {
+        let line = UIView(frame:CGRectZero)
+        line.backgroundColor = UIColor.createColor(220, green: 220, blue: 224, alpha: 1)
+        return line
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -108,6 +130,9 @@ class PhotoViewController: UIViewController {
         self.scrollView.addSubview(self.titleLabel)
         self.scrollView.addSubview(self.shareButton)
         self.scrollView.addSubview(self.tableView)
+        self.scrollView.addSubview(self.avatarImageView)
+        self.scrollView.addSubview(self.usernameLabel)
+        self.scrollView.addSubview(self.lineView)
         self.view.addGestureRecognizer(self.edgePanGestureRecognizer)
         addConstraints()
     }
@@ -160,20 +185,38 @@ class PhotoViewController: UIViewController {
         self.titleLabel.snp_makeConstraints { (make) in
             make.top.equalTo(self.imageView.snp_bottom).offset(10)
             make.leading.equalTo(self.scrollView).offset(10)
-            make.trailing.equalTo(self.shareButton.snp_leading)
+            make.trailing.equalTo(self.view)
         }
         
         self.shareButton.snp_makeConstraints { (make) in
             make.trailing.equalTo(self.scrollView).offset(-10)
-            make.top.equalTo(self.imageView.snp_bottom).offset(10)
             make.width.height.equalTo(32)
+            make.bottom.equalTo(self.lineView.snp_top).offset(-5)
         }
         
         self.tableView.snp_makeConstraints { (make) in
             make.leading.equalTo(self.scrollView)
             make.trailing.equalTo(self.scrollView)
-            make.top.equalTo(self.titleLabel.snp_bottom).offset(10)
+            make.top.equalTo(self.lineView.snp_bottom)
             make.bottom.equalTo(self.scrollView)
+        }
+        
+        avatarImageView.snp_makeConstraints { (make) in
+            make.leading.equalTo(self.scrollView).offset(10)
+            make.width.height.equalTo(AvatarWidth)
+            make.top.equalTo(self.titleLabel.snp_bottom).offset(10)
+        }
+        
+        usernameLabel.snp_makeConstraints { (make) in
+            make.leading.equalTo(self.avatarImageView.snp_trailing).offset(10)
+            make.centerY.equalTo(self.avatarImageView)
+            make.trailing.equalTo(self.shareButton.snp_leading)
+        }
+        
+        lineView.snp_makeConstraints { (make) in
+            make.leading.trailing.equalTo(self.scrollView)
+            make.height.equalTo(0.5)
+            make.top.equalTo(self.avatarImageView.snp_bottom).offset(10)
         }
     }
     
@@ -184,7 +227,7 @@ class PhotoViewController: UIViewController {
                 self.tableView.snp_remakeConstraints { (make) in
                     make.leading.equalTo(self.scrollView)
                     make.trailing.equalTo(self.scrollView)
-                    make.top.equalTo(self.titleLabel.snp_bottom).offset(10)
+                    make.top.equalTo(self.lineView.snp_bottom)
                     make.bottom.equalTo(self.scrollView)
                     make.height.equalTo(44*count)
                 }
@@ -227,6 +270,8 @@ class PhotoViewController: UIViewController {
         self.tableView.reloadData()
         self.updateViewConstraints()
         self.titleLabel.text = illust.title
+        self.avatarImageView.kf_setImageWithURL(NSURL(string: illust.profile_url_px_50x50!)!, placeholderImage: nil)
+        self.usernameLabel.text = illust.name
         self.imageView.kf_setImageWithURL(NSURL(string:self.photoUrl!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
             let progress = Float(receivedSize)/Float(totalSize)
             self.progressView.progress = progress
