@@ -59,12 +59,12 @@ public class ProfileView: UIView {
         let button = UIButton(frame: CGRectZero)
         button.setBackgroundImage(UIImage(named:"profileFloBtn"), forState: UIControlState.Normal)
         button.setBackgroundImage(UIImage(named:"profileFloBtn_pressed"), forState: UIControlState.Highlighted)
-        button.setTitle("关注", forState: UIControlState.Normal)
+        button.setTitle("查看用户详情", forState: UIControlState.Normal)
         button.titleLabel?.font = UIFont.systemFontOfSize(12)
         button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         button.setImage(UIImage(named:"profileFloArrow"), forState: UIControlState.Normal)
-        button.titleEdgeInsets = UIEdgeInsetsMake(0, -18, 0, 18)
-        button.imageEdgeInsets = UIEdgeInsetsMake(0, 70, 0, -70)
+        button.titleEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10)
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, 90, 0, -90)
         return button
     }()
     
