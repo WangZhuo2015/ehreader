@@ -75,6 +75,13 @@ public class PixivIllust: Object {
         return self.tags?.componentsSeparatedByString(",") ?? []
     }
     
+    public func getMediaImageUrl()->String? {
+        if self.url_medium != nil && !self.url_medium!.isEmpty {
+            return self.url_medium
+        }
+        return self.url_px_480mw
+    }
+    
     public static func createPixivIllust(source:NSDictionary, isWork:Bool)->PixivIllust? {
         var data:NSDictionary?
         print(source)

@@ -29,6 +29,7 @@ class GalleryWaterFlowViewController: UIViewController {
         return collectionView
     }()
     
+    var currentSelectedCell:GalleryCell?
     
     lazy var headerView:CurveRefreshHeaderView = {
         let headerView = CurveRefreshHeaderView(associatedScrollView: self.collectionView, withNavigationBar: true)
@@ -40,7 +41,10 @@ class GalleryWaterFlowViewController: UIViewController {
         return footerView
     }()
     
-    lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
+    lazy var backgroundView:BackgroundView = {
+        let backgroundView = BackgroundView(frame: CGRectZero)
+        return backgroundView
+    }()
     
     let galleryService = GalleryService()
     lazy var pixivProvider:PixivProvider = PixivProvider.getInstance()
@@ -52,11 +56,9 @@ class GalleryWaterFlowViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        self.title = rankingTypes[PixivRankingMode.Daily]
-        
         self.view.addSubview(collectionView)
-        backgroundView.status = BackgroundViewStatus.Loading
         view.addSubview(backgroundView)
+        backgroundView.status = BackgroundViewStatus.Loading
 
         addViewConstraints()
     }
@@ -132,6 +134,7 @@ extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionVi
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        self.currentSelectedCell = collectionView.cellForItemAtIndexPath(indexPath) as? GalleryCell
         let photoViewController = PhotoViewController()
         let illust = self.gallery!.illusts[indexPath.row]
         photoViewController.startLoading(illust)

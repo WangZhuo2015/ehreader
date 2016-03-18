@@ -159,8 +159,7 @@ class GalleryCell: UICollectionViewCell {
             request.setValue(agent, forHTTPHeaderField: "User-Agent")
         }
         
-        
-        self.imageView.kf_setImageWithURL(NSURL(string: illust.url_medium!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
+        self.imageView.kf_setImageWithURL(NSURL(string: illust.getMediaImageUrl()!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
             let progress = Float(receivedSize)/Float(totalSize)
             self.progressView.progress = progress
         }) { (image, error, cacheType, imageURL) in

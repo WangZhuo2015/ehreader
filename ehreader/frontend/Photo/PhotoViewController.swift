@@ -150,7 +150,6 @@ class PhotoViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         print(self.imageView.frame)
-        //self.hideMainTabbar(true)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -265,7 +264,7 @@ class PhotoViewController: UIViewController {
     
     func startLoading(illust:PixivIllust) {
         self.imageSize = illust.imageSize()
-        self.photoUrl = illust.url_medium
+        self.photoUrl = illust.getMediaImageUrl()
         self.illust = illust
         self.tableView.reloadData()
         self.updateViewConstraints()

@@ -51,6 +51,7 @@
 		E9F6CB851C9ABBB900D26534 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6CB841C9ABBB900D26534 /* ProfileView.swift */; };
 		E9F774C11C9BAD250045D128 /* PixivProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F774C01C9BAD250045D128 /* PixivProfile.swift */; };
 		E9F774C51C9BB5320045D128 /* ViewPagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9F774C31C9BB5320045D128 /* ViewPagerSwift.framework */; };
+		E9F774C71C9BF7150045D128 /* MeFavoriteWorksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F774C61C9BF7150045D128 /* MeFavoriteWorksViewController.swift */; };
 		E9FB948B1C8FBDF50076E01D /* CurveRefreshFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FB948A1C8FBDF50076E01D /* CurveRefreshFooterView.swift */; };
 		E9FB948D1C8FBDFB0076E01D /* LabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FB948C1C8FBDFB0076E01D /* LabelView.swift */; };
 		E9FB948F1C8FBE060076E01D /* CurveRefreshHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FB948E1C8FBE060076E01D /* CurveRefreshHeaderView.swift */; };
@@ -141,6 +142,7 @@
 		E9F774C01C9BAD250045D128 /* PixivProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivProfile.swift; sourceTree = "<group>"; };
 		E9F774C21C9BB5320045D128 /* MJExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MJExtension.framework; path = "Pods/../build/Debug-iphoneos/MJExtension.framework"; sourceTree = "<group>"; };
 		E9F774C31C9BB5320045D128 /* ViewPagerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ViewPagerSwift.framework; path = "../../Library/Developer/Xcode/DerivedData/ehreader-bsawwpbfimnubodhgkvnncxpxovf/Build/Products/Debug-iphonesimulator/ViewPagerSwift.framework"; sourceTree = "<group>"; };
+		E9F774C61C9BF7150045D128 /* MeFavoriteWorksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeFavoriteWorksViewController.swift; sourceTree = "<group>"; };
 		E9FB948A1C8FBDF50076E01D /* CurveRefreshFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurveRefreshFooterView.swift; sourceTree = "<group>"; };
 		E9FB948C1C8FBDFB0076E01D /* LabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelView.swift; sourceTree = "<group>"; };
 		E9FB948E1C8FBE060076E01D /* CurveRefreshHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurveRefreshHeaderView.swift; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				E9F6CB821C9AB8D000D26534 /* ProfileViewController.swift */,
+				E9F774C61C9BF7150045D128 /* MeFavoriteWorksViewController.swift */,
 				E9F6CB841C9ABBB900D26534 /* ProfileView.swift */,
 			);
 			path = User;
@@ -617,6 +620,7 @@
 				E9FDED9C1C49385E00557D0A /* RatingBar.swift in Sources */,
 				F78DD6DA1BF9DB7C003D3CB9 /* AppDelegate.swift in Sources */,
 				E9F1FD211C8EA6BE0029BD17 /* DropdownController.swift in Sources */,
+				E9F774C71C9BF7150045D128 /* MeFavoriteWorksViewController.swift in Sources */,
 				E967A4941C50C9B2000C6DC2 /* PixivIllust.swift in Sources */,
 				E9FB948D1C8FBDFB0076E01D /* LabelView.swift in Sources */,
 				E9F1FD1F1C8E816D0029BD17 /* UIArrowTitleView.swift in Sources */,

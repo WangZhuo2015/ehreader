@@ -117,4 +117,18 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return titles[section]
     }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 0 && indexPath.row == 0 {
+            let favoriteWorksViewController = MeFavoriteWorksViewController()
+            favoriteWorksViewController.title = titleValues[indexPath.section][indexPath.row]
+            favoriteWorksViewController.currentPublicity = PixivPublicity.Public
+            self.navigationController?.pushViewController(favoriteWorksViewController, animated: true)
+        }else if indexPath.section == 0 && indexPath.row == 1 {
+            let favoriteWorksViewController = MeFavoriteWorksViewController()
+            favoriteWorksViewController.title = titleValues[indexPath.section][indexPath.row]
+            favoriteWorksViewController.currentPublicity = PixivPublicity.Private
+            self.navigationController?.pushViewController(favoriteWorksViewController, animated: true)
+        }
+    }
 }

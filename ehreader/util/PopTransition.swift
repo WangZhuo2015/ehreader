@@ -26,13 +26,7 @@ public class PopTransition: NSObject, UIViewControllerAnimatedTransitioning {
             return
         }
         
-        let collectionView = toViewController.collectionView
-        
-        guard let selectedIndexPath = collectionView.indexPathsForSelectedItems()?.first else {
-            return
-        }
-        
-        guard let cell = collectionView.cellForItemAtIndexPath(selectedIndexPath) as? GalleryCell else{
+        guard let cell = toViewController.currentSelectedCell else{
             return
         }
         

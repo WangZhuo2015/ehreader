@@ -25,6 +25,7 @@ class RankGalleryViewController: GalleryWaterFlowViewController {
         super.viewDidLoad()
         self.arrowTitleView.titleLabel.text = self.title
         self.navigationItem.titleView = self.arrowTitleView
+        self.title = rankingTypes[PixivRankingMode.Daily]
         startLoading()
     }
     
