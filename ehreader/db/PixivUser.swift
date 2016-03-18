@@ -83,6 +83,6 @@ public class PixivUser: Object {
         let realm = try! Realm()
         
         let users = realm.objects(PixivUser)
-        return users[0]
+        return users.first
     }
 }

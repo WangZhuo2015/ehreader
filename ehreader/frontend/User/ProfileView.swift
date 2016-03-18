@@ -35,12 +35,15 @@ public class ProfileView: UIView {
         return label
     }()
     
-    public lazy var descriptionLabel:UILabel = {
-        let label = UILabel(frame: CGRectZero)
-        label.textColor = UIColor.whiteColor()
-        label.font = UIFont.systemFontOfSize(15)
-        label.textAlignment = NSTextAlignment.Center
-        return label
+    public lazy var descriptionLabel:UITextView = {
+        let textView = UITextView(frame: CGRectZero)
+        textView.textColor = UIColor.whiteColor()
+        textView.font = UIFont.systemFontOfSize(13)
+        textView.textAlignment = NSTextAlignment.Center
+        textView.editable = false
+        textView.backgroundColor = UIColor.clearColor()
+        textView.showsVerticalScrollIndicator = false
+        return textView
     }()
     
     public lazy var avatarImageView:UIImageView = {
@@ -60,7 +63,8 @@ public class ProfileView: UIView {
         button.titleLabel?.font = UIFont.systemFontOfSize(12)
         button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         button.setImage(UIImage(named:"profileFloArrow"), forState: UIControlState.Normal)
-        
+        button.titleEdgeInsets = UIEdgeInsetsMake(0, -18, 0, 18)
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, 70, 0, -70)
         return button
     }()
     
@@ -68,6 +72,14 @@ public class ProfileView: UIView {
         let label = UILabel(frame: CGRectZero)
         label.textColor = UIColor.whiteColor()
         label.font = UIFont.systemFontOfSize(17)
+        label.textAlignment = NSTextAlignment.Center
+        return label
+    }()
+    
+    public lazy var locationLabel:UILabel = {
+        let label = UILabel(frame: CGRectZero)
+        label.textColor = UIColor.whiteColor()
+        label.font = UIFont.systemFontOfSize(14)
         label.textAlignment = NSTextAlignment.Center
         return label
     }()
@@ -121,6 +133,7 @@ public class ProfileView: UIView {
         avatarView.addSubview(avatarImageView)
         avatarView.addSubview(nameLable)
         avatarView.addSubview(avatarButton)
+        avatarView.addSubview(locationLabel)
         
         descriptionView.addSubview(descriptionTitleLabel)
         descriptionView.addSubview(descriptionLabel)
@@ -150,16 +163,18 @@ public class ProfileView: UIView {
         avatarView.snp_makeConstraints { (make) in
             make.top.bottom.leading.equalTo(self.scrollView)
             make.width.equalTo(self)
+            make.height.equalTo(self)
         }
         
         descriptionView.snp_makeConstraints { (make) in
             make.top.bottom.trailing.equalTo(self.scrollView)
             make.leading.equalTo(self.avatarView.snp_trailing)
             make.width.equalTo(self)
+            make.height.equalTo(self)
         }
         
         avatarImageView.snp_makeConstraints { (make) in
-            make.top.equalTo(self.avatarView).offset(80)
+            make.top.equalTo(self.avatarView).offset(20)
             make.width.height.equalTo(50)
             make.centerX.equalTo(self.avatarView)
         }
@@ -169,19 +184,26 @@ public class ProfileView: UIView {
             make.centerX.equalTo(self.avatarView)
         }
         
+        locationLabel.snp_makeConstraints { (make) in
+            make.top.equalTo(self.nameLable.snp_bottom).offset(10)
+            make.centerX.equalTo(self.avatarView)
+        }
+        
         avatarButton.snp_makeConstraints { (make) in
             make.width.equalTo(150)
             make.height.equalTo(30)
-            make.top.equalTo(self.nameLable.snp_bottom).offset(30)
+            make.bottom.equalTo(self.avatarView).offset(-25)
             make.centerX.equalTo(self.avatarView)
         }
         
         descriptionLabel.snp_makeConstraints { (make) in
-            make.center.equalTo(self.descriptionView)
+            make.leading.trailing.equalTo(self.descriptionView)
+            make.top.equalTo(self.descriptionTitleLabel.snp_bottom).offset(10)
+            make.bottom.equalTo(self.descriptionView)
         }
         
         descriptionTitleLabel.snp_makeConstraints { (make) in
-            make.top.equalTo(self.descriptionView).offset(80)
+            make.top.equalTo(self.descriptionView).offset(20)
             make.centerX.equalTo(self.descriptionView)
         }
         
@@ -196,10 +218,12 @@ public class ProfileView: UIView {
         pageControl.refresh()
     }
     
-    public func setUser(user:PixivUser) {
+    public func setUser(user:PixivProfile) {
         self.avatarImageView.kf_setImageWithURL(NSURL(string: user.profile_image_urls_px_170x170!)!, placeholderImage: nil)
         self.backgroundImageView.kf_setImageWithURL(NSURL(string: user.profile_image_urls_px_170x170!)!, placeholderImage: nil)
         self.nameLable.text = user.name
+        self.locationLabel.text = user.location
+        self.descriptionLabel.text = user.introduction
     }
 }
 

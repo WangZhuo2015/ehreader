@@ -374,6 +374,58 @@ public class PixivProvider: NSObject {
             complete?(gallery: gallery, error: nil)
         }
     }
+    
+    public func getUserInfomation(userId:String, complete:((profile:PixivProfile?, error:NSError?)->Void)?) {
+        guard let accessToken = self.accessToken else {
+            let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.AccessTokenEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
+            complete?(profile: nil, error: error)
+            return
+        }
+        
+        guard let session = self.session else {
+            let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.SessionEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
+            complete?(profile: nil, error: error)
+            return
+        }
+        
+        let apiUrl = PixivPAPIRoot + "users/\(userId).json"
+        let parameters:[String:AnyObject] = [
+            "profile_image_sizes": "px_170x170,px_50x50",
+            "image_sizes": "px_128x128,small,medium,large,px_480mw",
+            "include_stats": 1,
+            "include_profile": 1,
+            "include_workspace": 1,
+            "include_contacts": 1,
+        ]
+        
+        var headers = PixivDefaultHeaders
+        headers["Authorization"] = "Bearer \(accessToken)"
+        headers["Cookie"] = "PHPSESSID=\(session)"
+        request(.GET, apiUrl, parameters: parameters, encoding: ParameterEncoding.URL, headers: headers).responseJSON { (response:Response<AnyObject, NSError>) -> Void in
+            if response.result.error != nil {
+                complete?(profile: nil, error: response.result.error)
+                return
+            }
+            
+            guard let value = response.result.value as? NSDictionary else {
+                complete?(profile: nil, error: nil)
+                return
+            }
+            
+            guard let responses = value.objectForKey("response") as? NSArray else {
+                complete?(profile: nil, error: nil)
+                return
+            }
+            
+            guard let response = responses.firstObject as? NSDictionary else {
+                complete?(profile: nil, error: nil)
+                return
+            }
+            
+            let profile = PixivProfile.createProfile(response)
+            complete?(profile: profile, error: nil)
+        }
+    }
 }
 
 extension PixivProvider {

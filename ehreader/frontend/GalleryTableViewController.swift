@@ -20,7 +20,6 @@ class GalleryTableViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(backgroundView)
         
         tableView.delegate = self
         tableView.dataSource = self
