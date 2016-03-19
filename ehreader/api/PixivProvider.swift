@@ -335,6 +335,31 @@ public class PixivProvider: NSObject {
         }
     }
     
+    public func meFavoriteWorksAdd(workId:Int, publicity:PixivPublicity, complete:((success:Bool, error:NSError?)->Void)?) {
+        let url = PixivPAPIRoot + "me/favorite_works.json"
+        let parameters:[String:AnyObject] = [
+            "work_id": workId,
+            "publicity": publicity.rawValue,
+        ]
+         var error:NSError?
+        authrizonRequest(.POST, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            if response.result.error != nil {
+                complete?(success: false, error: response.result.error)
+                return
+            }
+            guard let value = response.result.value as? NSDictionary else {
+                complete?(success: false, error: response.result.error)
+                return
+            }
+            if value.objectForKey("status") as! String == "success" {
+                complete?(success: true, error: nil)
+            }
+        }
+        if error != nil {
+            complete?(success: false, error: error)
+        }
+    }
+    
     public func meFavoriteWorks(page:Int = 1, perPage:Int = 50, publicity:PixivPublicity, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
         let url = PixivPAPIRoot + "me/favorite_works.json"
         let parameters:[String:AnyObject] = [
@@ -404,6 +429,44 @@ public class PixivProvider: NSObject {
         }
     }
     
+    public func getWorkInformation(illustId:Int, complete:((illust:PixivIllust?, error:NSError?)->Void)?) {
+        let url = PixivPAPIRoot + "works/\(illustId).json"
+        let parameters:[String:AnyObject] = [
+            "profile_image_sizes": "px_170x170,px_50x50",
+            "image_sizes": "px_128x128,small,medium,large,px_480mw",
+            "include_stats": 1,
+        ]
+        var error:NSError?
+        authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            if response.result.error != nil {
+                complete?(illust: nil, error: response.result.error)
+                return
+            }
+            
+            guard let value = response.result.value as? NSDictionary else {
+                complete?(illust: nil, error: nil)
+                return
+            }
+            
+            
+            guard let responses = value.objectForKey("response") as? NSArray else {
+                complete?(illust: nil, error: nil)
+                return
+            }
+            
+            guard let source = responses.firstObject as? NSDictionary else {
+                complete?(illust: nil, error: nil)
+                return
+            }
+            
+            let illust = PixivIllust.createPixivIllust(source, isWork: true)
+            complete?(illust:illust, error:nil)
+        }
+        if error != nil {
+            complete?(illust:nil, error:error)
+        }
+    }
+    
     public func getUserInfomation(userId:String, complete:((profile:PixivProfile?, error:NSError?)->Void)?) {
         let url = PixivPAPIRoot + "users/\(userId).json"
         let parameters:[String:AnyObject] = [
@@ -447,7 +510,7 @@ public class PixivProvider: NSObject {
 }
 
 extension PixivProvider {
-    public func authrizonRequest(method: Alamofire.Method, url:String, parameters: [String: AnyObject]? = nil,inout error:NSError?, completionHandler: Response<AnyObject, NSError> -> Void) {
+    public func authrizonRequest(method: Alamofire.Method, url:String, parameters: [String: AnyObject]? = nil, encoding: ParameterEncoding = ParameterEncoding.URL, inout error:NSError?, completionHandler: Response<AnyObject, NSError> -> Void) {
         guard let accessToken = self.accessToken else {
             error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.AccessTokenEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])
             return
@@ -462,7 +525,7 @@ extension PixivProvider {
         headers["Authorization"] = "Bearer \(accessToken)"
         headers["Cookie"] = "PHPSESSID=\(session)"
         
-        request(method, url, parameters: parameters, encoding: ParameterEncoding.URL, headers: headers).responseJSON(completionHandler: completionHandler)
+        request(method, url, parameters: parameters, encoding: encoding, headers: headers).responseJSON(completionHandler: completionHandler)
     }
     
     private func requestUrl(method:String = "GET", url:String, headers:[String:String]?, parameters:[String:String]?, content:[String:String]?)throws->ResponseWrapper {

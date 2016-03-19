@@ -57,7 +57,6 @@ public class UIArrowTitleView: UIControl {
         }
         
         arrowImageView.snp_makeConstraints { (make) in
-            make.leading.equalTo(self.titleLabel.snp_trailing)
             make.centerY.equalTo(self)
             make.height.width.equalTo(20)
             make.trailing.equalTo(self)

@@ -221,7 +221,7 @@ class PhotoViewController: UIViewController {
     
     override func updateViewConstraints() {
         super.updateViewConstraints()
-        if let count = self.illust?.getTags().count {
+        if let count = self.illust?.getTagArray().count {
             if count > 0 && self.scrollView.subviews.contains(self.tableView) {
                 self.tableView.snp_remakeConstraints { (make) in
                     make.leading.equalTo(self.scrollView)
@@ -240,6 +240,16 @@ class PhotoViewController: UIViewController {
     }
     
     func onBookmark(sender:UIBarButtonItem) {
+        if let illust = self.illust {
+            PixivProvider.getInstance().meFavoriteWorksAdd(illust.illust_id, publicity: PixivPublicity.Public) { (success, error) in
+                if success {
+                    sender.image = UIImage(named: "ic_navibar_liked")
+                }else {
+                    //TODO: Give failed hint
+                }
+            }
+        }
+        
     }
     
     func checkLargeImage(sender:UIBarButtonItem) {
@@ -266,6 +276,11 @@ class PhotoViewController: UIViewController {
         self.imageSize = illust.imageSize()
         self.photoUrl = illust.getMediaImageUrl()
         self.illust = illust
+        if illust.favorite_id > 0 {
+            self.starBarButton.image = UIImage(named: "ic_navibar_liked")
+        }else {
+            self.starBarButton.image = UIImage(named: "ic_navibar_like")
+        }
         self.tableView.reloadData()
         self.updateViewConstraints()
         self.titleLabel.text = illust.title
@@ -277,6 +292,24 @@ class PhotoViewController: UIViewController {
         }) { (image, error, cacheType, imageURL) in
             self.progressView.progress = 0
             self.progressView.hidden = true
+        }
+        loadIllustDetail()
+    }
+    
+    func loadIllustDetail() {
+        guard let illustId = self.illust?.illust_id else {
+            return
+        }
+        PixivProvider.getInstance().getWorkInformation(illustId) { (illust, error) in
+            self.illust = illust
+            if self.illust == nil {
+                return
+            }
+            if illust!.favorite_id > 0 {
+                self.starBarButton.image = UIImage(named: "ic_navibar_liked")
+            }else {
+                self.starBarButton.image = UIImage(named: "ic_navibar_like")
+            }
         }
     }
     
@@ -331,12 +364,12 @@ extension PhotoViewController: UIScrollViewDelegate {
 
 extension PhotoViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.illust?.getTags().count ?? 0
+        return self.illust?.getTagArray().count ?? 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(IllustTagCellIdentifer)!
-        cell.textLabel?.text = self.illust?.getTags()[indexPath.row]
+        cell.textLabel?.text = self.illust?.getTagArray()[indexPath.row]
         cell.textLabel?.font = UIFont.systemFontOfSize(14)
         cell.imageView?.image = UIImage(named: "ico_tag")
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator

@@ -71,7 +71,7 @@ public class PixivIllust: Object {
         return CGSizeMake(CGFloat(self.width), CGFloat(self.height))
     }
     
-    public func getTags()->[String] {
+    public func getTagArray()->[String] {
         return self.tags?.componentsSeparatedByString(",") ?? []
     }
     
@@ -84,7 +84,6 @@ public class PixivIllust: Object {
     
     public static func createPixivIllust(source:NSDictionary, isWork:Bool)->PixivIllust? {
         var data:NSDictionary?
-        print(source)
         if isWork {
             data = source
         }else {
@@ -100,82 +99,98 @@ public class PixivIllust: Object {
             print("data.id or data.title not found")
             return nil
         }
-        let illust = PixivIllust()
-        illust.publicity = data!.objectForKey("publicity") as? Int ?? 0
-        if let isManga = data!.objectForKey("is_manga")?.boolValue {
-            illust.is_manga = isManga
-        }else {
-            illust.is_manga = false
+        
+        guard let illustId = data?.objectForKey("id")?.integerValue else {
+            return nil
         }
-        if let stats = data?.objectForKey("stats") as? NSDictionary {
-            if let favorited_count = stats.objectForKey("favorited_count") as? NSDictionary {
-                illust.favorited_private = favorited_count.objectForKey("private") as? Int ?? 0
-                illust.favorited_public = favorited_count.objectForKey("public") as? Int ?? 0
+        
+        let realm = try! Realm()
+        let illustCache = realm.objects(PixivIllust.self).filter("illust_id = \(illustId)").first
+        var illust = PixivIllust()
+        illust.illust_id = illustId
+        if illustCache != nil {
+            illust = illustCache!
+        }
+        try! realm.write {
+            illust.publicity = data!.objectForKey("publicity") as? Int ?? illust.publicity
+            if let isManga = data!.objectForKey("is_manga")?.boolValue {
+                illust.is_manga = isManga
+            }else {
+                illust.is_manga = false
             }
-            illust.score = stats.objectForKey("score") as? Int ?? 0
-            illust.views_count = stats.objectForKey("views_count") as? Int ?? 0
-            illust.scored_count = stats.objectForKey("scored_count") as? Int ?? 0
-            illust.commented_count = stats.objectForKey("commented_count") as? Int ?? 0
-        }
-        illust.favorite_id = data?.objectForKey("favorite_id") as? Int ?? 0
-        if let tags = data?.objectForKey("tags") as? NSArray {
-            let tagString = tags.componentsJoinedByString(",")
-            illust.tags = tagString
-        }
-        illust.type = data?.objectForKey("type") as? String
-        illust.is_liked = data?.objectForKey("is_liked")?.boolValue ?? false
-        illust.page_count = data?.objectForKey("page_count") as? Int ?? 0
-        if let imageUrls = data?.objectForKey("image_urls") as? NSDictionary {
-            illust.url_small = imageUrls.objectForKey("small") as? String
-            illust.url_large = imageUrls.objectForKey("large") as? String
-            illust.url_px_128x128 = imageUrls.objectForKey("px_128x128") as? String
-            illust.url_medium = imageUrls.objectForKey("medium") as? String
-            illust.url_px_480mw = imageUrls.objectForKey("px_480mw") as? String
-        }
-        illust.height = data?.objectForKey("height") as? Int ?? 0
-        illust.caption = data?.objectForKey("caption") as? String
-        if let tools = data?.objectForKey("tools") as? NSArray {
-            illust.tools = tools.componentsJoinedByString(" ")
-        }
-        if let user = data?.objectForKey("user") as? NSDictionary {
-            illust.account = user.objectForKey("account") as? String
-            illust.name = user.objectForKey("name") as? String
-            illust.is_friend = user.objectForKey("is_friend")?.boolValue ?? false
-            illust.is_follower = user.objectForKey("is_follower")?.boolValue ?? false
-            illust.is_following = user.objectForKey("is_following")?.boolValue ?? false
-            illust.author_id = user.objectForKey("author_id")?.integerValue ?? 0
-            if let profileImageUrls = user.objectForKey("profile_image_urls") as? NSDictionary {
-                illust.profile_url_px_50x50 = profileImageUrls.objectForKey("px_50x50") as? String
-                illust.profile_url_px_170x170 = profileImageUrls.objectForKey("px_170x170") as? String
+            if let stats = data?.objectForKey("stats") as? NSDictionary {
+                if let favorited_count = stats.objectForKey("favorited_count") as? NSDictionary {
+                    illust.favorited_private = favorited_count.objectForKey("private") as? Int ?? illust.favorited_private
+                    illust.favorited_public = favorited_count.objectForKey("public") as? Int ?? illust.favorited_public
+                }
+                illust.score = stats.objectForKey("score") as? Int ?? illust.score
+                illust.views_count = stats.objectForKey("views_count") as? Int ?? illust.views_count
+                illust.scored_count = stats.objectForKey("scored_count") as? Int ?? illust.scored_count
+                illust.commented_count = stats.objectForKey("commented_count") as? Int ?? illust.commented_count
             }
-        }
-        illust.reuploaded_time = data?.objectForKey("reuploaded_time") as? String
-        illust.created_time = data?.objectForKey("created_time") as? String
-        illust.title = data?.objectForKey("title") as? String
-        illust.illust_id = data!.objectForKey("id")!.integerValue
-        illust.book_style = data?.objectForKey("book_style") as? String
-        illust.age_limit = data?.objectForKey("age_limit") as? String
-        illust.width = data?.objectForKey("width")?.integerValue ?? 0
-        if let metadata = data?.objectForKey("metadata") as? NSDictionary {
-            if let pages = metadata.objectForKey("pages") as? NSArray {
-                let firstObject = pages.firstObject as? NSDictionary
-                let imageUrls = firstObject?.objectForKey("image_urls") as? NSDictionary
-                illust.true_url_large = imageUrls?.objectForKey("large") as? String
+            illust.favorite_id = data?.objectForKey("favorite_id") as? Int ?? illust.favorite_id
+            if let tags = data?.objectForKey("tags") as? NSArray {
+                let tagString = tags.componentsJoinedByString(",")
+                illust.tags = tagString
             }
-        }
-        if illust.true_url_large == nil {
-            if illust.page_count > 0 {
-                if let url = illust.url_large {
-                    if url.containsString("_p0") {
-                        illust.true_url_large = illust.url_large
-                    }else {
-                        let ext = NSURL(string: url)!.pathExtension
-                        let base = NSURL(string: url)!.URLByDeletingPathExtension?.absoluteString
-                        illust.true_url_large = "\(base!)_p0\(ext!)"
+            illust.type = data?.objectForKey("type") as? String
+            illust.is_liked = data?.objectForKey("is_liked")?.boolValue ?? illust.is_liked
+            illust.page_count = data?.objectForKey("page_count") as? Int ?? illust.page_count
+            if let imageUrls = data?.objectForKey("image_urls") as? NSDictionary {
+                illust.url_small = imageUrls.objectForKey("small") as? String
+                illust.url_large = imageUrls.objectForKey("large") as? String
+                illust.url_px_128x128 = imageUrls.objectForKey("px_128x128") as? String
+                illust.url_medium = imageUrls.objectForKey("medium") as? String
+                illust.url_px_480mw = imageUrls.objectForKey("px_480mw") as? String
+            }
+            illust.height = data?.objectForKey("height") as? Int ?? illust.height
+            illust.caption = data?.objectForKey("caption") as? String
+            if let tools = data?.objectForKey("tools") as? NSArray {
+                illust.tools = tools.componentsJoinedByString(" ")
+            }
+            if let user = data?.objectForKey("user") as? NSDictionary {
+                illust.account = user.objectForKey("account") as? String
+                illust.name = user.objectForKey("name") as? String
+                illust.is_friend = user.objectForKey("is_friend")?.boolValue ?? illust.is_friend
+                illust.is_follower = user.objectForKey("is_follower")?.boolValue ?? illust.is_follower
+                illust.is_following = user.objectForKey("is_following")?.boolValue ?? illust.is_following
+                illust.author_id = user.objectForKey("author_id")?.integerValue ?? illust.author_id
+                if let profileImageUrls = user.objectForKey("profile_image_urls") as? NSDictionary {
+                    illust.profile_url_px_50x50 = profileImageUrls.objectForKey("px_50x50") as? String
+                    illust.profile_url_px_170x170 = profileImageUrls.objectForKey("px_170x170") as? String
+                }
+            }
+            illust.reuploaded_time = data?.objectForKey("reuploaded_time") as? String
+            illust.created_time = data?.objectForKey("created_time") as? String
+            illust.title = data?.objectForKey("title") as? String
+            illust.book_style = data?.objectForKey("book_style") as? String
+            illust.age_limit = data?.objectForKey("age_limit") as? String
+            illust.width = data?.objectForKey("width")?.integerValue ?? illust.width
+            if let metadata = data?.objectForKey("metadata") as? NSDictionary {
+                if let pages = metadata.objectForKey("pages") as? NSArray {
+                    let firstObject = pages.firstObject as? NSDictionary
+                    let imageUrls = firstObject?.objectForKey("image_urls") as? NSDictionary
+                    illust.true_url_large = imageUrls?.objectForKey("large") as? String
+                }
+            }
+            if illust.true_url_large == nil {
+                if illust.page_count > 0 {
+                    if let url = illust.url_large {
+                        if url.containsString("_p0") {
+                            illust.true_url_large = illust.url_large
+                        }else {
+                            let ext = NSURL(string: url)!.pathExtension
+                            let base = NSURL(string: url)!.URLByDeletingPathExtension?.absoluteString
+                            illust.true_url_large = "\(base!)_p0\(ext!)"
+                        }
                     }
                 }
             }
+        
+            //update value
+            realm.create(PixivIllust.self, value: illust, update: true)
         }
+        
         return illust
     }
 }
