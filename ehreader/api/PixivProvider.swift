@@ -513,7 +513,7 @@ public class PixivProvider: NSObject {
         }
     }
     
-    public func usersFollowing(userId:Int, page:Int = 1, perPage:Int = 50, publicity:PixivPublicity, complete:((profiles:[PixivProfile], pagination:Pagination?, error:NSError?)->Void)?){
+    public func usersFollowing(userId:Int, page:Int = 1, perPage:Int = 50,complete:((profiles:[PixivProfile], pagination:Pagination?, error:NSError?)->Void)?){
         let url = PixivPAPIRoot + "users/\(userId)/following.json"
         let parameters:[String:AnyObject] = [
             "page": page,
@@ -561,43 +561,43 @@ public class PixivProvider: NSObject {
         }
     }
     
-//    public func searchWorks(query:String, page:Int = 1, perPage:Int = 30, mode:PixivSearchMode = PixivSearchMode.ExactTag, period:String = "all", order:String = "desc", sort:String = "date", complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
-//        
-//        let url = PixivPAPIRoot + "works.json"
-//        let parameters:[String:AnyObject] = [
-//            "q": query,
-//            "page": page,
-//            "per_page": perPage,
-//            "period": period,
-//            "order": order,
-//            "sort": sort,
-//            "mode": mode.rawValue,
-//            "types": "illustration,manga,ugoira",
-//            "include_stats": "true",
-//            "include_sanity_level": "true",
-//            "image_sizes": "medium,small,px_128x128,px_480mw,large",
-//        ]
-//        
-//        var error:NSError?
-//        authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
-//            if response.result.error != nil {
-//                complete?(gallery: nil, error: response.result.error)
-//                return
-//            }
-//            
-//            guard let result = response.result.value as? [NSObject:AnyObject] else {
-//                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
-//                complete?(gallery: nil, error: error)
-//                return
-//            }
-//            
-//            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
-//            complete?(gallery: gallery, error: nil)
-//        }
-//        if error != nil {
-//            complete?(gallery: nil, error: error)
-//        }
-//    }
+    public func searchWorks(query:String, page:Int = 1, perPage:Int = 30, mode:PixivSearchMode = PixivSearchMode.ExactTag, period:String = "all", order:String = "desc", sort:String = "date", complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+        
+        let url = PixivPAPIRoot + "works.json"
+        let parameters:[String:AnyObject] = [
+            "q": query,
+            "page": page,
+            "per_page": perPage,
+            "period": period,
+            "order": order,
+            "sort": sort,
+            "mode": mode.rawValue,
+            "types": "illustration,manga,ugoira",
+            "include_stats": "true",
+            "include_sanity_level": "true",
+            "image_sizes": "medium,small,px_128x128,px_480mw,large",
+        ]
+        
+        var error:NSError?
+        authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            if response.result.error != nil {
+                complete?(gallery: nil, error: response.result.error)
+                return
+            }
+            
+            guard let result = response.result.value as? [NSObject:AnyObject] else {
+                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                complete?(gallery: nil, error: error)
+                return
+            }
+            
+            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
+            complete?(gallery: gallery, error: nil)
+        }
+        if error != nil {
+            complete?(gallery: nil, error: error)
+        }
+    }
     
     public func getWorkInformation(illustId:Int, complete:((illust:PixivIllust?, error:NSError?)->Void)?) {
         let url = PixivPAPIRoot + "works/\(illustId).json"

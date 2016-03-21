@@ -56,6 +56,7 @@ class OtherProfileViewController: UIViewController {
         didSet {
             self.userWorksGalleryViewController.profile = profile
             self.userFavoriteWorksViewController.profile = profile
+            self.userFollowingViewController.profile = profile
         }
     }
     
@@ -79,10 +80,17 @@ class OtherProfileViewController: UIViewController {
         return viewController
     }()
     
+    lazy var userFollowingViewController:UserFollowingViewController = {
+        let viewController = UserFollowingViewController()
+        viewController.profile = self.profile
+        //viewController.collectionView.scrollEnabled = false
+        return viewController
+    }()
+    
     override func viewDidLoad() {
         self.title = "我的主页"
         super.viewDidLoad()
-        self.automaticallyAdjustsScrollViewInsets = false
+        self.automaticallyAdjustsScrollViewInsets = true
         self.view.backgroundColor = UIConstants.GrayBackgroundColor
         
         profileView.frame = CGRectMake(0, 0, view.frame.width, 200)
@@ -117,6 +125,7 @@ class OtherProfileViewController: UIViewController {
     private func addViewControllers() {
         addChildViewController(self.userWorksGalleryViewController)
         addChildViewController(self.userFavoriteWorksViewController)
+        addChildViewController(self.userFollowingViewController)
     }
     
     private func addConstraints() {
