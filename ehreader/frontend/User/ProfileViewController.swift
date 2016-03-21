@@ -39,8 +39,6 @@ class ProfileViewController: UIViewController {
         return barButtonItem
     }()
     
-    
-    
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
     var user:PixivUser?
@@ -84,7 +82,7 @@ class ProfileViewController: UIViewController {
         self.user = PixivUser.currentLoginUser()
         
         if let _user = self.user {
-            self.pixivProvider.getUserInfomation(_user.id, complete: { (profile, error) in
+            self.pixivProvider.getUserInfomation(Int(_user.id)!, complete: { (profile, error) in
                 self.backgroundView.status = BackgroundViewStatus.Hidden
                 self.profileView.setUser(profile!)
             })

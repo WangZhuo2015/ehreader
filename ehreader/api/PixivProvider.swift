@@ -431,6 +431,39 @@ public class PixivProvider: NSObject {
         }
     }
     
+    public func usersWorks(userId:Int, page:Int = 1, perPage:Int = 50, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+        let url = PixivPAPIRoot + "users/\(userId)/works.json"
+        let parameters:[String:AnyObject] = [
+            "page": page,
+            "per_page": perPage,
+            "image_sizes": "medium,small,px_128x128,px_480mw,large",
+            "profile_image_sizes": "px_170x170,px_50x50",
+            "include_stats": "true",
+            "include_sanity_level": "true"
+        ]
+        
+        var error:NSError?
+        authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            if response.result.error != nil {
+                complete?(gallery: nil, error: response.result.error)
+                return
+            }
+            
+            guard let result = response.result.value as? [NSObject:AnyObject] else {
+                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                complete?(gallery: nil, error: error)
+                return
+            }
+            
+            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
+            complete?(gallery: gallery, error: nil)
+        }
+        if error != nil {
+            complete?(gallery: nil, error: error)
+        }
+    }
+    
+    
     public func meFollowing(page:Int = 1, perPage:Int = 50, publicity:PixivPublicity, complete:((profiles:[PixivProfile], pagination:Pagination?, error:NSError?)->Void)?) {
         let url = PixivPAPIRoot + "me/following.json"
         let parameters:[String:AnyObject] = [
@@ -480,43 +513,91 @@ public class PixivProvider: NSObject {
         }
     }
     
-    public func searchWorks(query:String, page:Int = 1, perPage:Int = 30, mode:PixivSearchMode = PixivSearchMode.ExactTag, period:String = "all", order:String = "desc", sort:String = "date", complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
-        
-        let url = PixivPAPIRoot + "works.json"
+    public func usersFollowing(userId:Int, page:Int = 1, perPage:Int = 50, publicity:PixivPublicity, complete:((profiles:[PixivProfile], pagination:Pagination?, error:NSError?)->Void)?){
+        let url = PixivPAPIRoot + "users/\(userId)/following.json"
         let parameters:[String:AnyObject] = [
-            "q": query,
             "page": page,
             "per_page": perPage,
-            "period": period,
-            "order": order,
-            "sort": sort,
-            "mode": mode.rawValue,
-            "types": "illustration,manga,ugoira",
-            "include_stats": "true",
-            "include_sanity_level": "true",
-            "image_sizes": "medium,small,px_128x128,px_480mw,large",
+            "profile_image_sizes": "px_170x170,px_50x50"
         ]
         
         var error:NSError?
         authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
             if response.result.error != nil {
-                complete?(gallery: nil, error: response.result.error)
+                complete?(profiles: [], pagination: nil, error: response.result.error)
                 return
             }
             
             guard let result = response.result.value as? [NSObject:AnyObject] else {
                 let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
-                complete?(gallery: nil, error: error)
+                complete?(profiles: [], pagination: nil, error: error)
                 return
             }
             
-            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
-            complete?(gallery: gallery, error: nil)
+            guard let paginationJson = result["pagination"] as? NSDictionary else {
+                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                complete?(profiles: [], pagination: nil, error: error)
+                return
+            }
+            
+            guard let profilesArray = result["response"] as? NSArray else {
+                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                complete?(profiles: [], pagination: nil, error: error)
+                return
+            }
+            
+            let pagination = self.createPagination(paginationJson)
+            var profiles:[PixivProfile] = []
+            for profileJson in profilesArray {
+                if let profile  = PixivProfile.createProfile(profileJson as! NSDictionary){
+                    profiles.append(profile)
+                }
+            }
+            
+            complete?(profiles: profiles, pagination: pagination, error: nil)
         }
         if error != nil {
-            complete?(gallery: nil, error: error)
+            complete?(profiles: [], pagination: nil, error: error)
         }
     }
+    
+//    public func searchWorks(query:String, page:Int = 1, perPage:Int = 30, mode:PixivSearchMode = PixivSearchMode.ExactTag, period:String = "all", order:String = "desc", sort:String = "date", complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+//        
+//        let url = PixivPAPIRoot + "works.json"
+//        let parameters:[String:AnyObject] = [
+//            "q": query,
+//            "page": page,
+//            "per_page": perPage,
+//            "period": period,
+//            "order": order,
+//            "sort": sort,
+//            "mode": mode.rawValue,
+//            "types": "illustration,manga,ugoira",
+//            "include_stats": "true",
+//            "include_sanity_level": "true",
+//            "image_sizes": "medium,small,px_128x128,px_480mw,large",
+//        ]
+//        
+//        var error:NSError?
+//        authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+//            if response.result.error != nil {
+//                complete?(gallery: nil, error: response.result.error)
+//                return
+//            }
+//            
+//            guard let result = response.result.value as? [NSObject:AnyObject] else {
+//                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+//                complete?(gallery: nil, error: error)
+//                return
+//            }
+//            
+//            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
+//            complete?(gallery: gallery, error: nil)
+//        }
+//        if error != nil {
+//            complete?(gallery: nil, error: error)
+//        }
+//    }
     
     public func getWorkInformation(illustId:Int, complete:((illust:PixivIllust?, error:NSError?)->Void)?) {
         let url = PixivPAPIRoot + "works/\(illustId).json"
@@ -556,7 +637,7 @@ public class PixivProvider: NSObject {
         }
     }
     
-    public func getUserInfomation(userId:String, complete:((profile:PixivProfile?, error:NSError?)->Void)?) {
+    public func getUserInfomation(userId:Int, complete:((profile:PixivProfile?, error:NSError?)->Void)?) {
         let url = PixivPAPIRoot + "users/\(userId).json"
         let parameters:[String:AnyObject] = [
             "profile_image_sizes": "px_170x170,px_50x50",

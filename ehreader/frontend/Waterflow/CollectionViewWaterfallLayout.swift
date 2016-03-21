@@ -13,6 +13,7 @@ public let CollectionViewWaterfallElementKindSectionHeader = "CollectionViewWate
 public let CollectionViewWaterfallElementKindSectionFooter = "CollectionViewWaterfallElementKindSectionFooter"
 
 @objc public protocol CollectionViewWaterfallLayoutDelegate:UICollectionViewDelegate {
+    optional func onLoadLayoutFinished(collectionView: UICollectionView, contentSize:CGSize)
     
     func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
     
@@ -93,6 +94,15 @@ public class CollectionViewWaterfallLayout: UICollectionViewLayout {
     private var footersAttribute = [Int: UICollectionViewLayoutAttributes]()
     private var unionRects = [CGRect]()
     
+    public func maxHeight()->Float {
+        var maxHeight:Float = 0
+        for height in columnHeights {
+            if height > maxHeight {
+                maxHeight = height
+            }
+        }
+        return maxHeight
+    }
     
     //MARK: UICollectionViewLayout Methods
     override public func prepareLayout() {
@@ -209,7 +219,7 @@ public class CollectionViewWaterfallLayout: UICollectionViewLayout {
                 allItemAttributes.append(attributes)
                 columnHeights[columnIndex] = Float(CGRectGetMaxY(attributes.frame)) + minimumInteritemSpacing
             }
-            
+            print("columnHeights:\(columnHeights)")
             sectionItemAttributes.append(itemAttributes)
             
             /*
@@ -262,6 +272,8 @@ public class CollectionViewWaterfallLayout: UICollectionViewLayout {
             unionRects.append(CGRectUnion(rect1, rect2))
             idx += 1
         }
+        
+        self.delegate?.onLoadLayoutFinished?(self.collectionView!, contentSize: self.collectionViewContentSize())
     }
     
     override public func collectionViewContentSize() -> CGSize {
@@ -271,7 +283,7 @@ public class CollectionViewWaterfallLayout: UICollectionViewLayout {
         }
         
         var contentSize = collectionView?.bounds.size
-        contentSize?.height = CGFloat(columnHeights[0])
+        contentSize?.height = CGFloat(self.maxHeight())
         
         return contentSize!
     }

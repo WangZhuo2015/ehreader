@@ -14,7 +14,7 @@ class MeFavoriteWorksViewController: GalleryWaterFlowViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        backgroundView.addTarget(self, action: #selector(LatestGalleryViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
+        //backgroundView.addTarget(self, action: #selector(LatestGalleryViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
         startLoading(publicity: self.currentPublicity)
     }
     

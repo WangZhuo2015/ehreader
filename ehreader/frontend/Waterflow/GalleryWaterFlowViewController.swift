@@ -13,7 +13,7 @@ import Alamofire
 import Kingfisher
 
 class GalleryWaterFlowViewController: UIViewController {
-    var collectionView:UICollectionView = {
+    lazy var collectionWaterfallLayout:CollectionViewWaterfallLayout = {
         let collectionWaterfallLayout:CollectionViewWaterfallLayout = CollectionViewWaterfallLayout()
         collectionWaterfallLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         collectionWaterfallLayout.headerInset = UIEdgeInsetsMake(0, 0, 0, 0)
@@ -21,15 +21,22 @@ class GalleryWaterFlowViewController: UIViewController {
         collectionWaterfallLayout.footerHeight = 0
         collectionWaterfallLayout.minimumColumnSpacing = 10
         collectionWaterfallLayout.minimumInteritemSpacing = 10
-        
-        let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: collectionWaterfallLayout)
-        collectionView.collectionViewLayout = collectionWaterfallLayout
+        return collectionWaterfallLayout
+    }()
+    
+    lazy var collectionView:UICollectionView = {
+        let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: self.collectionWaterfallLayout)
+        collectionView.collectionViewLayout = self.collectionWaterfallLayout
         collectionView.backgroundColor = UIColor.createColor(220, green: 220, blue: 224, alpha: 1)
         collectionView.registerClass(GalleryCell.self, forCellWithReuseIdentifier: GalleryCellIdentifier)
         return collectionView
     }()
     
     var currentSelectedCell:GalleryCell?
+    
+    var maxScrollViewHeight:CGFloat {
+        return CGFloat(self.collectionWaterfallLayout.maxHeight())
+    }
     
     lazy var headerView:CurveRefreshHeaderView = {
         let headerView = CurveRefreshHeaderView(associatedScrollView: self.collectionView, withNavigationBar: true)
@@ -154,6 +161,12 @@ extension GalleryWaterFlowViewController: UINavigationControllerDelegate {
         }else {
             return nil
         }
+    }
+}
+
+extension GalleryWaterFlowViewController: PopTransitionDelegate {
+    func currentSelectedCell(transition:PopTransition) -> GalleryCell? {
+        return self.currentSelectedCell
     }
 }
 

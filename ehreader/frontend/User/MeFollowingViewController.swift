@@ -105,4 +105,11 @@ extension MeFollowingViewController:UICollectionViewDataSource, UICollectionView
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return Padding*2
     }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let profile = self.profiles[indexPath.row]
+        let otherProfileViewController = OtherProfileViewController()
+        otherProfileViewController.userId = profile.id
+        self.navigationController?.pushViewController(otherProfileViewController, animated: true)
+    }
 }

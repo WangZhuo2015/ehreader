@@ -14,7 +14,14 @@ public class PushTransition: NSObject, UIViewControllerAnimatedTransitioning {
     }
     
     public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? GalleryWaterFlowViewController
+        var fromViewController:GalleryWaterFlowViewController?
+        
+        if transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!.isKindOfClass(GalleryWaterFlowViewController) {
+            fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? GalleryWaterFlowViewController
+        }else if transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!.isKindOfClass(OtherProfileViewController) {
+            let otherViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as! OtherProfileViewController
+            fromViewController = otherViewController.currentWaterFlowViewController
+        }
         
         guard let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? PhotoViewController else {
             return

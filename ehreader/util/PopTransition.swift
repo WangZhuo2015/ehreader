@@ -8,13 +8,17 @@
 
 import UIKit
 
+protocol PopTransitionDelegate {
+    func currentSelectedCell(transition:PopTransition)->GalleryCell?
+}
+
 public class PopTransition: NSObject, UIViewControllerAnimatedTransitioning {
     public func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.3
     }
     
     public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? GalleryWaterFlowViewController else {
+        guard let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
             return
         }
         
@@ -26,7 +30,7 @@ public class PopTransition: NSObject, UIViewControllerAnimatedTransitioning {
             return
         }
         
-        guard let cell = toViewController.currentSelectedCell else{
+        guard let cell = (toViewController as? PopTransitionDelegate)?.currentSelectedCell(self) else{
             return
         }
         
