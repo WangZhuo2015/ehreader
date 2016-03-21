@@ -69,6 +69,7 @@ public class FunctionView: UIView {
             let title = dataSource.functionView(self, titleForItemAtIndex: index)
             let button = UIButton(frame: CGRectZero)
             button.setTitle(title, forState: UIControlState.Normal)
+            button.setBackgroundImage(UIConstants.GrayBackgroundColor.createImage(), forState: UIControlState.Selected)
             button.setImage(dataSource.functionView?(self, imageForItemAtIndex: index), forState: UIControlState.Normal)
             button.backgroundColor = UIColor.clearColor()
             button.titleLabel?.font = UIFont.systemFontOfSize(15)
@@ -86,8 +87,8 @@ public class FunctionView: UIView {
                 }else {
                     make.leading.equalTo(self)
                 }
-                make.centerY.equalTo(self)
-                make.height.equalTo(36)
+                make.top.equalTo(self)
+                make.bottom.equalTo(self)
                 if index == (count - 1) {
                     make.trailing.equalTo(self)
                 }
@@ -98,10 +99,23 @@ public class FunctionView: UIView {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        //reloadData()
     }
     
     public func onButtonClicked(button:UIButton) {
+        for b in self.buttons {
+            b.selected = false
+        }
+        button.selected = true
         self.delegate?.functionView?(self, didClickAtIndex: button.tag)
+    }
+    
+    public func onButtonClick(index:Int) {
+        if index < 0 || index >= self.buttons.count {
+            return
+        }
+        for b in self.buttons {
+            b.selected = false
+        }
+        self.buttons[index].selected = true
     }
 }

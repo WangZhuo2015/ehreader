@@ -17,6 +17,7 @@ protocol UserWorksGalleryViewControllerDelegate:NSObjectProtocol {
 class UserWorksGalleryViewController: GalleryWaterFlowViewController {
     override func viewDidLoad() {
         self.automaticallyAdjustsScrollViewInsets = false
+        self.view.backgroundColor = UIConstants.GrayBackgroundColor
         super.viewDidLoad()
         backgroundView.addTarget(self, action: #selector(UserWorksGalleryViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
         startLoading()

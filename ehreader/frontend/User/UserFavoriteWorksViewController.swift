@@ -1,0 +1,68 @@
+//
+//  UserFavoriteWorksViewController.swift
+//  ehreader
+//
+//  Created by 周泽勇 on 16/3/21.
+//  Copyright © 2016年 bravedefault. All rights reserved.
+//
+
+import UIKit
+
+class UserFavoriteWorksViewController: GalleryWaterFlowViewController {
+    var currentPublicity:PixivPublicity = PixivPublicity.Public
+    
+    weak var delegate:UserWorksGalleryViewControllerDelegate?
+    
+    var profile:PixivProfile?
+    
+    override func viewDidLoad() {
+        self.automaticallyAdjustsScrollViewInsets = false
+        super.viewDidLoad()
+        startLoading()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        footerView.refreshingBlock = { ()->() in
+            self.currentPage += 1
+            self.startLoading(self.currentPage)
+        }
+    }
+    
+    func startLoading(page:Int = 1) {
+        guard let profile = self.profile else {
+            return
+        }
+        do {
+            try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
+        }catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        pixivProvider.usersFavoriteWorks(profile.id) { (gallery, error) in
+            if error != nil || gallery == nil{
+                print("loading choice data failed:\(error!.localizedDescription)")
+                self.backgroundView.status = BackgroundViewStatus.Failed
+                return
+            }
+            
+            if self.gallery == nil {
+                self.gallery = gallery
+            }else {
+                self.gallery?.addIllusts(gallery!)
+            }
+            
+            self.collectionView.reloadData()
+            self.backgroundView.status = BackgroundViewStatus.Hidden
+            
+            if self.footerView.loading {
+                self.footerView.stopRefreshing()
+            }
+        }
+    }
+    
+    func onLoadLayoutFinished(collectionView: UICollectionView, contentSize: CGSize) {
+        self.delegate?.onLoadLayoutFinished(collectionView, contentSize: contentSize)
+    }
+}

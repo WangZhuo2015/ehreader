@@ -18,6 +18,7 @@ class OtherProfileViewController: UIViewController {
         let tableView = UITableView(frame: CGRectZero)
         tableView.backgroundColor = UIColor.clearColor()
         tableView.showsVerticalScrollIndicator = false
+        tableView.backgroundColor = UIColor.clearColor()
         tableView.scrollsToTop = true
         tableView.delegate = self
         tableView.dataSource = self
@@ -39,6 +40,7 @@ class OtherProfileViewController: UIViewController {
         pageView.dataSource = self
         pageView.delegate = self
         pageView.contentView.scrollEnabled = false
+        pageView.backgroundColor = UIColor.clearColor()
         return pageView
     }()
     
@@ -53,6 +55,7 @@ class OtherProfileViewController: UIViewController {
     var profile:PixivProfile? {
         didSet {
             self.userWorksGalleryViewController.profile = profile
+            self.userFavoriteWorksViewController.profile = profile
         }
     }
     
@@ -64,15 +67,23 @@ class OtherProfileViewController: UIViewController {
         let viewController = UserWorksGalleryViewController()
         viewController.profile = self.profile
         viewController.delegate = self
-        viewController.collectionView.scrollEnabled = false
+        //viewController.collectionView.scrollEnabled = false
+        return viewController
+    }()
+    
+    lazy var userFavoriteWorksViewController:UserFavoriteWorksViewController = {
+        let viewController = UserFavoriteWorksViewController()
+        viewController.profile = self.profile
+        viewController.delegate = self
+        //viewController.collectionView.scrollEnabled = false
         return viewController
     }()
     
     override func viewDidLoad() {
         self.title = "我的主页"
         super.viewDidLoad()
-        self.automaticallyAdjustsScrollViewInsets = true
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.automaticallyAdjustsScrollViewInsets = false
+        self.view.backgroundColor = UIConstants.GrayBackgroundColor
         
         profileView.frame = CGRectMake(0, 0, view.frame.width, 200)
         tableView.tableHeaderView = profileView
@@ -99,11 +110,13 @@ class OtherProfileViewController: UIViewController {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        KingfisherManager.sharedManager.cache.clearMemoryCache()
         super.navigationController?.delegate = self.originalNaivgationControllerDelegate
     }
     
     private func addViewControllers() {
         addChildViewController(self.userWorksGalleryViewController)
+        addChildViewController(self.userFavoriteWorksViewController)
     }
     
     private func addConstraints() {
@@ -123,8 +136,13 @@ class OtherProfileViewController: UIViewController {
                 self.backgroundView.status = BackgroundViewStatus.Hidden
                 self.profileView.setUser(profile!)
                 self.profile = profile
+                if let name = profile?.name {
+                    self.title = name + "的主页"
+                }
+                
                 self.tableView.reloadData()
                 self.functionView.reloadData()
+                self.functionView.onButtonClick(0)
                 self.pageView.reloadData()
             })
         }
@@ -142,6 +160,7 @@ extension OtherProfileViewController: UIViewPagerDataSource, UIViewPagerDelegate
     
     func didMove(viewPager: UIViewPager, fromIndex: Int, toIndex: Int) {
         self.tableView.reloadData()
+        self.functionView.onButtonClick(toIndex)
     }
 }
 
@@ -165,11 +184,13 @@ extension OtherProfileViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        print(self.userWorksGalleryViewController.collectionView.contentSize.height)
-        let height = self.userWorksGalleryViewController.maxScrollViewHeight
-        if height > self.view.frame.height {
-            return height
-        }
+//        let currentIndex = self.pageView.currentIndex
+//        if currentIndex >= 0 && currentIndex < self.childViewControllers.count {
+//            if let height = (self.childViewControllers[self.pageView.currentIndex] as? GalleryWaterFlowViewController)?.maxScrollViewHeight {
+//                return height
+//            }
+//        }
+        
         return self.view.frame.height
     }
     
@@ -197,13 +218,16 @@ extension OtherProfileViewController: FunctionViewDataSource, FunctionViewDelega
     }
     
     func functionView(functionView: FunctionView, didClickAtIndex index: Int) {
-        
+        self.pageView.selectPage(index, animated: true)
+        if index >= 0 && index < self.childViewControllers.count {
+            self.currentWaterFlowViewController = self.childViewControllers[index] as? GalleryWaterFlowViewController
+            self.currentWaterFlowViewController?.automaticallyAdjustsScrollViewInsets = false
+        }
     }
 }
 
 extension OtherProfileViewController: UserWorksGalleryViewControllerDelegate {
     func onLoadingFinished(viewController: UserWorksGalleryViewController) {
-        //self.tableView.reloadData()
     }
     
     func onLoadLayoutFinished(collectionView: UICollectionView, contentSize: CGSize) {
