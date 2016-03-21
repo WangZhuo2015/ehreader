@@ -59,7 +59,7 @@ class PhotoViewController: UIViewController {
     
     private lazy var checkLargeImage:UIBarButtonItem = {
         let customButton = UIButton(frame: CGRectMake(0, 0, 70, 25))
-        customButton.backgroundColor = UIColor.redColor()
+        customButton.setBackgroundImage(UIColor.redColor().createImage(), forState: UIControlState.Normal)
         customButton.clipsToBounds = true
         customButton.layer.cornerRadius = 4
         customButton.setTitle("查看大图", forState: UIControlState.Normal)
@@ -100,7 +100,7 @@ class PhotoViewController: UIViewController {
         let imageView = UIImageView(frame: CGRectZero)
         imageView.layer.cornerRadius = AvatarWidth/2
         imageView.clipsToBounds = true
-        imageView.layer.borderColor = UIColor.createColor(220, green: 220, blue: 224, alpha: 1).CGColor
+        imageView.layer.borderColor = UIConstants.GrayBackgroundColor.CGColor
         imageView.layer.borderWidth = 0.5
         return imageView
     }()
@@ -114,7 +114,7 @@ class PhotoViewController: UIViewController {
     
     lazy var lineView:UIView = {
         let line = UIView(frame:CGRectZero)
-        line.backgroundColor = UIColor.createColor(220, green: 220, blue: 224, alpha: 1)
+        line.backgroundColor = UIConstants.GrayBackgroundColor
         return line
     }()
     

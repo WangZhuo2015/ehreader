@@ -117,3 +117,9 @@ extension UIViewController {
         mainTabbarController.displayTabbar(animated)
     }
 }
+
+public struct UIConstants {
+    public static let DefaultBlackTextColor:UIColor = UIColor.createColor(30, green: 30, blue: 30, alpha: 1)
+    public static let GrayBackgroundColor:UIColor = UIColor.createColor(220, green: 220, blue: 224, alpha: 1)
+    public static let DisableBackgroundColor:UIColor = UIColor.createColor(239, green: 239, blue: 239, alpha: 1)
+}

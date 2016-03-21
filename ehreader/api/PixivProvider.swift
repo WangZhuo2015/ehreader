@@ -72,6 +72,15 @@ public enum PixivPublicity:String {
     case Private = "private"
 }
 
+public struct Pagination {
+    public var current:Int = 0
+    public var next:Int?
+    public var pages:Int = 0
+    public var per_page:Int = 0
+    public var previous:Int?
+    public var total:Int = 0
+}
+
 private struct ResponseWrapper {
     var header:[NSObject : AnyObject]
     var data:NSData?
@@ -360,6 +369,37 @@ public class PixivProvider: NSObject {
         }
     }
     
+    public func meFavoriteWorksDelete(ids:[Int], publicity:PixivPublicity, complete:((success:Bool, error:NSError?)->Void)?) {
+        let url = PixivPAPIRoot + "me/favorite_works.json"
+        var workId = ""
+        if ids.count == 1 {
+            workId = "\(ids[0])"
+        }else if ids.count > 1 {
+            workId = (ids as NSArray).componentsJoinedByString(",")
+        }
+        let parameters:[String:AnyObject] = [
+            "ids": workId,
+            "publicity": publicity.rawValue,
+        ]
+        var error:NSError?
+        authrizonRequest(.DELETE, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            if response.result.error != nil {
+                complete?(success: false, error: response.result.error)
+                return
+            }
+            guard let value = response.result.value as? NSDictionary else {
+                complete?(success: false, error: response.result.error)
+                return
+            }
+            if value.objectForKey("status") as! String == "success" {
+                complete?(success: true, error: nil)
+            }
+        }
+        if error != nil {
+            complete?(success: false, error: error)
+        }
+    }
+    
     public func meFavoriteWorks(page:Int = 1, perPage:Int = 50, publicity:PixivPublicity, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
         let url = PixivPAPIRoot + "me/favorite_works.json"
         let parameters:[String:AnyObject] = [
@@ -388,6 +428,55 @@ public class PixivProvider: NSObject {
         }
         if error != nil {
             complete?(gallery: nil, error: error)
+        }
+    }
+    
+    public func meFollowing(page:Int = 1, perPage:Int = 50, publicity:PixivPublicity, complete:((profiles:[PixivProfile], pagination:Pagination?, error:NSError?)->Void)?) {
+        let url = PixivPAPIRoot + "me/following.json"
+        let parameters:[String:AnyObject] = [
+            "page": page,
+            "per_page": perPage,
+            "profile_image_sizes": "px_170x170,px_50x50",
+            "publicity": publicity.rawValue
+        ]
+        
+        var error:NSError?
+        authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            if response.result.error != nil {
+                complete?(profiles: [], pagination: nil, error: response.result.error)
+                return
+            }
+            
+            guard let result = response.result.value as? [NSObject:AnyObject] else {
+                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                complete?(profiles: [], pagination: nil, error: error)
+                return
+            }
+            
+            guard let paginationJson = result["pagination"] as? NSDictionary else {
+                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                complete?(profiles: [], pagination: nil, error: error)
+                return
+            }
+            
+            guard let profilesArray = result["response"] as? NSArray else {
+                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                complete?(profiles: [], pagination: nil, error: error)
+                return
+            }
+            
+            let pagination = self.createPagination(paginationJson)
+            var profiles:[PixivProfile] = []
+            for profileJson in profilesArray {
+                if let profile  = PixivProfile.createProfile(profileJson as! NSDictionary){
+                    profiles.append(profile)
+                }
+            }
+            
+            complete?(profiles: profiles, pagination: pagination, error: nil)
+        }
+        if error != nil {
+            complete?(profiles: [], pagination: nil, error: error)
         }
     }
     
@@ -510,6 +599,16 @@ public class PixivProvider: NSObject {
 }
 
 extension PixivProvider {
+    private func createPagination(source:NSDictionary)->Pagination {
+        var pagination = Pagination()
+        pagination.per_page = source["per_page"] as? Int ?? 0
+        pagination.total = source["total"] as? Int ?? 0
+        pagination.current = source["current"] as? Int ?? 0
+        pagination.next = source["next"] as? Int ?? 0
+        pagination.previous = source["previous"] as? Int ?? 0
+        return pagination
+    }
+    
     public func authrizonRequest(method: Alamofire.Method, url:String, parameters: [String: AnyObject]? = nil, encoding: ParameterEncoding = ParameterEncoding.URL, inout error:NSError?, completionHandler: Response<AnyObject, NSError> -> Void) {
         guard let accessToken = self.accessToken else {
             error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.AccessTokenEmpty._code, userInfo: [NSLocalizedDescriptionKey:"Authentication required! Call login: or set_session: first!"])

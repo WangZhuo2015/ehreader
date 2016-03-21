@@ -78,4 +78,17 @@ class PixivProviderTests: XCTestCase {
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
     
+    func testMeFollowing() {
+        do {
+            try self.pixivProvider.loginIfNeeded(username, password: password)
+        }catch let error as NSError {
+            XCTAssert(false, error.localizedDescription)
+        }
+        let expectation = expectationWithDescription("")
+        self.pixivProvider.meFollowing(publicity: PixivPublicity.Public) { (profiles, pagination, error) in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+    }
 }

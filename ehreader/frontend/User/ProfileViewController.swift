@@ -129,6 +129,16 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
             favoriteWorksViewController.title = titleValues[indexPath.section][indexPath.row]
             favoriteWorksViewController.currentPublicity = PixivPublicity.Private
             self.navigationController?.pushViewController(favoriteWorksViewController, animated: true)
+        }else if indexPath.section == 1 && indexPath.row == 0 {
+            let meFollowingViewController = MeFollowingViewController()
+            meFollowingViewController.publicity = PixivPublicity.Public
+            meFollowingViewController.title = titleValues[indexPath.section][indexPath.row]
+            self.navigationController?.pushViewController(meFollowingViewController, animated: true)
+        }else if indexPath.section == 1 && indexPath.row == 1 {
+            let meFollowingViewController = MeFollowingViewController()
+            meFollowingViewController.publicity = PixivPublicity.Private
+            meFollowingViewController.title = titleValues[indexPath.section][indexPath.row]
+            self.navigationController?.pushViewController(meFollowingViewController, animated: true)
         }
     }
 }

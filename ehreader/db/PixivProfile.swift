@@ -70,20 +70,20 @@ public class PixivProfile: NSObject {
         pixivProfile.is_friend = dataSource.objectForKey("is_friend") as? Bool ?? false
         pixivProfile.is_premium = dataSource.objectForKey("is_premium") as? Bool ?? false
         
-        if let stats = dataSource.objectForKey("stats") {
+        if let stats = dataSource.objectForKey("stats") as? NSDictionary {
             pixivProfile.favorites = stats.objectForKey("favorites") as? Int ?? 0
             pixivProfile.following = stats.objectForKey("following") as? Int ?? 0
             pixivProfile.friends = stats.objectForKey("friends") as? Int ?? 0
             pixivProfile.works = stats.objectForKey("works") as? Int ?? 0
         }
         
-        if let profile_image_urls = dataSource.objectForKey("profile_image_urls") {
+        if let profile_image_urls = dataSource.objectForKey("profile_image_urls") as? NSDictionary  {
             pixivProfile.profile_image_urls_px_16x16 = profile_image_urls.objectForKey("px_16x16") as? String
             pixivProfile.profile_image_urls_px_50x50 = profile_image_urls.objectForKey("px_50x50") as? String
             pixivProfile.profile_image_urls_px_170x170 = profile_image_urls.objectForKey("px_170x170") as? String
         }
         
-        if let profile = dataSource.objectForKey("profile") {
+        if let profile = dataSource.objectForKey("profile") as? NSDictionary  {
             pixivProfile.birth_date = profile.objectForKey("birth_date") as? String
             pixivProfile.blood_type = profile.objectForKey("blood_type") as? String
             pixivProfile.contacts = profile.objectForKey("contacts") as? [String:String]

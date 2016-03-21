@@ -40,6 +40,8 @@
 		E98B074B1C89C2E100EE44B7 /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B073E1C89C2E100EE44B7 /* GalleryCell.swift */; };
 		E98B074C1C89C2E100EE44B7 /* GalleryWaterFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B073F1C89C2E100EE44B7 /* GalleryWaterFlowViewController.swift */; };
 		E98F53F41C9AE64F003B5093 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98F53F31C9AE64F003B5093 /* PageControl.swift */; };
+		E9AE80BA1C9F997B006A5AC4 /* MeFollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE80B91C9F997B006A5AC4 /* MeFollowingViewController.swift */; };
+		E9AE80BC1C9FA133006A5AC4 /* FollowingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE80BB1C9FA133006A5AC4 /* FollowingCollectionViewCell.swift */; };
 		E9B216F61C4A84990099CF54 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F51C4A84990099CF54 /* PhotoService.swift */; };
 		E9DC51EC1C4699740053D331 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC51EB1C4699740053D331 /* Constants.swift */; };
 		E9F1FD1F1C8E816D0029BD17 /* UIArrowTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F1FD1E1C8E816D0029BD17 /* UIArrowTitleView.swift */; };
@@ -130,6 +132,8 @@
 		E98B073E1C89C2E100EE44B7 /* GalleryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
 		E98B073F1C89C2E100EE44B7 /* GalleryWaterFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryWaterFlowViewController.swift; sourceTree = "<group>"; };
 		E98F53F31C9AE64F003B5093 /* PageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
+		E9AE80B91C9F997B006A5AC4 /* MeFollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeFollowingViewController.swift; sourceTree = "<group>"; };
+		E9AE80BB1C9FA133006A5AC4 /* FollowingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingCollectionViewCell.swift; sourceTree = "<group>"; };
 		E9B216F51C4A84990099CF54 /* PhotoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
 		E9DC51EB1C4699740053D331 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E9F1FD1E1C8E816D0029BD17 /* UIArrowTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIArrowTitleView.swift; sourceTree = "<group>"; };
@@ -307,6 +311,8 @@
 			children = (
 				E9F6CB821C9AB8D000D26534 /* ProfileViewController.swift */,
 				E9F774C61C9BF7150045D128 /* MeFavoriteWorksViewController.swift */,
+				E9AE80B91C9F997B006A5AC4 /* MeFollowingViewController.swift */,
+				E9AE80BB1C9FA133006A5AC4 /* FollowingCollectionViewCell.swift */,
 				E9F6CB841C9ABBB900D26534 /* ProfileView.swift */,
 			);
 			path = User;
@@ -610,6 +616,7 @@
 				E967A4961C50D172000C6DC2 /* PixivIllustGallery.swift in Sources */,
 				E97D61D11C8D4B5800E12AEF /* PushTransition.swift in Sources */,
 				E98B07491C89C2E100EE44B7 /* MainTabbarController.swift in Sources */,
+				E9AE80BA1C9F997B006A5AC4 /* MeFollowingViewController.swift in Sources */,
 				E9FB948B1C8FBDF50076E01D /* CurveRefreshFooterView.swift in Sources */,
 				F78DD6DC1BF9DB7C003D3CB9 /* ViewController.swift in Sources */,
 				E91B7BCD1C9A7E54007ED39F /* LatestGalleryViewController.swift in Sources */,
@@ -628,6 +635,7 @@
 				E9FB948F1C8FBE060076E01D /* CurveRefreshHeaderView.swift in Sources */,
 				E92C26CF1C4E0787009FB297 /* BppDownloadFile.swift in Sources */,
 				E9DC51EC1C4699740053D331 /* Constants.swift in Sources */,
+				E9AE80BC1C9FA133006A5AC4 /* FollowingCollectionViewCell.swift in Sources */,
 				E98F53F41C9AE64F003B5093 /* PageControl.swift in Sources */,
 				E9F6CB851C9ABBB900D26534 /* ProfileView.swift in Sources */,
 				E9F6CB831C9AB8D000D26534 /* ProfileViewController.swift in Sources */,
