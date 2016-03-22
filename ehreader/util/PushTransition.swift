@@ -14,13 +14,8 @@ public class PushTransition: NSObject, UIViewControllerAnimatedTransitioning {
     }
     
     public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        var fromViewController:GalleryWaterFlowViewController?
-        
-        if transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!.isKindOfClass(GalleryWaterFlowViewController) {
-            fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? GalleryWaterFlowViewController
-        }else if transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!.isKindOfClass(OtherProfileViewController) {
-            let otherViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as! OtherProfileViewController
-            fromViewController = otherViewController.currentWaterFlowViewController
+        guard let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) else {
+            return
         }
         
         guard let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? PhotoViewController else {
@@ -31,15 +26,7 @@ public class PushTransition: NSObject, UIViewControllerAnimatedTransitioning {
             return
         }
         
-        guard let collectionView = fromViewController?.collectionView else {
-            return
-        }
-        
-        guard let selectedIndexPath = collectionView.indexPathsForSelectedItems()?.first else {
-            return
-        }
-        
-        guard let cell = collectionView.cellForItemAtIndexPath(selectedIndexPath) as? GalleryCell else{
+        guard let cell = (fromViewController as? TransitionDelegate)?.currentSelectedCellForAnimation() else {
             return
         }
         

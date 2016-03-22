@@ -316,7 +316,7 @@ extension OtherProfileViewController: UserWorksGalleryViewControllerDelegate {
 
 extension OtherProfileViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if toVC.isKindOfClass(PhotoViewController) {
+        if toVC.isKindOfClass(PhotoViewController) && operation == .Push {
             let pushTransition = PushTransition()
             return pushTransition
         }else {
@@ -325,8 +325,8 @@ extension OtherProfileViewController: UINavigationControllerDelegate {
     }
 }
 
-extension OtherProfileViewController:PopTransitionDelegate {
-    func currentSelectedCell(transition:PopTransition) -> GalleryCell? {
+extension OtherProfileViewController:TransitionDelegate {
+    func currentSelectedCellForAnimation() -> GalleryCell? {
         return self.currentWaterFlowViewController?.currentSelectedCell
     }
 }

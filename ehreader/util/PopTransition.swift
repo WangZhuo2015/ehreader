@@ -8,8 +8,8 @@
 
 import UIKit
 
-protocol PopTransitionDelegate {
-    func currentSelectedCell(transition:PopTransition)->GalleryCell?
+protocol TransitionDelegate {
+    func currentSelectedCellForAnimation()->GalleryCell?
 }
 
 public class PopTransition: NSObject, UIViewControllerAnimatedTransitioning {
@@ -30,7 +30,7 @@ public class PopTransition: NSObject, UIViewControllerAnimatedTransitioning {
             return
         }
         
-        guard let cell = (toViewController as? PopTransitionDelegate)?.currentSelectedCell(self) else{
+        guard let cell = (toViewController as? TransitionDelegate)?.currentSelectedCellForAnimation() else{
             return
         }
         

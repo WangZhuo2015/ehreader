@@ -175,7 +175,7 @@ extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionVi
 
 extension GalleryWaterFlowViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if toVC.isKindOfClass(PhotoViewController) {
+        if toVC.isKindOfClass(PhotoViewController) && operation == .Push {
             let pushTransition = PushTransition()
             return pushTransition
         }else {
@@ -184,8 +184,8 @@ extension GalleryWaterFlowViewController: UINavigationControllerDelegate {
     }
 }
 
-extension GalleryWaterFlowViewController: PopTransitionDelegate {
-    func currentSelectedCell(transition:PopTransition) -> GalleryCell? {
+extension GalleryWaterFlowViewController: TransitionDelegate {
+    func currentSelectedCellForAnimation() -> GalleryCell? {
         return self.currentSelectedCell
     }
 }
