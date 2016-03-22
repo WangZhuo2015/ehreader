@@ -70,6 +70,12 @@ class GalleryWaterFlowViewController: UIViewController {
         addViewConstraints()
     }
     
+    deinit {
+        print("deint GalleryWaterFlowViewController")
+        self.currentSelectedCell = nil
+        self.gallery = nil
+    }
+    
     func addViewConstraints() {
         backgroundView.snp_remakeConstraints { (make) -> Void in
             make.edges.equalTo(self.view)
@@ -81,7 +87,7 @@ class GalleryWaterFlowViewController: UIViewController {
         }
     }
     
-    private var originalNaivgationControllerDelegate:UINavigationControllerDelegate?
+    private weak var originalNaivgationControllerDelegate:UINavigationControllerDelegate?
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)

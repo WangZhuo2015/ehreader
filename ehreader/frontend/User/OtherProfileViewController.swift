@@ -55,7 +55,6 @@ class OtherProfileViewController: UIViewController {
         return button
     }()
     
-    
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
     var userId:Int = -1
@@ -116,10 +115,15 @@ class OtherProfileViewController: UIViewController {
         addViewControllers()
     }
     
+    deinit {
+        print("deinit OtherProfileViewController")
+    }
+    
     private var originalNaivgationControllerDelegate:UINavigationControllerDelegate?
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.hideMainTabbar(true)
         self.originalNaivgationControllerDelegate = self.navigationController?.delegate
         self.navigationController?.delegate = self
     }
@@ -150,6 +154,9 @@ class OtherProfileViewController: UIViewController {
     func startLoading() {
         if userId != -1 {
             PixivProvider.getInstance().getUserInfomation(userId, complete: { (profile, error) in
+                if profile == nil {
+                    return
+                }
                 self.backgroundView.status = BackgroundViewStatus.Hidden
                 self.profileView.setUser(profile!)
                 self.profile = profile
@@ -276,7 +283,7 @@ extension OtherProfileViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        self.onScrollViewScrollingWithTabbar(scrollView)
+        //self.onScrollViewScrollingWithTabbar(scrollView)
     }
 }
 

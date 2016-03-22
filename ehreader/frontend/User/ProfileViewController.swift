@@ -59,6 +59,10 @@ class ProfileViewController: UIViewController {
         
         addConstraints()
         startLoading()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         self.displayMainTabbar(true)
     }
     

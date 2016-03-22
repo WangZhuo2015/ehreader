@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MeFavoriteWorksViewController: GalleryWaterFlowViewController {
     var currentPublicity:PixivPublicity = PixivPublicity.Public
@@ -18,15 +19,25 @@ class MeFavoriteWorksViewController: GalleryWaterFlowViewController {
         startLoading(publicity: self.currentPublicity)
     }
     
+    deinit {
+        print("deinit MeFavoriteWorksViewController")
+        KingfisherManager.sharedManager.cache.clearMemoryCache()
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        headerView.refreshingBlock = { ()->() in
-            self.startLoading(self.currentPage, publicity: self.currentPublicity)
+        headerView.refreshingBlock = { [weak self] ()->() in
+            if self != nil {
+                self!.startLoading(self!.currentPage, publicity: self!.currentPublicity)
+            }
+            
         }
         
-        footerView.refreshingBlock = { ()->() in
-            self.currentPage += 1
-            self.startLoading(self.currentPage, publicity: self.currentPublicity)
+        footerView.refreshingBlock = {[weak self] ()->() in
+            if self != nil {
+                self!.currentPage += 1
+                self!.startLoading(self!.currentPage, publicity: self!.currentPublicity)
+            }
         }
     }
     

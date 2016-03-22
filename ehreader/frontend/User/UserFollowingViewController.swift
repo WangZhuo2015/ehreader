@@ -47,6 +47,10 @@ class UserFollowingViewController: UIViewController {
         addConstraints()
     }
     
+    deinit {
+        print("deinit UserFollowingViewController")
+    }
+    
     func startLoading(page:Int = 1) {
         guard let profile = self.profile else {
             return

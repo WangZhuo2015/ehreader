@@ -33,6 +33,10 @@ class UserWorksGalleryViewController: GalleryWaterFlowViewController {
         }
     }
     
+    deinit {
+        print("deinit UserWorksGalleryViewController")
+    }
+    
     var profile:PixivProfile?
     
     weak var delegate:UserWorksGalleryViewControllerDelegate?

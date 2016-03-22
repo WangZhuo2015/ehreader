@@ -19,13 +19,17 @@ class LatestGalleryViewController: GalleryWaterFlowViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        headerView.refreshingBlock = { ()->() in
-            self.startLoading(self.currentPage)
+        headerView.refreshingBlock = {[weak self] ()->() in
+            if self != nil {
+                self!.startLoading(self!.currentPage)
+            }
         }
         
-        footerView.refreshingBlock = { ()->() in
-            self.currentPage += 1
-            self.startLoading(self.currentPage)
+        footerView.refreshingBlock = {[weak self] ()->() in
+            if self != nil {
+                self!.currentPage += 1
+                self!.startLoading(self!.currentPage)
+            }
         }
     }
     

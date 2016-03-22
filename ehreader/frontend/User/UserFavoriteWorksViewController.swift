@@ -30,6 +30,10 @@ class UserFavoriteWorksViewController: GalleryWaterFlowViewController {
         }
     }
     
+    deinit {
+        print("deinit UserFavoriteWorksViewController")
+    }
+    
     func startLoading(page:Int = 1) {
         guard let profile = self.profile else {
             return

@@ -143,6 +143,10 @@ class PhotoViewController: UIViewController {
         addConstraints()
     }
     
+    deinit {
+        print("deinit PhotoViewController")
+    }
+    
     private var originalNaivgationControllerDelegate:UINavigationControllerDelegate?
     
     override func viewWillAppear(animated: Bool) {
