@@ -94,10 +94,11 @@ extension UIViewController {
             return
         }
         let currentPosition = scrollView.contentOffset.y
-        if currentPosition - lastPosition > 20 && currentPosition > 0 {
+        //print("currentPosition:\(currentPosition), lastPosition:\(lastPosition)")
+        if currentPosition - lastPosition > 64 && currentPosition > 0 {
             lastPosition = currentPosition
             mainTabbarController.hideTabbar(true)
-        }else if (lastPosition - currentPosition > 20) && (currentPosition < scrollView.contentSize.height - scrollView.bounds.height - 20) {
+        }else if (lastPosition - currentPosition > 64) {
             lastPosition = currentPosition
             mainTabbarController.displayTabbar(true)
         }
