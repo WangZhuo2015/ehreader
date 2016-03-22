@@ -82,7 +82,7 @@ public class PixivIllust: Object {
         return self.url_px_480mw
     }
     
-    public static func createPixivIllust(source:NSDictionary, isWork:Bool)->PixivIllust? {
+    public static func createPixivIllust(source:NSDictionary, isWork:Bool)->Int? {
         print(source)
         var data:NSDictionary?
         if isWork {
@@ -191,7 +191,12 @@ public class PixivIllust: Object {
             //update value
             realm.create(PixivIllust.self, value: illust, update: true)
         }
-        
-        return illust
+
+        return illustId
+    }
+    
+    public static func getIllustWithId(illustId:Int)->PixivIllust? {
+        let realm = try! Realm()
+        return realm.objects(PixivIllust).filter("illust_id = \(illustId)").first
     }
 }

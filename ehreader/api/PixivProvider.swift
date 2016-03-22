@@ -263,19 +263,29 @@ public class PixivProvider: NSObject {
 //        }
         var error:NSError?
         authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
-            if response.result.error != nil {
-                complete?(gallery: nil, error: response.result.error)
-                return
-            }
-            
-            guard let result = response.result.value as? [NSObject:AnyObject] else {
-                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
-                complete?(gallery: nil, error: error)
-                return
-            }
-            
-            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: false)
-            complete?(gallery: gallery, error: nil)
+            dispatch_async(dispatch_get_global_queue(0, 0), { 
+                if response.result.error != nil {
+                    dispatch_async(dispatch_get_main_queue(), { 
+                        complete?(gallery: nil, error: response.result.error)
+                    })
+                    return
+                }
+                
+                guard let result = response.result.value as? [NSObject:AnyObject] else {
+                    let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: error)
+                    })
+                    return
+                }
+                
+                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: false)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete?(gallery: gallery, error: nil)
+                })
+            })
         }
         if error != nil {
             complete?(gallery: nil, error: error)
@@ -294,19 +304,29 @@ public class PixivProvider: NSObject {
         ]
         var error:NSError?
         authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
-            if response.result.error != nil {
-                complete?(gallery: nil, error: response.result.error)
-                return
-            }
-            
-            guard let result = response.result.value as? [NSObject:AnyObject] else {
-                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
-                complete?(gallery: nil, error: error)
-                return
-            }
-            
-            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
-            complete?(gallery: gallery, error: nil)
+            dispatch_async(dispatch_get_global_queue(0, 0), {
+                if response.result.error != nil {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: response.result.error)
+                    })
+                    return
+                }
+                
+                guard let result = response.result.value as? [NSObject:AnyObject] else {
+                    let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: error)
+                    })
+                    return
+                }
+                
+                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete?(gallery: gallery, error: nil)
+                })
+            })
         }
         if error != nil {
             complete?(gallery: nil, error: error)
@@ -325,19 +345,29 @@ public class PixivProvider: NSObject {
         
         var error:NSError?
         authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
-            if response.result.error != nil {
-                complete?(gallery: nil, error: response.result.error)
-                return
-            }
-            
-            guard let result = response.result.value as? [NSObject:AnyObject] else {
-                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
-                complete?(gallery: nil, error: error)
-                return
-            }
-            
-            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: false)
-            complete?(gallery: gallery, error: nil)
+            dispatch_async(dispatch_get_global_queue(0, 0), {
+                if response.result.error != nil {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: response.result.error)
+                    })
+                    return
+                }
+                
+                guard let result = response.result.value as? [NSObject:AnyObject] else {
+                    let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: error)
+                    })
+                    return
+                }
+                
+                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: false)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete?(gallery: gallery, error: nil)
+                })
+            })
         }
         if error != nil {
             complete?(gallery: nil, error: error)
@@ -412,19 +442,29 @@ public class PixivProvider: NSObject {
         
         var error:NSError?
         authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
-            if response.result.error != nil {
-                complete?(gallery: nil, error: response.result.error)
-                return
-            }
-            
-            guard let result = response.result.value as? [NSObject:AnyObject] else {
-                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
-                complete?(gallery: nil, error: error)
-                return
-            }
-            
-            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: false)
-            complete?(gallery: gallery, error: nil)
+            dispatch_async(dispatch_get_global_queue(0, 0), {
+                if response.result.error != nil {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: response.result.error)
+                    })
+                    return
+                }
+                
+                guard let result = response.result.value as? [NSObject:AnyObject] else {
+                    let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: error)
+                    })
+                    return
+                }
+                
+                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: false)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete?(gallery: gallery, error: nil)
+                })
+            })
         }
         if error != nil {
             complete?(gallery: nil, error: error)
@@ -444,19 +484,29 @@ public class PixivProvider: NSObject {
         
         var error:NSError?
         authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
-            if response.result.error != nil {
-                complete?(gallery: nil, error: response.result.error)
-                return
-            }
-            
-            guard let result = response.result.value as? [NSObject:AnyObject] else {
-                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
-                complete?(gallery: nil, error: error)
-                return
-            }
-            
-            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
-            complete?(gallery: gallery, error: nil)
+            dispatch_async(dispatch_get_global_queue(0, 0), {
+                if response.result.error != nil {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: response.result.error)
+                    })
+                    return
+                }
+                
+                guard let result = response.result.value as? [NSObject:AnyObject] else {
+                    let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: error)
+                    })
+                    return
+                }
+                
+                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete?(gallery: gallery, error: nil)
+                })
+            })
         }
         if error != nil {
             complete?(gallery: nil, error: error)
@@ -651,19 +701,29 @@ public class PixivProvider: NSObject {
         
         var error:NSError?
         authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
-            if response.result.error != nil {
-                complete?(gallery: nil, error: response.result.error)
-                return
-            }
-            
-            guard let result = response.result.value as? [NSObject:AnyObject] else {
-                let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
-                complete?(gallery: nil, error: error)
-                return
-            }
-            
-            let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
-            complete?(gallery: gallery, error: nil)
+            dispatch_async(dispatch_get_global_queue(0, 0), {
+                if response.result.error != nil {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: response.result.error)
+                    })
+                    return
+                }
+                
+                guard let result = response.result.value as? [NSObject:AnyObject] else {
+                    let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: error)
+                    })
+                    return
+                }
+                
+                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: false)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete?(gallery: gallery, error: nil)
+                })
+            })
         }
         if error != nil {
             complete?(gallery: nil, error: error)
@@ -700,7 +760,11 @@ public class PixivProvider: NSObject {
                 return
             }
             
-            let illust = PixivIllust.createPixivIllust(source, isWork: true)
+            guard let illustId = PixivIllust.createPixivIllust(source, isWork: true) else {
+                complete?(illust: nil, error: nil)
+                return
+            }
+            let illust = PixivIllust.getIllustWithId(illustId)
             complete?(illust:illust, error:nil)
         }
         if error != nil {

@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import RealmSwift
 
 public class PixivIllustGallery: NSObject {
     public var count:Int = 0
-    public var illusts:[PixivIllust] = []
+    public var illusts:[Int] = []
     
     public var per_page:Int = 0
     public var total:Int = 0
@@ -62,8 +63,8 @@ public class PixivIllustGallery: NSObject {
         
         if let illustGallery = responseList {
             for value in illustGallery {
-                if let illust = PixivIllust.createPixivIllust(value, isWork: isWork) {
-                    gallery.illusts.append(illust)
+                if let illustId = PixivIllust.createPixivIllust(value, isWork: isWork) {
+                    gallery.illusts.append(illustId)
                 }
             }
         }

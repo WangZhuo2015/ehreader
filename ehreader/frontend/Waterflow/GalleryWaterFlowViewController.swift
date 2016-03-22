@@ -112,8 +112,10 @@ extension GalleryWaterFlowViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(GalleryCellIdentifier, forIndexPath: indexPath) as! GalleryCell
         cell.delegate = self
-        if let illust = self.gallery?.illusts[indexPath.row] {
-            cell.configCellWithPxiv(illust)
+        if let illustId = self.gallery?.illusts[indexPath.row] {
+            if let illust = PixivIllust.getIllustWithId(illustId) {
+                cell.configCellWithPxiv(illust)
+            }
         }
         return cell
     }
@@ -121,9 +123,13 @@ extension GalleryWaterFlowViewController: UICollectionViewDataSource {
 
 extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionViewWaterfallLayoutDelegate {
     func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let illust = self.gallery!.illusts[indexPath.row]
-        let size = CGSizeMake(CGFloat(illust.width), CGFloat(illust.height))
-        return size
+        if let illustId = self.gallery?.illusts[indexPath.row] {
+            if let illust = PixivIllust.getIllustWithId(illustId) {
+                let size = CGSizeMake(CGFloat(illust.width), CGFloat(illust.height))
+                return size
+            }
+        }
+        return CGSizeZero
     }
     
     func extenalHeightForCollectionView(collectionView: UICollectionView, indexPath: NSIndexPath, calculateSize: CGSize) -> Float {
@@ -131,22 +137,29 @@ extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionVi
     }
     
     func bottomHeight(indexPath:NSIndexPath, calculateSize: CGSize) -> Float {
-        let illust = self.gallery!.illusts[indexPath.row]
-        let normalHeight = 20 + AvatarWidth + 0.5 + 20
-        if let text = illust.title {
-            let titleWidth = calculateSize.width - 16
-            let titleHeight = text.contentRect(UIFont.systemFontOfSize(12), maxSize: CGSizeMake(titleWidth, CGFloat(MAXFLOAT))).height
-            return Float(titleHeight + normalHeight)
+        if let illustId = self.gallery?.illusts[indexPath.row] {
+            if let illust = PixivIllust.getIllustWithId(illustId) {
+                let normalHeight = 20 + AvatarWidth + 0.5 + 20
+                if let text = illust.title {
+                    let titleWidth = calculateSize.width - 16
+                    let titleHeight = text.contentRect(UIFont.systemFontOfSize(12), maxSize: CGSizeMake(titleWidth, CGFloat(MAXFLOAT))).height
+                    return Float(titleHeight + normalHeight)
+                }
+                return Float(normalHeight) + 24
+            }
         }
-        return Float(normalHeight) + 24
+        return 0
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         self.currentSelectedCell = collectionView.cellForItemAtIndexPath(indexPath) as? GalleryCell
-        let photoViewController = PhotoViewController()
-        let illust = self.gallery!.illusts[indexPath.row]
-        photoViewController.startLoading(illust)
-        self.navigationController?.pushViewController(photoViewController, animated: true)
+        if let illustId = self.gallery?.illusts[indexPath.row] {
+            if let illust = PixivIllust.getIllustWithId(illustId) {
+                let photoViewController = PhotoViewController()
+                photoViewController.startLoading(illust)
+                self.navigationController?.pushViewController(photoViewController, animated: true)
+            }
+        }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -173,8 +186,8 @@ extension GalleryWaterFlowViewController: PopTransitionDelegate {
 
 extension GalleryWaterFlowViewController: GalleryCellDelegate {
     func onUserAvatarClicked(cell: GalleryCell) {
-        if let indexPath = self.collectionView.indexPathForCell(cell) {
-            if let userId = self.gallery?.illusts[indexPath.row].author_id {
+        if let indexPath = self.collectionView.indexPathForCell(cell), illustId = self.gallery?.illusts[indexPath.row] {
+            if let userId = PixivIllust.getIllustWithId(illustId)?.author_id {
                 let otherProfileViewController = OtherProfileViewController()
                 otherProfileViewController.userId = userId
                 self.navigationController?.pushViewController(otherProfileViewController, animated: true)

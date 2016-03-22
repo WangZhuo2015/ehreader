@@ -59,6 +59,7 @@ class ProfileViewController: UIViewController {
         
         addConstraints()
         startLoading()
+        self.displayMainTabbar(true)
     }
     
     private func addConstraints() {

@@ -78,8 +78,11 @@ extension GalleryCollectionViewController: UICollectionViewDelegate, UICollectio
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(GalleryCollectionViewCellIdentifer, forIndexPath: indexPath) as! GalleryCollectionViewCell
-        let illust = self.gallery!.illusts[indexPath.row]
-        collectionCell.imageView.kf_setImageWithURL(NSURL(string: illust.url_px_128x128!)!)
+        if let illustId = self.gallery?.illusts[indexPath.row] {
+            if let illust = PixivIllust.getIllustWithId(illustId) {
+                collectionCell.imageView.kf_setImageWithURL(NSURL(string: illust.url_px_128x128!)!)
+            }
+        }
         return collectionCell
     }
     
@@ -99,8 +102,12 @@ extension GalleryCollectionViewController: UICollectionViewDelegate, UICollectio
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let photoViewController = PhotoViewController()
-        let illust = self.gallery!.illusts[indexPath.row]
-        photoViewController.startLoading(illust.url_px_480mw!, thumbUrl: illust.url_px_128x128!, imageSize: CGSizeZero)
+        if let illustId = self.gallery?.illusts[indexPath.row] {
+            if let illust = PixivIllust.getIllustWithId(illustId) {
+                photoViewController.startLoading(illust.url_px_480mw!, thumbUrl: illust.url_px_128x128!, imageSize: CGSizeZero)
+            }
+        }
+        
         self.navigationController?.pushViewController(photoViewController, animated: true)
     }
 }

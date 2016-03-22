@@ -353,7 +353,7 @@ class PhotoViewController: UIViewController {
 
 extension PhotoViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if toVC.isKindOfClass(GalleryWaterFlowViewController) || toVC.isKindOfClass(OtherProfileViewController) {
+        if toVC.isKindOfClass(GalleryWaterFlowViewController) || (toVC.isKindOfClass(OtherProfileViewController) && operation == .Pop) {
             let popTransition = PopTransition()
             return popTransition
         }else {
