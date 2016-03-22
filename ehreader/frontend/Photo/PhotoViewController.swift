@@ -102,6 +102,9 @@ class PhotoViewController: UIViewController {
         imageView.clipsToBounds = true
         imageView.layer.borderColor = UIConstants.GrayBackgroundColor.CGColor
         imageView.layer.borderWidth = 0.5
+        let tapGuesture = UITapGestureRecognizer(target: self, action: #selector(PhotoViewController.openUserDetail))
+        imageView.addGestureRecognizer(tapGuesture)
+        imageView.userInteractionEnabled = true
         return imageView
     }()
     
@@ -109,6 +112,9 @@ class PhotoViewController: UIViewController {
         let label = UILabel(frame: CGRectZero)
         label.font = UIFont.systemFontOfSize(12)
         label.textColor = UIColor.lightGrayColor()
+        let tapGuesture = UITapGestureRecognizer(target: self, action: #selector(PhotoViewController.openUserDetail))
+        label.addGestureRecognizer(tapGuesture)
+        label.userInteractionEnabled = true
         return label
     }()
     
@@ -258,6 +264,14 @@ class PhotoViewController: UIViewController {
     
     func downloadImage(sender:UIBarButtonItem) {
         
+    }
+    
+    func openUserDetail() {
+        if let userId = self.illust?.author_id {
+            let otherProfileViewController = OtherProfileViewController()
+            otherProfileViewController.userId = userId
+            self.navigationController?.pushViewController(otherProfileViewController, animated: true)
+        }
     }
     
     func startLoading(photoUrl:String, thumbUrl:String, imageSize:CGSize) {

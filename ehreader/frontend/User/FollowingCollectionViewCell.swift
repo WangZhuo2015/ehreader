@@ -14,7 +14,13 @@ private let ImageViewWidth:CGFloat = 85
 
 let FollowingCollectionViewCellIdentifier = "FollowingCollectionViewCellIdentifier"
 
+protocol FollowingCollectionViewCellDelegate:NSObjectProtocol {
+    func onFollowingUser(cell:FollowingCollectionViewCell)
+}
+
 class FollowingCollectionViewCell: UICollectionViewCell {
+    weak var delegate:FollowingCollectionViewCellDelegate?
+    
     var imageView:UIImageView = {
         let imageView = UIImageView(frame: CGRectZero)
         imageView.layer.cornerRadius = ImageViewWidth/2
@@ -55,6 +61,9 @@ class FollowingCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    func onFollowingUser(sender:UIButton) {
+        self.delegate?.onFollowingUser(self)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -67,6 +76,7 @@ class FollowingCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupFollowingCollectionViewCell() {
+        self.followButton.addTarget(self, action: #selector(FollowingCollectionViewCell.onFollowingUser(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         self.backgroundColor = UIColor.whiteColor()
         layer.cornerRadius = 5
         self.clipsToBounds = true
@@ -114,11 +124,17 @@ class FollowingCollectionViewCell: UICollectionViewCell {
         
         nameLabel.text = profile.name
         accountLabel.text = profile.account
-        if profile.is_following {
+        self.setFollowing(profile.is_following)
+    }
+    
+    func setFollowing(following:Bool) {
+        if following {
             self.followButton.enabled = false
             self.followButton.setImage(nil, forState: UIControlState.Normal)
             self.followButton.setTitle("已关注", forState: UIControlState.Normal)
+        }else {
+            self.followButton.setImage(UIImage(named:"timeline_relationship_icon_addattention"), forState: UIControlState.Normal)
+            self.followButton.setTitle("关注", forState: UIControlState.Normal)
         }
     }
-    
 }

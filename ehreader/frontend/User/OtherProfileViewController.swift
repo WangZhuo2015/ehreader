@@ -44,10 +44,17 @@ class OtherProfileViewController: UIViewController {
         return pageView
     }()
     
+    
     lazy var profileView:ProfileView = {
         let profileView = ProfileView(frame: CGRectZero)
         return profileView
     }()
+    
+    lazy var followButtonItem:UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "关注", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(OtherProfileViewController.followUser(_:)))
+        return button
+    }()
+    
     
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
@@ -92,6 +99,7 @@ class OtherProfileViewController: UIViewController {
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = true
         self.view.backgroundColor = UIConstants.GrayBackgroundColor
+        self.navigationItem.rightBarButtonItem = self.followButtonItem
         
         profileView.frame = CGRectMake(0, 0, view.frame.width, 200)
         tableView.tableHeaderView = profileView
@@ -145,6 +153,9 @@ class OtherProfileViewController: UIViewController {
                 self.backgroundView.status = BackgroundViewStatus.Hidden
                 self.profileView.setUser(profile!)
                 self.profile = profile
+                if let _profile = profile {
+                    self.changeFollowingButton(_profile.is_following)
+                }
                 if let name = profile?.name {
                     self.title = name + "的主页"
                 }
@@ -154,6 +165,58 @@ class OtherProfileViewController: UIViewController {
                 self.functionView.onButtonClick(0)
                 self.pageView.reloadData()
             })
+        }
+    }
+    
+    func changeFollowingButton(isFollowing:Bool) {
+        if isFollowing {
+            self.followButtonItem.title = "取消关注"
+            self.followButtonItem.action = #selector(OtherProfileViewController.unfollowUser(_:))
+        }else {
+            self.followButtonItem.title = "关注"
+            self.followButtonItem.action = #selector(OtherProfileViewController.followUser(_:))
+        }
+    }
+    
+    func followUser(sender:UIBarButtonItem)  {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        alertController.addAction(UIAlertAction(title: "关注", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) in
+            self.followUserInternal(PixivPublicity.Public)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "悄悄关注", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) in
+            self.followUserInternal(PixivPublicity.Private)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func followUserInternal(publicity:PixivPublicity) {
+        guard let profile = self.profile else {
+            return
+        }
+        PixivProvider.getInstance().meFavoriteUsersFollow(profile.id, publicity: publicity) { (success, error) in
+            if success {
+                profile.is_following = true
+                self.changeFollowingButton(true)
+            }
+        }
+    }
+    
+    func unfollowUser(sender:UIBarButtonItem) {
+        unfollowUserInternal(PixivPublicity.Public)
+    }
+    
+    func unfollowUserInternal(publicity:PixivPublicity) {
+        guard let profile = self.profile else {
+            return
+        }
+        PixivProvider.getInstance().meFavoriteUsersUnfollow([profile.id], publicity: publicity) { (success, error) in
+            if success {
+                profile.is_following = false
+                self.changeFollowingButton(false)
+            }
         }
     }
 }

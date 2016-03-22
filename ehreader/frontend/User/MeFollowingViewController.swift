@@ -89,6 +89,7 @@ extension MeFollowingViewController:UICollectionViewDataSource, UICollectionView
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(FollowingCollectionViewCellIdentifier, forIndexPath: indexPath) as! FollowingCollectionViewCell
         let profile = self.profiles[indexPath.row]
         cell.configCell(profile)
+        cell.delegate = self
         return cell
     }
     
@@ -111,5 +112,37 @@ extension MeFollowingViewController:UICollectionViewDataSource, UICollectionView
         let otherProfileViewController = OtherProfileViewController()
         otherProfileViewController.userId = profile.id
         self.navigationController?.pushViewController(otherProfileViewController, animated: true)
+    }
+}
+
+extension MeFollowingViewController: FollowingCollectionViewCellDelegate {
+    func onFollowingUser(cell: FollowingCollectionViewCell) {
+        if let indexPath = self.collectionView.indexPathForCell(cell) {
+            let profile = self.profiles[indexPath.row]
+            self.followUser(profile, cell: cell)
+        }
+    }
+    
+    func followUser(profile:PixivProfile, cell: FollowingCollectionViewCell)  {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        alertController.addAction(UIAlertAction(title: "关注", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) in
+            self.followUserInternal(profile, publicity: PixivPublicity.Public, cell: cell)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "悄悄关注", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) in
+            self.followUserInternal(profile, publicity: PixivPublicity.Private, cell: cell)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func followUserInternal(profile:PixivProfile ,publicity:PixivPublicity, cell: FollowingCollectionViewCell) {
+        PixivProvider.getInstance().meFavoriteUsersFollow(profile.id, publicity: publicity) { (success, error) in
+            if success {
+                profile.is_following = true
+                cell.setFollowing(true)
+            }
+        }
     }
 }

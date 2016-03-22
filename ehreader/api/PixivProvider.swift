@@ -561,6 +561,77 @@ public class PixivProvider: NSObject {
         }
     }
     
+    /**
+     关注用户
+     
+     - parameter userId:    用户ID
+     - parameter publicity: 是否公开关注
+     - parameter complete:  完成回调
+     */
+    public func meFavoriteUsersFollow(userId:Int, publicity:PixivPublicity, complete:((success:Bool, error:NSError?)->Void)?) {
+        let url = PixivPAPIRoot + "me/favorite-users.json"
+        let parameters:[String:AnyObject] = [
+            "target_user_id": userId,
+            "publicity": publicity.rawValue
+        ]
+        var error:NSError?
+        authrizonRequest(.POST, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            if response.result.error != nil {
+                complete?(success: false, error: response.result.error)
+                return
+            }
+            guard let value = response.result.value as? NSDictionary else {
+                complete?(success: false, error: response.result.error)
+                return
+            }
+            print(value)
+            if value.objectForKey("status") as! String == "success" {
+                complete?(success: true, error: nil)
+            }
+        }
+        if error != nil {
+            complete?(success: false, error: error)
+        }
+    }
+    
+    /**
+     解除关注用户
+     
+     - parameter userIds:   用户id组成的数组，可以一次性取消多人关注
+     - parameter publicity: 是否公开
+     - parameter complete:  完成回调
+     */
+    public func meFavoriteUsersUnfollow(userIds:[Int], publicity:PixivPublicity, complete:((success:Bool, error:NSError?)->Void)?) {
+        let url = PixivPAPIRoot + "me/favorite-users.json"
+        var userId = ""
+        if userIds.count == 1 {
+            userId = "\(userIds[0])"
+        }else if userIds.count > 1 {
+            userId = (userIds as NSArray).componentsJoinedByString(",")
+        }
+        let parameters:[String:AnyObject] = [
+            "delete_ids": userId,
+            "publicity": publicity.rawValue,
+            ]
+        var error:NSError?
+        authrizonRequest(.DELETE, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            if response.result.error != nil {
+                complete?(success: false, error: response.result.error)
+                return
+            }
+            guard let value = response.result.value as? NSDictionary else {
+                complete?(success: false, error: response.result.error)
+                return
+            }
+            if value.objectForKey("status") as! String == "success" {
+                complete?(success: true, error: nil)
+            }
+        }
+        if error != nil {
+            complete?(success: false, error: error)
+        }
+    }
+    
     public func searchWorks(query:String, page:Int = 1, perPage:Int = 30, mode:PixivSearchMode = PixivSearchMode.ExactTag, period:String = "all", order:String = "desc", sort:String = "date", complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
         
         let url = PixivPAPIRoot + "works.json"

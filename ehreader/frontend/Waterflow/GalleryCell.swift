@@ -18,7 +18,13 @@ let CellWidth:CGFloat = 200
 let AvatarWidth:CGFloat = 24
 let CellFooterContainerViewHeight:CGFloat = 20 + AvatarWidth + 0.5 + 80 + 10
 
+protocol GalleryCellDelegate:NSObjectProtocol {
+    func onUserAvatarClicked(cell:GalleryCell)
+}
+
 class GalleryCell: UICollectionViewCell {
+    
+    weak var delegate:GalleryCellDelegate?
     
     lazy var imageView:UIImageView = {
         let imageView = UIImageView(frame: CGRectZero)
@@ -52,6 +58,9 @@ class GalleryCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.layer.borderColor = UIColor.createColor(220, green: 220, blue: 224, alpha: 1).CGColor
         imageView.layer.borderWidth = 0.5
+        let tapGuesture = UITapGestureRecognizer(target: self, action: #selector(GalleryCell.onUserAvatarClicked))
+        imageView.addGestureRecognizer(tapGuesture)
+        imageView.userInteractionEnabled = true
         return imageView
     }()
     
@@ -59,6 +68,9 @@ class GalleryCell: UICollectionViewCell {
         let label = UILabel(frame: CGRectZero)
         label.font = UIFont.systemFontOfSize(12)
         label.textColor = UIColor.lightGrayColor()
+        let tapGuesture = UITapGestureRecognizer(target: self, action: #selector(GalleryCell.onUserAvatarClicked))
+        label.addGestureRecognizer(tapGuesture)
+        label.userInteractionEnabled = true
         return label
     }()
     
@@ -134,6 +146,10 @@ class GalleryCell: UICollectionViewCell {
             make.trailing.equalTo(self.imageView)
             make.height.equalTo(1)
         }
+    }
+    
+    func onUserAvatarClicked() {
+        self.delegate?.onUserAvatarClicked(self)
     }
     
     func configCell(gallery:Gallery, collectionView:UICollectionView) {

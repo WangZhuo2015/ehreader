@@ -83,6 +83,7 @@ public class PixivIllust: Object {
     }
     
     public static func createPixivIllust(source:NSDictionary, isWork:Bool)->PixivIllust? {
+        print(source)
         var data:NSDictionary?
         if isWork {
             data = source
@@ -154,7 +155,7 @@ public class PixivIllust: Object {
                 illust.is_friend = user.objectForKey("is_friend")?.boolValue ?? illust.is_friend
                 illust.is_follower = user.objectForKey("is_follower")?.boolValue ?? illust.is_follower
                 illust.is_following = user.objectForKey("is_following")?.boolValue ?? illust.is_following
-                illust.author_id = user.objectForKey("author_id")?.integerValue ?? illust.author_id
+                illust.author_id = user.objectForKey("id")?.integerValue ?? illust.author_id
                 if let profileImageUrls = user.objectForKey("profile_image_urls") as? NSDictionary {
                     illust.profile_url_px_50x50 = profileImageUrls.objectForKey("px_50x50") as? String
                     illust.profile_url_px_170x170 = profileImageUrls.objectForKey("px_170x170") as? String

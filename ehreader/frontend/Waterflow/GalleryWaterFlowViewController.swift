@@ -111,6 +111,7 @@ extension GalleryWaterFlowViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(GalleryCellIdentifier, forIndexPath: indexPath) as! GalleryCell
+        cell.delegate = self
         if let illust = self.gallery?.illusts[indexPath.row] {
             cell.configCellWithPxiv(illust)
         }
@@ -170,4 +171,16 @@ extension GalleryWaterFlowViewController: PopTransitionDelegate {
     }
 }
 
+extension GalleryWaterFlowViewController: GalleryCellDelegate {
+    func onUserAvatarClicked(cell: GalleryCell) {
+        if let indexPath = self.collectionView.indexPathForCell(cell) {
+            if let userId = self.gallery?.illusts[indexPath.row].author_id {
+                let otherProfileViewController = OtherProfileViewController()
+                otherProfileViewController.userId = userId
+                self.navigationController?.pushViewController(otherProfileViewController, animated: true)
+            }
+        }
+        
+    }
+}
 
