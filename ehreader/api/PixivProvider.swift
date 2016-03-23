@@ -684,7 +684,7 @@ public class PixivProvider: NSObject {
     
     public func searchWorks(query:String, page:Int = 1, perPage:Int = 30, mode:PixivSearchMode = PixivSearchMode.ExactTag, period:String = "all", order:String = "desc", sort:String = "date", complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
         
-        let url = PixivPAPIRoot + "works.json"
+        let url = PixivPAPIRoot + "search/works.json"
         let parameters:[String:AnyObject] = [
             "q": query,
             "page": page,
@@ -698,6 +698,8 @@ public class PixivProvider: NSObject {
             "include_sanity_level": "true",
             "image_sizes": "medium,small,px_128x128,px_480mw,large",
         ]
+        
+        print(parameters)
         
         var error:NSError?
         authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
@@ -718,7 +720,7 @@ public class PixivProvider: NSObject {
                     return
                 }
                 
-                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: false)
+                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
                 
                 dispatch_async(dispatch_get_main_queue(), {
                     complete?(gallery: gallery, error: nil)

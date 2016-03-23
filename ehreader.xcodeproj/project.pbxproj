@@ -47,6 +47,8 @@
 		E9AE80BE1C9FCF3C006A5AC4 /* OtherProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE80BD1C9FCF3C006A5AC4 /* OtherProfileViewController.swift */; };
 		E9AE80C01C9FD86D006A5AC4 /* FunctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE80BF1C9FD86D006A5AC4 /* FunctionView.swift */; };
 		E9B216F61C4A84990099CF54 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B216F51C4A84990099CF54 /* PhotoService.swift */; };
+		E9B78FCD1CA26FE900A5F5D8 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B78FCC1CA26FE900A5F5D8 /* SearchResultViewController.swift */; };
+		E9B78FCF1CA272FC00A5F5D8 /* SearchWaterFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B78FCE1CA272FC00A5F5D8 /* SearchWaterFlowViewController.swift */; };
 		E9C237D01C9FE70500343A41 /* UserWorksGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C237CF1C9FE70500343A41 /* UserWorksGalleryViewController.swift */; };
 		E9DC51EC1C4699740053D331 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC51EB1C4699740053D331 /* Constants.swift */; };
 		E9F1FD1F1C8E816D0029BD17 /* UIArrowTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F1FD1E1C8E816D0029BD17 /* UIArrowTitleView.swift */; };
@@ -144,6 +146,9 @@
 		E9AE80BD1C9FCF3C006A5AC4 /* OtherProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherProfileViewController.swift; sourceTree = "<group>"; };
 		E9AE80BF1C9FD86D006A5AC4 /* FunctionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionView.swift; sourceTree = "<group>"; };
 		E9B216F51C4A84990099CF54 /* PhotoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
+		E9B78FCC1CA26FE900A5F5D8 /* SearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
+		E9B78FCE1CA272FC00A5F5D8 /* SearchWaterFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchWaterFlowViewController.swift; sourceTree = "<group>"; };
+		E9B78FD21CA2852900A5F5D8 /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
 		E9C237CF1C9FE70500343A41 /* UserWorksGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserWorksGalleryViewController.swift; sourceTree = "<group>"; };
 		E9DC51EB1C4699740053D331 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E9F1FD1E1C8E816D0029BD17 /* UIArrowTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIArrowTitleView.swift; sourceTree = "<group>"; };
@@ -225,6 +230,7 @@
 		21DD57ACF2F65B9C647D2B90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E9B78FD21CA2852900A5F5D8 /* PhotosUI.framework */,
 				E9F774C21C9BB5320045D128 /* MJExtension.framework */,
 				E9F774C31C9BB5320045D128 /* ViewPagerSwift.framework */,
 				E98AB13B1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework */,
@@ -246,6 +252,8 @@
 			isa = PBXGroup;
 			children = (
 				E91B7BD21C9AA248007ED39F /* SearchViewController.swift */,
+				E9B78FCC1CA26FE900A5F5D8 /* SearchResultViewController.swift */,
+				E9B78FCE1CA272FC00A5F5D8 /* SearchWaterFlowViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -638,6 +646,7 @@
 				F78DD6DC1BF9DB7C003D3CB9 /* ViewController.swift in Sources */,
 				E98BBEEE1CA03EAB009C5099 /* UserFollowingViewController.swift in Sources */,
 				E91B7BCD1C9A7E54007ED39F /* LatestGalleryViewController.swift in Sources */,
+				E9B78FCD1CA26FE900A5F5D8 /* SearchResultViewController.swift in Sources */,
 				E98B07411C89C2E100EE44B7 /* GalleryDetailViewController.swift in Sources */,
 				E9AE80C01C9FD86D006A5AC4 /* FunctionView.swift in Sources */,
 				E98B07441C89C2E100EE44B7 /* GalleryTableViewCell.swift in Sources */,
@@ -658,6 +667,7 @@
 				E98F53F41C9AE64F003B5093 /* PageControl.swift in Sources */,
 				E9F6CB851C9ABBB900D26534 /* ProfileView.swift in Sources */,
 				E9F6CB831C9AB8D000D26534 /* ProfileViewController.swift in Sources */,
+				E9B78FCF1CA272FC00A5F5D8 /* SearchWaterFlowViewController.swift in Sources */,
 				F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */,
 				E98B07451C89C2E100EE44B7 /* GalleryTableViewController.swift in Sources */,
 				F72B31E81C4F7C89007C6B21 /* PixivProvider.swift in Sources */,

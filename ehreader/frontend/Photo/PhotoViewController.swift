@@ -92,7 +92,7 @@ class PhotoViewController: UIViewController {
         let tableView = UITableView(frame: CGRectZero)
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: IllustTagCellIdentifer)
         tableView.dataSource = self
-        tableView.dataSource = self
+        tableView.delegate = self
         return tableView
     }()
     
@@ -357,7 +357,9 @@ class PhotoViewController: UIViewController {
 
 extension PhotoViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if toVC.isKindOfClass(GalleryWaterFlowViewController) || (toVC.isKindOfClass(OtherProfileViewController) && operation == .Pop) {
+        if toVC.isKindOfClass(GalleryWaterFlowViewController)
+            || (toVC.isKindOfClass(OtherProfileViewController) && operation == .Pop)
+            || (toVC.isKindOfClass(SearchResultViewController) && operation == .Pop){
             let popTransition = PopTransition()
             return popTransition
         }else {
@@ -392,5 +394,13 @@ extension PhotoViewController: UITableViewDataSource, UITableViewDelegate {
         cell.imageView?.image = UIImage(named: "ico_tag")
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let searchResultViewController = SearchResultViewController()
+        if let query = self.illust?.getTagArray()[indexPath.row] {
+            searchResultViewController.startSearching(query)
+        }
+        self.navigationController?.pushViewController(searchResultViewController, animated: true)
     }
 }

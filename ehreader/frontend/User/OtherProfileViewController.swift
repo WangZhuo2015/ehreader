@@ -263,13 +263,6 @@ extension OtherProfileViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        let currentIndex = self.pageView.currentIndex
-//        if currentIndex >= 0 && currentIndex < self.childViewControllers.count {
-//            if let height = (self.childViewControllers[self.pageView.currentIndex] as? GalleryWaterFlowViewController)?.maxScrollViewHeight {
-//                return height
-//            }
-//        }
-        
         return self.view.frame.height
     }
     
