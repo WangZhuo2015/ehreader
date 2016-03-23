@@ -11,8 +11,6 @@ import ViewPagerSwift
 import Kingfisher
 import SnapKit
 
-var FunctionViewHeight:CGFloat = 60
-
 class OtherProfileViewController: UIViewController {
     private lazy var tableView:UITableView = {
         let tableView = UITableView(frame: CGRectZero)
@@ -74,7 +72,6 @@ class OtherProfileViewController: UIViewController {
         let viewController = UserWorksGalleryViewController()
         viewController.profile = self.profile
         viewController.delegate = self
-        //viewController.collectionView.scrollEnabled = false
         return viewController
     }()
     
@@ -82,14 +79,12 @@ class OtherProfileViewController: UIViewController {
         let viewController = UserFavoriteWorksViewController()
         viewController.profile = self.profile
         viewController.delegate = self
-        //viewController.collectionView.scrollEnabled = false
         return viewController
     }()
     
     lazy var userFollowingViewController:UserFollowingViewController = {
         let viewController = UserFollowingViewController()
         viewController.profile = self.profile
-        //viewController.collectionView.scrollEnabled = false
         return viewController
     }()
     

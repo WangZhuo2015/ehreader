@@ -14,7 +14,7 @@ import Kingfisher
 class SearchResultViewController: UIViewController {
     private lazy var pageView:UIViewPager = {
         let pageView = UIViewPager(frame: CGRectZero)
-        pageView.style = UIViewPagerStyle.TabHost
+        pageView.style = UIViewPagerStyle.Normal
         pageView.dataSource = self
         pageView.delegate = self
         pageView.contentView.scrollEnabled = false
@@ -46,12 +46,23 @@ class SearchResultViewController: UIViewController {
         viewController.title = "搜索用户"
         return viewController
     }()
+    
+    var functionButtons = ["搜索标签", "搜索标题", "搜索用户"]
+    
+    private lazy  var functionView:FunctionView = {
+        let functionView = FunctionView(frame: CGRectZero)
+        functionView.dataSource = self
+        functionView.delegate = self
+        functionView.backgroundColor = UIColor.clearColor()
+        return functionView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.whiteColor()
 
         addChildViewControllers()
+        view.addSubview(self.functionView)
         view.addSubview(self.pageView)
         addConstraints()
     }
@@ -64,6 +75,8 @@ class SearchResultViewController: UIViewController {
         self.originalNaivgationControllerDelegate = self.navigationController?.delegate
         self.navigationController?.delegate = self
         self.pageView.reloadData()
+        self.functionView.reloadData()
+        self.functionView.onButtonClick(0)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -85,20 +98,31 @@ class SearchResultViewController: UIViewController {
             self.searchTagResultViewController.startSearching(query, page: page, mode: .ExactTag, order: order)
             self.currentWaterFlowViewController = searchTagResultViewController
             break
+        case .Text:
+            self.searchTitleResultViewController.startSearching(query, page: page, mode: .Title, order: order)
+            self.currentWaterFlowViewController = searchTitleResultViewController
+            break
         case .Title:
             self.searchTitleResultViewController.startSearching(query, page: page, mode: .Title, order: order)
             self.currentWaterFlowViewController = searchTitleResultViewController
             break
-        case .Text:
+        case .User:
             self.searchUserResultViewController.startSearching(query, page: page, mode: .Text, order: order)
             self.currentWaterFlowViewController = searchUserResultViewController
+            break
         }
     }
     
     func addConstraints() {
         self.pageView.snp_makeConstraints { (make) in
-            make.top.equalTo(self.snp_topLayoutGuideBottom)
+            make.top.equalTo(self.functionView.snp_bottom)
             make.leading.trailing.bottom.equalTo(self.view)
+        }
+        
+        self.functionView.snp_makeConstraints { (make) in
+            make.top.equalTo(self.snp_topLayoutGuideBottom)
+            make.leading.trailing.equalTo(self.view)
+            make.height.equalTo(FunctionViewHeight)
         }
     }
     
@@ -132,23 +156,9 @@ extension SearchResultViewController: UIViewPagerDataSource, UIViewPagerDelegate
         if toIndex < 0 || toIndex >= self.childViewControllers.count {
             return
         }
+        self.functionView.onButtonClick(toIndex)
         
-        if toIndex == 0 {
-            self.currentMode = .ExactTag
-        }else if toIndex == 1 {
-            self.currentMode = .Title
-        }else if toIndex == 2 {
-            self.currentMode = .Text
-        }
         
-        self.currentWaterFlowViewController = self.childViewControllers[toIndex] as? SearchWaterFlowViewController
-        if let viewController = self.childViewControllers[toIndex] as? SearchWaterFlowViewController {
-            if !viewController.isFinishLoading {
-                if let query = self.currentQuery, order = self.currentOrder{
-                    viewController.startSearching(query, page: self.currentPage, mode: self.currentMode, order: order)
-                }
-            }
-        }
     }
 }
 
@@ -167,5 +177,37 @@ extension SearchResultViewController: UINavigationControllerDelegate {
 extension SearchResultViewController:TransitionDelegate {
     func currentSelectedCellForAnimation() -> GalleryCell? {
         return self.currentWaterFlowViewController?.currentSelectedCell
+    }
+}
+
+extension SearchResultViewController: FunctionViewDataSource, FunctionViewDelegate {
+    func numberOfItemsInFunctionView(functionView: FunctionView) -> Int {
+        return functionButtons.count
+    }
+    
+    func functionView(functionView: FunctionView, titleForItemAtIndex index: Int) -> String? {
+        return functionButtons[index]
+    }
+    
+    func functionView(functionView: FunctionView, didClickAtIndex index: Int) {
+        if index == 0 {
+            self.currentMode = .ExactTag
+        }else if index == 1 {
+            self.currentMode = .Text
+        }else if index == 2 {
+            self.currentMode = .User
+        }
+        
+        if let viewController = self.childViewControllers[index] as? SearchWaterFlowViewController {
+            if !viewController.isFinishLoading {
+                if let query = self.currentQuery, order = self.currentOrder{
+                    viewController.startSearching(query, page: self.currentPage, mode: self.currentMode, order: order)
+                }
+            }
+        }
+        self.pageView.selectPage(index, animated: true)
+        if index >= 0 && index < self.childViewControllers.count {
+             self.currentWaterFlowViewController = self.childViewControllers[index] as? SearchWaterFlowViewController
+        }
     }
 }

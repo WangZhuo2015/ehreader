@@ -58,6 +58,7 @@ public enum PixivSearchMode:String {
     case ExactTag = "exact_tag"
     case Text = "text"
     case Title = "title"
+    case User = "user"
 }
 
 public enum PixivRankingType:String {

@@ -8,6 +8,8 @@
 
 import UIKit
 
+var FunctionViewHeight:CGFloat = 40
+
 @objc
 public protocol FunctionViewDataSource:NSObjectProtocol {
     func numberOfItemsInFunctionView(functionView:FunctionView)->Int
