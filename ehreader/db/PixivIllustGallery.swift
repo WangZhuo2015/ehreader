@@ -28,6 +28,9 @@ public class PixivIllustGallery: NSObject {
         if self.mergePages.contains(gallery.current) {
             return
         }
+        self.previous = gallery.previous
+        self.current = gallery.current
+        self.next = gallery.next
         self.illusts.appendContentsOf(gallery.illusts)
         self.mergePages.append(gallery.current)
     }

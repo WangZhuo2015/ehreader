@@ -34,6 +34,13 @@ class GalleryWaterFlowViewController: UIViewController {
     
     var currentSelectedCell:GalleryCell?
     
+    var isLoadingFinished:Bool {
+        if let g = self.gallery where (g.next == -1) {
+            return true
+        }
+        return false
+    }
+    
     var maxScrollViewHeight:CGFloat {
         return CGFloat(self.collectionWaterfallLayout.maxHeight())
     }

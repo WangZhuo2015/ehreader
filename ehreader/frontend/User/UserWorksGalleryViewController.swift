@@ -9,12 +9,11 @@
 import UIKit
 
 protocol UserWorksGalleryViewControllerDelegate:NSObjectProtocol {
-    func onLoadingFinished(viewController:UserWorksGalleryViewController)
-    
     func onLoadLayoutFinished(collectionView: UICollectionView, contentSize:CGSize)
 }
 
 class UserWorksGalleryViewController: GalleryWaterFlowViewController {
+    
     override func viewDidLoad() {
         self.automaticallyAdjustsScrollViewInsets = false
         self.view.backgroundColor = UIConstants.GrayBackgroundColor
@@ -25,7 +24,13 @@ class UserWorksGalleryViewController: GalleryWaterFlowViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.delegate?.onLoadingFinished(self)
+        
+        footerView.refreshingBlock = {[weak self] ()->() in
+            if self != nil {
+                self!.currentPage += 1
+                self!.startLoading(self!.currentPage)
+            }
+        }
     }
     
     deinit {
@@ -33,14 +38,18 @@ class UserWorksGalleryViewController: GalleryWaterFlowViewController {
     }
     
     var profile:PixivProfile?
+    var parentScrollView:UIScrollView?
     
     weak var delegate:UserWorksGalleryViewControllerDelegate?
     
     func startLoading(page:Int = 1) {
+        if self.isLoadingFinished {
+            return
+        }
         if let profile = self.profile {
-            pixivProvider.usersWorks(profile.id, complete: { (gallery, error) in
+            pixivProvider.usersWorks(profile.id, page: page, complete: { (gallery, error) in
                 if error != nil || gallery == nil{
-                    print("loading choice data failed:\(error!.localizedDescription)")
+                    print("loading choice data failed:\(error?.localizedDescription)")
                     self.backgroundView.status = BackgroundViewStatus.Failed
                     return
                 }
@@ -53,7 +62,6 @@ class UserWorksGalleryViewController: GalleryWaterFlowViewController {
                 
                 self.collectionView.reloadData()
                 self.backgroundView.status = BackgroundViewStatus.Hidden
-                self.delegate?.onLoadingFinished(self)
                 
                 if self.footerView.loading {
                     self.footerView.stopRefreshing()

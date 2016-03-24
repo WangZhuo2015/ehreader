@@ -32,17 +32,6 @@ class OtherProfileViewController: UIViewController {
         return functionView
     }()
     
-    private lazy var pageView:UIViewPager = {
-        let pageView = UIViewPager(frame: CGRectZero)
-        pageView.style = UIViewPagerStyle.Normal
-        pageView.dataSource = self
-        pageView.delegate = self
-        pageView.contentView.scrollEnabled = false
-        pageView.backgroundColor = UIColor.clearColor()
-        return pageView
-    }()
-    
-    
     lazy var profileView:ProfileView = {
         let profileView = ProfileView(frame: CGRectZero)
         return profileView
@@ -123,11 +112,37 @@ class OtherProfileViewController: UIViewController {
     
     private var originalNaivgationControllerDelegate:UINavigationControllerDelegate?
     
+//    lazy var footerView:CurveRefreshFooterView = {
+//        let footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
+//        return footerView
+//    }()
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.hideMainTabbar(true)
         self.originalNaivgationControllerDelegate = self.navigationController?.delegate
         self.navigationController?.delegate = self
+        
+        if let viewController = self.currentDisplayViewController as? GalleryWaterFlowViewController {
+            viewController.footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
+        }else if let viewController = self.currentDisplayViewController as? UserFollowingViewController {
+            viewController.footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
+        }
+        
+//        footerView.refreshingBlock = {[weak self] ()->() in
+//            if self != nil {
+//                if let viewController = self?.currentDisplayViewController as? UserWorksGalleryViewController {
+//                    viewController.currentPage += 1
+//                    viewController.startLoading(viewController.currentPage)
+//                }else if let viewController = self?.currentDisplayViewController as? UserFavoriteWorksViewController {
+//                    viewController.currentPage += 1
+//                    viewController.startLoading(viewController.currentPage)
+//                }else if let viewController = self?.currentDisplayViewController as? UserFollowingViewController {
+//                    viewController.currentPage += 1
+//                    viewController.startLoading(viewController.currentPage)
+//                }
+//            }
+//        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -172,7 +187,6 @@ class OtherProfileViewController: UIViewController {
                 self.tableView.reloadData()
                 self.functionView.reloadData()
                 self.functionView.onButtonClick(0)
-                self.pageView.reloadData()
                 self.userWorksGalleryViewController.startLoading()
             })
         }
@@ -322,18 +336,29 @@ extension OtherProfileViewController: FunctionViewDataSource, FunctionViewDelega
     }
     
     func functionView(functionView: FunctionView, didClickAtIndex index: Int) {
-        self.pageView.selectPage(index, animated: true)
         if index >= 0 && index < self.childViewControllers.count {
             self.currentDisplayViewController = self.childViewControllers[index]
             self.currentDisplayViewController?.automaticallyAdjustsScrollViewInsets = false
+        }
+        self.userFollowingViewController.footerView?.removeFromSuperview()
+        self.userWorksGalleryViewController.footerView.removeFromSuperview()
+        self.userFavoriteWorksViewController.footerView.removeFromSuperview()
+        if let viewController = self.currentDisplayViewController as? GalleryWaterFlowViewController {
+            viewController.footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
+            if viewController.isLoadingFinished {
+                viewController.footerView.setNoMoreLoading()
+            }
+        }else if let viewController = self.currentDisplayViewController as? UserFollowingViewController {
+            viewController.footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
+            if viewController.isLoadingFinished {
+                viewController.footerView?.setNoMoreLoading()
+            }
         }
         self.tableView.reloadData()
     }
 }
 
 extension OtherProfileViewController: UserWorksGalleryViewControllerDelegate {
-    func onLoadingFinished(viewController: UserWorksGalleryViewController) {
-    }
     
     func onLoadLayoutFinished(collectionView: UICollectionView, contentSize: CGSize) {
         self.tableView.reloadData()

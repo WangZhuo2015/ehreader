@@ -23,6 +23,13 @@ class UserFavoriteWorksViewController: GalleryWaterFlowViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        footerView.refreshingBlock = {[weak self] ()->() in
+            if self != nil {
+                self!.currentPage += 1
+                self!.startLoading(self!.currentPage)
+            }
+        }
     }
     
     deinit {
@@ -39,7 +46,11 @@ class UserFavoriteWorksViewController: GalleryWaterFlowViewController {
             print(error.localizedDescription)
         }
         
-        pixivProvider.usersFavoriteWorks(profile.id) { (gallery, error) in
+        if self.isLoadingFinished {
+            return
+        }
+        
+        pixivProvider.usersFavoriteWorks(profile.id, page: page) { (gallery, error) in
             if error != nil || gallery == nil{
                 print("loading choice data failed:\(error!.localizedDescription)")
                 self.backgroundView.status = BackgroundViewStatus.Failed

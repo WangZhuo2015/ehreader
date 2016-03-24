@@ -24,6 +24,8 @@ class UserFollowingViewController: UIViewController {
     
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
+    var footerView:CurveRefreshFooterView?
+    
     weak var delegate:UserWorksGalleryViewControllerDelegate?
     
     var profile:PixivProfile?
@@ -50,9 +52,28 @@ class UserFollowingViewController: UIViewController {
         addConstraints()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        footerView?.refreshingBlock = {[weak self] ()->() in
+            if self != nil {
+                self!.currentPage += 1
+                self!.startLoading(self!.currentPage)
+            }
+        }
+    }
+    
     deinit {
         print("deinit UserFollowingViewController")
     }
+    
+    var isLoadingFinished:Bool {
+        if self.pagination.next == -1 {
+            return true
+        }
+        return false
+    }
+    
     
     func startLoading(page:Int = 1) {
         guard let profile = self.profile else {
@@ -64,27 +85,46 @@ class UserFollowingViewController: UIViewController {
             print(error.localizedDescription)
         }
         
-        PixivProvider.getInstance().usersFollowing(profile.id) { (profiles, pagination, error) in
+        if self.isLoadingFinished {
+            return
+        }
+        
+        PixivProvider.getInstance().usersFollowing(profile.id, page: page) { (profiles, pagination, error) in
             if error != nil {
                 print("loading choice data failed:\(error?.localizedDescription)")
                 self.backgroundView.status = BackgroundViewStatus.Failed
                 return
             }
             self.pagination = pagination ?? Pagination()
-            self.profiles = profiles
+            if self.profiles.count == 0 {
+                self.profiles = profiles
+            }else {
+                self.profiles.appendContentsOf(profiles)
+            }
+            
             self.collectionView.reloadData()
             self.backgroundView.status = BackgroundViewStatus.Hidden
-            if let totoal = pagination?.total, perPage = pagination?.per_page, next = pagination?.next {
+            if let totoal = pagination?.total, perPage = pagination?.per_page, next = pagination?.next, current = pagination?.current {
                 var count = 0
                 if next == -1 {
                     count = totoal
                 }else {
-                    count = perPage
+                    count = perPage*(current - 1)
                 }
                 let heightCount = CGFloat(ceil(Float(count)/2.0))
                 self.maxScrollViewHeight = heightCount*(180 + Padding*2)
                 let size = CGSizeMake(self.view.frame.width, self.maxScrollViewHeight)
                 self.delegate?.onLoadLayoutFinished(self.collectionView, contentSize: size)
+            }
+            
+            if let footerView = self.footerView where footerView.loading {
+                self.footerView?.stopRefreshing()
+            }
+            
+            if let p = pagination{
+                if p.next == -1 {
+                    self.footerView?.setNoMoreLoading()
+                }
             }
         }
     }
@@ -105,6 +145,7 @@ class UserFollowingViewController: UIViewController {
 
 extension UserFollowingViewController:UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("profile totoal count:\(profiles.count)")
         return profiles.count
     }
     

@@ -58,7 +58,7 @@ class CurveRefreshFooterView: UIView {
     private var _associatedScrollView: UIScrollView!
     
     private var curveView: UIActivityIndicatorView!
-    private var hintLabel: UILabel!
+    private var hintLabel: UILabel?
     private var contentSize: CGSize?
     private var originOffset: CGFloat!
     private var willEnd: Bool = false
@@ -116,11 +116,18 @@ class CurveRefreshFooterView: UIView {
 extension CurveRefreshFooterView {
     internal func setNoMoreLoading() {
         self.curveView.removeFromSuperview()
-        self.hintLabel = UILabel(frame: CGRectMake((frame.width - 20)/2, 0, 20, frame.height))
-        self.hintLabel.text = "没有更多内容了"
-        hintLabel.textColor = UIColor.redColor()
-        hintLabel.font = UIFont.systemFontOfSize(12)
-        insertSubview(hintLabel, atIndex: 0)
+        self.hintLabel = UILabel(frame: CGRectMake((frame.width - 100)/2, 0, 100, frame.height))
+        self.hintLabel!.text = "没有更多内容了"
+        hintLabel!.textColor = UIColor.redColor()
+        hintLabel!.font = UIFont.systemFontOfSize(12)
+        insertSubview(hintLabel!, atIndex: 0)
+    }
+    
+    func reset() {
+        self.hintLabel?.removeFromSuperview()
+        curveView = UIActivityIndicatorView(frame: CGRectMake((frame.width - 20)/2, 0, 20, frame.height))
+        curveView.tintColor = UIColor.redColor()
+        insertSubview(curveView, atIndex: 0)
     }
     
     private func setUp() {
