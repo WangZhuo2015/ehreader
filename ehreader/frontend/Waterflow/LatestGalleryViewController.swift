@@ -63,6 +63,12 @@ class LatestGalleryViewController: GalleryWaterFlowViewController {
             if self.headerView.loading {
                 self.headerView.stopRefreshing()
             }
+            
+            if let g = self.gallery {
+                if g.next == -1 {
+                    self.footerView.setNoMoreLoading()
+                }
+            }
         }
     }
 }

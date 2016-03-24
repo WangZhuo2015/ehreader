@@ -23,11 +23,6 @@ class UserFavoriteWorksViewController: GalleryWaterFlowViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        footerView.refreshingBlock = { ()->() in
-            self.currentPage += 1
-            self.startLoading(self.currentPage)
-        }
     }
     
     deinit {
@@ -62,6 +57,12 @@ class UserFavoriteWorksViewController: GalleryWaterFlowViewController {
             
             if self.footerView.loading {
                 self.footerView.stopRefreshing()
+            }
+            
+            if let g = self.gallery {
+                if g.next == -1 {
+                    self.footerView.setNoMoreLoading()
+                }
             }
         }
     }

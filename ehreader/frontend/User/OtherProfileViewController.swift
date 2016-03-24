@@ -66,11 +66,13 @@ class OtherProfileViewController: UIViewController {
     
     var functionButtons = ["作品一栏", "他的收藏", "他的关注"]
     
-    var currentWaterFlowViewController:GalleryWaterFlowViewController?
+    var currentDisplayViewController:UIViewController?
+    var prevDisplayViewController:UIViewController?
     
     lazy var userWorksGalleryViewController:UserWorksGalleryViewController = {
         let viewController = UserWorksGalleryViewController()
         viewController.profile = self.profile
+        viewController.collectionView.scrollEnabled = false
         viewController.delegate = self
         return viewController
     }()
@@ -79,18 +81,23 @@ class OtherProfileViewController: UIViewController {
         let viewController = UserFavoriteWorksViewController()
         viewController.profile = self.profile
         viewController.delegate = self
+        viewController.collectionView.scrollEnabled = false
         return viewController
     }()
     
     lazy var userFollowingViewController:UserFollowingViewController = {
         let viewController = UserFollowingViewController()
         viewController.profile = self.profile
+        viewController.delegate = self
+        viewController.collectionView.scrollEnabled = false
         return viewController
     }()
     
     override func viewDidLoad() {
         self.title = "我的主页"
         super.viewDidLoad()
+        currentDisplayViewController = userWorksGalleryViewController
+        
         self.automaticallyAdjustsScrollViewInsets = true
         self.view.backgroundColor = UIConstants.GrayBackgroundColor
         self.navigationItem.rightBarButtonItem = self.followButtonItem
@@ -103,7 +110,7 @@ class OtherProfileViewController: UIViewController {
         backgroundView.addTarget(self, action: #selector(ProfileViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(backgroundView)
         
-        currentWaterFlowViewController = userWorksGalleryViewController
+        
         
         addConstraints()
         startLoading()
@@ -166,6 +173,7 @@ class OtherProfileViewController: UIViewController {
                 self.functionView.reloadData()
                 self.functionView.onButtonClick(0)
                 self.pageView.reloadData()
+                self.userWorksGalleryViewController.startLoading()
             })
         }
     }
@@ -258,15 +266,44 @@ extension OtherProfileViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if let viewController = self.currentDisplayViewController as? GalleryWaterFlowViewController {
+            let height = viewController.maxScrollViewHeight
+            if height > self.view.frame.height {
+                return height
+            }
+        }else if let viewController = self.currentDisplayViewController as? UserFollowingViewController {
+            let height = viewController.maxScrollViewHeight
+            if height > self.view.frame.height {
+                return height
+            }
+        }
         return self.view.frame.height
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: nil)
-        cell.contentView.addSubview(self.pageView)
-        self.pageView.snp_makeConstraints { (make) in
-            make.edges.equalTo(cell.contentView)
+        if currentDisplayViewController == prevDisplayViewController {
+            return cell
         }
+        
+        if let viewController = self.currentDisplayViewController {
+            for subview in cell.contentView.subviews {
+                subview.removeFromSuperview()
+            }
+            let view = viewController.view
+            cell.contentView.addSubview(view)
+            viewController.didMoveToParentViewController(self)
+            view.snp_makeConstraints { (make) in
+                make.edges.equalTo(cell.contentView)
+            }
+//            view.alpha = 0
+//            UIView.animateWithDuration(1, animations: {
+//                view.alpha = 1
+//            }, completion: { (finished:Bool) in
+//                    
+//            })
+        }
+        
         return cell
     }
     
@@ -287,9 +324,10 @@ extension OtherProfileViewController: FunctionViewDataSource, FunctionViewDelega
     func functionView(functionView: FunctionView, didClickAtIndex index: Int) {
         self.pageView.selectPage(index, animated: true)
         if index >= 0 && index < self.childViewControllers.count {
-            self.currentWaterFlowViewController = self.childViewControllers[index] as? GalleryWaterFlowViewController
-            self.currentWaterFlowViewController?.automaticallyAdjustsScrollViewInsets = false
+            self.currentDisplayViewController = self.childViewControllers[index]
+            self.currentDisplayViewController?.automaticallyAdjustsScrollViewInsets = false
         }
+        self.tableView.reloadData()
     }
 }
 
@@ -315,6 +353,9 @@ extension OtherProfileViewController: UINavigationControllerDelegate {
 
 extension OtherProfileViewController:TransitionDelegate {
     func currentSelectedCellForAnimation() -> GalleryCell? {
-        return self.currentWaterFlowViewController?.currentSelectedCell
+        if let viewController = self.currentDisplayViewController as? GalleryWaterFlowViewController {
+            return viewController.currentSelectedCell
+        }
+        return nil
     }
 }

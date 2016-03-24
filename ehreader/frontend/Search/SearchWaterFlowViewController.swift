@@ -37,6 +37,7 @@ class SearchWaterFlowViewController: GalleryWaterFlowViewController {
             if self != nil {
                 self!.currentPage += 1
                 //self!.startLoading(self!.currentPage, publicity: self!.currentPublicity)
+                //self?.startSearching(<#T##query: String##String#>, page: <#T##Int#>, mode: <#T##PixivSearchMode#>, order: <#T##String#>)
             }
         }
     }
@@ -73,6 +74,12 @@ class SearchWaterFlowViewController: GalleryWaterFlowViewController {
                 self.headerView.stopRefreshing()
             }
             self.isFinishLoading = true
+            
+            if let g = self.gallery {
+                if g.next == -1 {
+                    self.footerView.setNoMoreLoading()
+                }
+            }
         }
     }
 }

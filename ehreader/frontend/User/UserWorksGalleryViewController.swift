@@ -26,11 +26,6 @@ class UserWorksGalleryViewController: GalleryWaterFlowViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.delegate?.onLoadingFinished(self)
-        
-        footerView.refreshingBlock = { ()->() in
-            self.currentPage += 1
-            self.startLoading(self.currentPage)
-        }
     }
     
     deinit {
@@ -62,6 +57,11 @@ class UserWorksGalleryViewController: GalleryWaterFlowViewController {
                 
                 if self.footerView.loading {
                     self.footerView.stopRefreshing()
+                }
+                if let g = self.gallery {
+                    if g.next == -1 {
+                        self.footerView.setNoMoreLoading()
+                    }
                 }
             })
         }

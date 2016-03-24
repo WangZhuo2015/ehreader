@@ -820,11 +820,11 @@ public class PixivProvider: NSObject {
 extension PixivProvider {
     private func createPagination(source:NSDictionary)->Pagination {
         var pagination = Pagination()
-        pagination.per_page = source["per_page"] as? Int ?? 0
-        pagination.total = source["total"] as? Int ?? 0
-        pagination.current = source["current"] as? Int ?? 0
-        pagination.next = source["next"] as? Int ?? 0
-        pagination.previous = source["previous"] as? Int ?? 0
+        pagination.per_page = source["per_page"] as? Int ?? -1
+        pagination.total = source["total"] as? Int ?? -1
+        pagination.current = source["current"] as? Int ?? -1
+        pagination.next = source["next"] as? Int ?? -1
+        pagination.previous = source["previous"] as? Int ?? -1
         return pagination
     }
     

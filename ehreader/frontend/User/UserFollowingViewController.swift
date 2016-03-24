@@ -24,11 +24,14 @@ class UserFollowingViewController: UIViewController {
     
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
+    weak var delegate:UserWorksGalleryViewControllerDelegate?
+    
     var profile:PixivProfile?
     var profiles:[PixivProfile] = []
     var pagination:Pagination = Pagination()
     var currentPage:Int = 1
     var publicity:PixivPublicity = PixivPublicity.Public
+    var maxScrollViewHeight:CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +74,18 @@ class UserFollowingViewController: UIViewController {
             self.profiles = profiles
             self.collectionView.reloadData()
             self.backgroundView.status = BackgroundViewStatus.Hidden
+            if let totoal = pagination?.total, perPage = pagination?.per_page, next = pagination?.next {
+                var count = 0
+                if next == -1 {
+                    count = totoal
+                }else {
+                    count = perPage
+                }
+                let heightCount = CGFloat(ceil(Float(count)/2.0))
+                self.maxScrollViewHeight = heightCount*(180 + Padding*2)
+                let size = CGSizeMake(self.view.frame.width, self.maxScrollViewHeight)
+                self.delegate?.onLoadLayoutFinished(self.collectionView, contentSize: size)
+            }
         }
     }
     
