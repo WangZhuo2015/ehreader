@@ -54,6 +54,9 @@ class SearchWaterFlowViewController: GalleryWaterFlowViewController {
             print(error.localizedDescription)
         }
         
+        // Add search log
+        SearchHistory.addHistory(query)
+        
         pixivProvider.searchWorks(query, page: page, mode: mode, order: order) { (gallery, error) in
             if error != nil || gallery == nil{
                 print("loading choice data failed:\(error?.localizedDescription)")

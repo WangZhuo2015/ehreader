@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 private let SearchTagCellIdentifer = "SearchTagCellIdentifer"
 
@@ -30,9 +31,9 @@ class SearchViewController: UIViewController {
         return tableView
     }()
     
-    var searchHistory:[String] = []
+    lazy var searchHistory:Results<SearchHistory> = SearchHistory.getAllHistory()
     
-    lazy var searchHintArray:[[String]] = {
+    lazy var searchHintArray:[NSObject] = {
         let array = [SearchType, self.searchHistory]
         return array
     }()
@@ -41,16 +42,26 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.whiteColor()
-        
         self.navigationItem.titleView = self.searchBar
         self.view.addSubview(tableView)
         addConstraints()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.displayMainTabbar(true)
+        self.loadHistory()
+        self.tableView.reloadData()
     }
     
     func addConstraints() {
         tableView.snp_makeConstraints { (make) in
             make.top.leading.trailing.bottom.equalTo(self.view)
         }
+    }
+    
+    func loadHistory() {
+        self.searchHistory = SearchHistory.getAllHistory()
     }
     
     override func viewDidLayoutSubviews() {
@@ -94,12 +105,22 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.searchHintArray[section].count
+        if let array = self.searchHintArray[section] as? [String] {
+            return array.count
+        }else if let array = self.searchHintArray[section] as? Results<SearchHistory> {
+            return array.count
+        }
+        return 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(SearchTagCellIdentifer)!
-        cell.textLabel?.text = self.searchHintArray[indexPath.section][indexPath.row]
+        if let array = self.searchHintArray[indexPath.section] as? [String] {
+            cell.textLabel?.text = array[indexPath.row]
+        }else if let array = self.searchHintArray[indexPath.section] as? Results<SearchHistory> {
+            cell.textLabel?.text = array[indexPath.row].keyword
+        }
+        
         cell.textLabel?.font = UIFont.systemFontOfSize(14)
         if indexPath.section == 0 {
             cell.imageView?.image = UIImage(named: SearchTypeImage[indexPath.row])
@@ -111,18 +132,30 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var mode = PixivSearchMode.Tag
+        if indexPath.section == 0 && indexPath.row == 0 {
+            mode = PixivSearchMode.Tag
+        }else if indexPath.section == 0 && indexPath.row == 1 {
+            mode = PixivSearchMode.Text
+        }else if indexPath.section == 1 {
+            if let array = self.searchHintArray[indexPath.section] as? Results<SearchHistory> {
+                self.searchBar.text = array[indexPath.row].keyword
+            }
+            mode = PixivSearchMode.ExactTag
+        }
         guard let query = searchBar.text else{
             return
         }
         if query.isEmpty {
             return
         }
-        var mode = PixivSearchMode.Tag
-        if indexPath.section == 0 && indexPath.row == 0 {
-            mode = PixivSearchMode.Tag
-        }else if indexPath.section == 0 && indexPath.row == 1 {
-            mode = PixivSearchMode.Text
-        }
         self.startSearch(query, mode: mode)
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 1 {
+            return "搜索历史"
+        }
+        return ""
     }
 }
