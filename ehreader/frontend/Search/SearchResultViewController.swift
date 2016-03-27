@@ -99,15 +99,15 @@ class SearchResultViewController: UIViewController {
             self.currentWaterFlowViewController = searchTagResultViewController
             break
         case .Text:
-            self.searchTitleResultViewController.startSearching(query, page: page, mode: .Title, order: order)
+            self.searchTitleResultViewController.startSearching(query, page: page, mode: .Text, order: order)
             self.currentWaterFlowViewController = searchTitleResultViewController
             break
-        case .Title:
-            self.searchTitleResultViewController.startSearching(query, page: page, mode: .Title, order: order)
+        case .Tag:
+            self.searchTitleResultViewController.startSearching(query, page: page, mode: .Tag, order: order)
             self.currentWaterFlowViewController = searchTitleResultViewController
             break
-        case .User:
-            self.searchUserResultViewController.startSearching(query, page: page, mode: .Text, order: order)
+        case .Caption:
+            self.searchUserResultViewController.startSearching(query, page: page, mode: .Caption, order: order)
             self.currentWaterFlowViewController = searchUserResultViewController
             break
         }
@@ -195,7 +195,7 @@ extension SearchResultViewController: FunctionViewDataSource, FunctionViewDelega
         }else if index == 1 {
             self.currentMode = .Text
         }else if index == 2 {
-            self.currentMode = .User
+            self.currentMode = .Caption
         }
         
         if let viewController = self.childViewControllers[index] as? SearchWaterFlowViewController {

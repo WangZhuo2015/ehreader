@@ -112,11 +112,6 @@ class OtherProfileViewController: UIViewController {
     
     private var originalNaivgationControllerDelegate:UINavigationControllerDelegate?
     
-//    lazy var footerView:CurveRefreshFooterView = {
-//        let footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
-//        return footerView
-//    }()
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.hideMainTabbar(true)
@@ -129,20 +124,6 @@ class OtherProfileViewController: UIViewController {
             viewController.footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
         }
         
-//        footerView.refreshingBlock = {[weak self] ()->() in
-//            if self != nil {
-//                if let viewController = self?.currentDisplayViewController as? UserWorksGalleryViewController {
-//                    viewController.currentPage += 1
-//                    viewController.startLoading(viewController.currentPage)
-//                }else if let viewController = self?.currentDisplayViewController as? UserFavoriteWorksViewController {
-//                    viewController.currentPage += 1
-//                    viewController.startLoading(viewController.currentPage)
-//                }else if let viewController = self?.currentDisplayViewController as? UserFollowingViewController {
-//                    viewController.currentPage += 1
-//                    viewController.startLoading(viewController.currentPage)
-//                }
-//            }
-//        }
     }
     
     override func viewWillDisappear(animated: Bool) {

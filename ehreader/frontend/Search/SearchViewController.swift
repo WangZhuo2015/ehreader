@@ -11,8 +11,8 @@ import SnapKit
 
 private let SearchTagCellIdentifer = "SearchTagCellIdentifer"
 
-let SearchType:[String] = ["在标签中搜索", "按热门度搜索", "在标题中搜索", "在用户中搜索"]
-let SearchTypeImage:[String] = ["ico_tag", "ico_func_premium", "ico_detail", "ico_user"]
+let SearchType:[String] = ["在标签中搜索", "在标题中搜索", "在用户中搜索"]
+let SearchTypeImage:[String] = ["ico_tag", "ico_detail", "ico_user"]
 
 class SearchViewController: UIViewController {
     private lazy var searchBar:UISearchBar = {
@@ -57,6 +57,13 @@ class SearchViewController: UIViewController {
         super.viewDidLayoutSubviews()
         searchBar.frame = CGRectMake(0, 0, self.view.frame.width, 44)
     }
+    
+    func startSearch(query:String, mode:PixivSearchMode) {
+        UIApplication.sharedApplication().keyWindow?.endEditing(true)
+        let searchResultViewController = SearchResultViewController()
+        searchResultViewController.startSearching(query, mode:mode)
+        self.navigationController?.pushViewController(searchResultViewController, animated: true)
+    }
 }
 
 extension SearchViewController: UISearchBarDelegate {
@@ -68,6 +75,16 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
         UIApplication.sharedApplication().keyWindow?.endEditing(true)
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        guard let query = searchBar.text else{
+            return
+        }
+        if query.isEmpty {
+            return
+        }
+        self.startSearch(query, mode: PixivSearchMode.Tag)
     }
 }
 
@@ -91,5 +108,21 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         }
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let query = searchBar.text else{
+            return
+        }
+        if query.isEmpty {
+            return
+        }
+        var mode = PixivSearchMode.Tag
+        if indexPath.section == 0 && indexPath.row == 0 {
+            mode = PixivSearchMode.Tag
+        }else if indexPath.section == 0 && indexPath.row == 1 {
+            mode = PixivSearchMode.Text
+        }
+        self.startSearch(query, mode: mode)
     }
 }

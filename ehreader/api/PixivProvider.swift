@@ -57,8 +57,8 @@ public enum PixivRankingMode:String {
 public enum PixivSearchMode:String {
     case ExactTag = "exact_tag"
     case Text = "text"
-    case Title = "title"
-    case User = "user"
+    case Tag = "tag"
+    case Caption = "caption"
 }
 
 public enum PixivRankingType:String {
@@ -683,6 +683,18 @@ public class PixivProvider: NSObject {
         }
     }
     
+    /**
+     搜索作品
+     
+     - parameter query:    搜索的文字
+     - parameter page:     page 的范围为1~n
+     - parameter perPage:  每页显示的数目，默认为30
+     - parameter mode:     搜索模式：text - 标题/描述， tag - 非精确标签， exact_tag - 精确标签， caption - 描述
+     - parameter period:   only applies to asc order， all - 所有，day - 一天之内，week - 一周之内，month - 一月之内
+     - parameter order:    desc - 新顺序，asc - 旧顺序
+     - parameter sort:     排序方式，目前只有date
+     - parameter complete: 完成回调
+     */
     public func searchWorks(query:String, page:Int = 1, perPage:Int = 30, mode:PixivSearchMode = PixivSearchMode.ExactTag, period:String = "all", order:String = "desc", sort:String = "date", complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
         
         let url = PixivPAPIRoot + "search/works.json"
@@ -698,6 +710,47 @@ public class PixivProvider: NSObject {
             "include_stats": "true",
             "include_sanity_level": "true",
             "image_sizes": "medium,small,px_128x128,px_480mw,large",
+        ]
+        
+        print(parameters)
+        
+        var error:NSError?
+        authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            dispatch_async(dispatch_get_global_queue(0, 0), {
+                if response.result.error != nil {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: response.result.error)
+                    })
+                    return
+                }
+                
+                guard let result = response.result.value as? [NSObject:AnyObject] else {
+                    let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: error)
+                    })
+                    return
+                }
+                
+                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete?(gallery: gallery, error: nil)
+                })
+            })
+        }
+        if error != nil {
+            complete?(gallery: nil, error: error)
+        }
+    }
+    
+    public func searchUsers(query:String, page:Int = 1, perPage:Int = 30, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+        
+        let url = PixivSAPIRoot + "search_user.php"
+        let parameters:[String:AnyObject] = [
+            "nick": query,
+            "p": page
         ]
         
         print(parameters)

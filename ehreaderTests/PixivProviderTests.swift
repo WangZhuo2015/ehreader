@@ -71,7 +71,7 @@ class PixivProviderTests: XCTestCase {
         }
         let expectation = expectationWithDescription("")
         let userId = PixivUser.currentLoginUser()!.id
-        self.pixivProvider.getUserInfomation(userId) { (gallery, error) in
+        self.pixivProvider.getUserInfomation(Int(userId)!) { (profile, error) in
             XCTAssertNil(error)
             expectation.fulfill()
         }
@@ -86,6 +86,20 @@ class PixivProviderTests: XCTestCase {
         }
         let expectation = expectationWithDescription("")
         self.pixivProvider.meFollowing(publicity: PixivPublicity.Public) { (profiles, pagination, error) in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+    }
+    
+    func testSearchUsers() {
+        do {
+            try self.pixivProvider.loginIfNeeded(username, password: password)
+        }catch let error as NSError {
+            XCTAssert(false, error.localizedDescription)
+        }
+        let expectation = expectationWithDescription("")
+        self.pixivProvider.searchUsers("zz") { (gallery, error) in
             XCTAssertNil(error)
             expectation.fulfill()
         }

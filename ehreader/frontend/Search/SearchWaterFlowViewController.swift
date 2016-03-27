@@ -13,7 +13,9 @@ import SnapKit
 class SearchWaterFlowViewController: GalleryWaterFlowViewController {
     var currentPublicity:PixivPublicity = PixivPublicity.Public
     var isFinishLoading = false
-    
+    var currentQuery:String?
+    var currentMode:PixivSearchMode = PixivSearchMode.ExactTag
+    var currentOrder:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,24 +28,26 @@ class SearchWaterFlowViewController: GalleryWaterFlowViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        headerView.refreshingBlock = { [weak self] ()->() in
-            if self != nil {
-                //self!.startLoading(self!.currentPage, publicity: self!.currentPublicity)
-            }
-            
-        }
         
         footerView.refreshingBlock = {[weak self] ()->() in
-            if self != nil {
-                self!.currentPage += 1
-                //self!.startLoading(self!.currentPage, publicity: self!.currentPublicity)
-                //self?.startSearching(<#T##query: String##String#>, page: <#T##Int#>, mode: <#T##PixivSearchMode#>, order: <#T##String#>)
+            if let weakSelf = self {
+                weakSelf.currentPage += 1
+                if let query = weakSelf.currentQuery, order = weakSelf.currentOrder {
+                    weakSelf.startSearching(query, page: weakSelf.currentPage, mode: weakSelf.currentMode, order: order)
+                }
             }
         }
     }
     
     func startSearching(query:String, page:Int = 1, mode:PixivSearchMode = PixivSearchMode.ExactTag, order:String = "desc") {
+        self.currentQuery = query
+        self.currentPage = page
+        self.currentMode = mode
+        self.currentOrder = order
         isFinishLoading = false
+        if self.isLoadingFinished {
+            return
+        }
         do {
             try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
         }catch let error as NSError {
@@ -68,10 +72,6 @@ class SearchWaterFlowViewController: GalleryWaterFlowViewController {
             
             if self.footerView.loading {
                 self.footerView.stopRefreshing()
-            }
-            
-            if self.headerView.loading {
-                self.headerView.stopRefreshing()
             }
             self.isFinishLoading = true
             
