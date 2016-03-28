@@ -52,6 +52,9 @@
 		E9B78FCF1CA272FC00A5F5D8 /* SearchWaterFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B78FCE1CA272FC00A5F5D8 /* SearchWaterFlowViewController.swift */; };
 		E9C237D01C9FE70500343A41 /* UserWorksGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C237CF1C9FE70500343A41 /* UserWorksGalleryViewController.swift */; };
 		E9DC51EC1C4699740053D331 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC51EB1C4699740053D331 /* Constants.swift */; };
+		E9F0C6FB1CA9347000AB0A77 /* JTSImageViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9F0C6FA1CA9347000AB0A77 /* JTSImageViewController.framework */; };
+		E9F0C6FD1CA9637000AB0A77 /* ImageProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0C6FC1CA9637000AB0A77 /* ImageProgressView.swift */; };
+		E9F0C7001CA981E900AB0A77 /* UCZProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9F0C6FF1CA981E900AB0A77 /* UCZProgressView.m */; };
 		E9F1FD1F1C8E816D0029BD17 /* UIArrowTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F1FD1E1C8E816D0029BD17 /* UIArrowTitleView.swift */; };
 		E9F1FD211C8EA6BE0029BD17 /* DropdownController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F1FD201C8EA6BE0029BD17 /* DropdownController.swift */; };
 		E9F1FD231C8EAF5D0029BD17 /* PixivRankingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F1FD221C8EAF5D0029BD17 /* PixivRankingViewController.swift */; };
@@ -143,6 +146,7 @@
 		E98BBEED1CA03EAB009C5099 /* UserFollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFollowingViewController.swift; sourceTree = "<group>"; };
 		E98F53F31C9AE64F003B5093 /* PageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
 		E9A90D901CA7D3C300253629 /* SearchHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHistory.swift; sourceTree = "<group>"; };
+		E9A90D921CA8304100253629 /* YHImageViewer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YHImageViewer.framework; path = "Pods/../build/Debug-iphoneos/YHImageViewer.framework"; sourceTree = "<group>"; };
 		E9AE80B91C9F997B006A5AC4 /* MeFollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeFollowingViewController.swift; sourceTree = "<group>"; };
 		E9AE80BB1C9FA133006A5AC4 /* FollowingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingCollectionViewCell.swift; sourceTree = "<group>"; };
 		E9AE80BD1C9FCF3C006A5AC4 /* OtherProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherProfileViewController.swift; sourceTree = "<group>"; };
@@ -153,6 +157,10 @@
 		E9B78FD21CA2852900A5F5D8 /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
 		E9C237CF1C9FE70500343A41 /* UserWorksGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserWorksGalleryViewController.swift; sourceTree = "<group>"; };
 		E9DC51EB1C4699740053D331 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		E9F0C6FA1CA9347000AB0A77 /* JTSImageViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JTSImageViewController.framework; path = "Pods/../build/Debug-iphoneos/JTSImageViewController.framework"; sourceTree = "<group>"; };
+		E9F0C6FC1CA9637000AB0A77 /* ImageProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProgressView.swift; sourceTree = "<group>"; };
+		E9F0C6FE1CA981E900AB0A77 /* UCZProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCZProgressView.h; sourceTree = "<group>"; };
+		E9F0C6FF1CA981E900AB0A77 /* UCZProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCZProgressView.m; sourceTree = "<group>"; };
 		E9F1FD1E1C8E816D0029BD17 /* UIArrowTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIArrowTitleView.swift; sourceTree = "<group>"; };
 		E9F1FD201C8EA6BE0029BD17 /* DropdownController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropdownController.swift; sourceTree = "<group>"; };
 		E9F1FD221C8EAF5D0029BD17 /* PixivRankingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivRankingViewController.swift; sourceTree = "<group>"; };
@@ -204,6 +212,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9F0C6FB1CA9347000AB0A77 /* JTSImageViewController.framework in Frameworks */,
 				E9F774C51C9BB5320045D128 /* ViewPagerSwift.framework in Frameworks */,
 				E98AB13F1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework in Frameworks */,
 				E98AB1401C7456C500291F27 /* RAMAnimatedTabBarController.framework in Frameworks */,
@@ -232,6 +241,8 @@
 		21DD57ACF2F65B9C647D2B90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E9F0C6FA1CA9347000AB0A77 /* JTSImageViewController.framework */,
+				E9A90D921CA8304100253629 /* YHImageViewer.framework */,
 				E9B78FD21CA2852900A5F5D8 /* PhotosUI.framework */,
 				E9F774C21C9BB5320045D128 /* MJExtension.framework */,
 				E9F774C31C9BB5320045D128 /* ViewPagerSwift.framework */,
@@ -449,9 +460,12 @@
 				E9FB94901C8FBE0C0076E01D /* CurveLayer.swift */,
 				E9FB948E1C8FBE060076E01D /* CurveRefreshHeaderView.swift */,
 				E9F1FD241C8EBD270029BD17 /* BlurView.swift */,
+				E9F0C6FE1CA981E900AB0A77 /* UCZProgressView.h */,
+				E9F0C6FF1CA981E900AB0A77 /* UCZProgressView.m */,
 				E9FDED9B1C49385E00557D0A /* RatingBar.swift */,
 				E9F1FD201C8EA6BE0029BD17 /* DropdownController.swift */,
 				E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */,
+				E9F0C6FC1CA9637000AB0A77 /* ImageProgressView.swift */,
 			);
 			path = wedget;
 			sourceTree = "<group>";
@@ -631,12 +645,14 @@
 				E95C063F1C48C2A70081C9C3 /* BackgroundView.swift in Sources */,
 				E91B7BCF1C9A7F12007ED39F /* RankGalleryViewController.swift in Sources */,
 				F7A556D21BFB2A1F00E7CBEB /* ImageSearch.swift in Sources */,
+				E9F0C6FD1CA9637000AB0A77 /* ImageProgressView.swift in Sources */,
 				E9C237D01C9FE70500343A41 /* UserWorksGalleryViewController.swift in Sources */,
 				F7A556D41BFB2DAB00E7CBEB /* Download.swift in Sources */,
 				E9F1FD231C8EAF5D0029BD17 /* PixivRankingViewController.swift in Sources */,
 				E98B07481C89C2E100EE44B7 /* MainTabBarButton.swift in Sources */,
 				E98B074C1C89C2E100EE44B7 /* GalleryWaterFlowViewController.swift in Sources */,
 				E9A90D911CA7D3C300253629 /* SearchHistory.swift in Sources */,
+				E9F0C7001CA981E900AB0A77 /* UCZProgressView.m in Sources */,
 				F7FAA4EB1BFAC43100E27E4A /* Gallery.swift in Sources */,
 				E9F774C11C9BAD250045D128 /* PixivProfile.swift in Sources */,
 				E967A4921C5079EF000C6DC2 /* PixivUser.swift in Sources */,

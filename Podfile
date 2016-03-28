@@ -11,4 +11,5 @@ target ‘ehreader’ do
     pod 'AXStretchableHeaderTabViewController'
     pod 'RAMAnimatedTabBarController'
     pod 'ViewPagerSwift'
+    pod 'JTSImageViewController'
 end

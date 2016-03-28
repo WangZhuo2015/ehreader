@@ -1,22 +1,24 @@
 PODS:
-  - Alamofire (3.2.1)
+  - Alamofire (3.3.0)
   - AXStretchableHeaderTabViewController (0.2.0)
-  - CryptoSwift (0.2.3)
-  - Kingfisher (2.0.4)
+  - CryptoSwift (0.3)
+  - JTSImageViewController (1.5.1)
+  - Kingfisher (2.2.0)
   - RAMAnimatedTabBarController (1.2.2)
-  - Realm (0.98.3):
-    - Realm/Headers (= 0.98.3)
-  - Realm/Headers (0.98.3)
-  - RealmSwift (0.98.3):
-    - Realm (= 0.98.3)
-  - SnapKit (0.19.1)
+  - Realm (0.98.6):
+    - Realm/Headers (= 0.98.6)
+  - Realm/Headers (0.98.6)
+  - RealmSwift (0.98.6):
+    - Realm (= 0.98.6)
+  - SnapKit (0.20.0)
   - ViewPagerSwift (1.0.0)
-  - Zip (0.3.2)
+  - Zip (0.3.4)
 
 DEPENDENCIES:
   - Alamofire
   - AXStretchableHeaderTabViewController
   - CryptoSwift
+  - JTSImageViewController
   - Kingfisher
   - RAMAnimatedTabBarController
   - RealmSwift
@@ -25,15 +27,16 @@ DEPENDENCIES:
   - Zip
 
 SPEC CHECKSUMS:
-  Alamofire: f11d8624a05f5d39e0c99309b3e600a3ba64298a
+  Alamofire: 9054db4a1b1ca9e363223183e01cea380159a27c
   AXStretchableHeaderTabViewController: 37c56211c98d3e823ecf7493d68f5ee8fa7028e1
-  CryptoSwift: b2bf37b8e7cc6d682ef3365cb966bc5ae5174aa5
-  Kingfisher: 8f1ec2c067ade2c549a1a594379b69c4b1ff81ab
+  CryptoSwift: 19d29910d88440fcb132761d9ab57e175f1b0d0e
+  JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
+  Kingfisher: 350869ed88d6451803b390475d977abdd9f0a357
   RAMAnimatedTabBarController: cadbef3162bc7ae86091661273ccec503deb3398
-  Realm: c6a7d00221a2d5177810a674aebd40c5e0b70b0f
-  RealmSwift: d6ecad6e4c2a645d6ac956c2c7e9efb375f39c31
-  SnapKit: eff58d6e3451bf2f482db2eccf86aecf371dc62d
+  Realm: 44803f35418c5d89b27825a564247fcd190de37e
+  RealmSwift: c7239c52c83f8c43525a5269ba7be1694da33afc
+  SnapKit: 5fce3c1bbbf1fbd31de9aa92f33eb9fa03f15650
   ViewPagerSwift: f607f30ed55ebe7adf74ebe6bcd8e9b23a73f155
-  Zip: e77fa4d9a8a057f84b4dc01e72390a7fec5e9ff1
+  Zip: 99d6f8bdcbcf1fd2f189af929651282bdc42c2f7
 
 COCOAPODS: 0.39.0

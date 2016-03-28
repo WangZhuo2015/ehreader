@@ -10,6 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 import Alamofire
+import JTSImageViewController
 
 private let ProgressHeight:CGFloat = 1
 private let IllustTagCellIdentifer = "IllustTagCellIdentifer"
@@ -20,6 +21,9 @@ class PhotoViewController: UIViewController {
     internal lazy var imageView:UIImageView = {
         let imageView = UIImageView(frame: CGRectZero)
         imageView.backgroundColor = UIColor.createColor(130, green: 187, blue: 220, alpha: 1)
+        let tapGuesture = UITapGestureRecognizer(target: self, action: #selector(PhotoViewController.checkLargeImage(_:)))
+        imageView.addGestureRecognizer(tapGuesture)
+        imageView.userInteractionEnabled = true
         return imageView
     }()
     
@@ -53,7 +57,7 @@ class PhotoViewController: UIViewController {
     }()
     
     private lazy var downloadButton:UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(named:"ic_navibar_download"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PhotoViewController.checkLargeImage(_:)))
+        let button = UIBarButtonItem(image: UIImage(named:"ic_navibar_download"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PhotoViewController.downloadImage(_:)))
         return button
     }()
     
@@ -263,11 +267,80 @@ class PhotoViewController: UIViewController {
     }
     
     func checkLargeImage(sender:UIBarButtonItem) {
+        guard let largeImageUrl = self.illust?.url_large else {
+            return
+        }
+        guard let imageUrl = self.photoUrl else {
+            return
+        }
         
+        guard let illustId = illust?.illust_id else {
+            return
+        }
+        
+        if let largeImage = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(largeImageUrl) {
+            displayImageViewer(largeImage, imageUrl: largeImageUrl, placeholderImageKey: imageUrl)
+        }else {
+            // download the image
+            let imageProgressView = UCZProgressView(frame: CGRectMake(0, 0, imageView.bounds.width, imageView.bounds.height))
+            imageView.addSubview(imageProgressView)
+            imageProgressView.indeterminate = true
+            imageProgressView.blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+            imageProgressView.usesVibrancyEffect = true
+            imageProgressView.showsText = true
+            imageProgressView.lineWidth = 1
+            imageProgressView.radius = 20
+            imageProgressView.textSize = 12
+            imageProgressView.alpha = 0.9
+            
+            KingfisherManager.sharedManager.downloader.requestModifier = {(request:NSMutableURLRequest)->Void in
+                let refrer = "http://www.pixiv.net/member_illust.php?mode=medium&illust_id=\(illustId)"
+                let agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Ubuntu/12.10 Chromium/22.0.1229.94 Chrome/22.0.1229.94 Safari/537.4"
+                request.setValue(refrer, forHTTPHeaderField: "Referer")
+                request.setValue(agent, forHTTPHeaderField: "User-Agent")
+            }
+            
+            let placeholderImage = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(imageUrl)
+            
+            self.imageView.kf_setImageWithURL(NSURL(string:largeImageUrl)!, placeholderImage: placeholderImage, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
+                let progress = CGFloat(receivedSize)/CGFloat(totalSize)
+                imageProgressView.progress = progress
+            }) { (image, error, cacheType, imageURL) in
+                if image != nil {
+                    imageProgressView.progress = 1
+                    imageProgressView.progressAnimiationDidStop({
+                        self.displayImageViewer(image!, imageUrl: largeImageUrl, placeholderImageKey: imageUrl)
+                    })
+                }
+            }
+        }
+    }
+    
+    func displayImageViewer(image:UIImage, imageUrl:String, placeholderImageKey:String) {
+        let imageInfo = JTSImageInfo()
+        imageInfo.image = image
+        imageInfo.imageURL = NSURL(string: imageUrl)
+        if let image = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(placeholderImageKey) {
+            imageInfo.placeholderImage = image
+        }
+        imageInfo.referenceRect = self.imageView.frame
+        imageInfo.referenceView = self.imageView.superview
+        imageInfo.referenceContentMode = self.imageView.contentMode
+        let imageViewer = JTSImageViewController(imageInfo: imageInfo, mode: JTSImageViewControllerMode.Image, backgroundStyle: JTSImageViewControllerBackgroundOptions.Scaled)
+        imageViewer.showFromViewController(self, transition: JTSImageViewControllerTransition.FromOriginalPosition)
     }
     
     func downloadImage(sender:UIBarButtonItem) {
-        
+        guard let imageUrl = self.photoUrl else {
+            return
+        }
+        if let image = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(imageUrl, scale: 1) {
+            UIImageWriteToSavedPhotosAlbum(image, self, #selector(PhotoViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
+        }
+    }
+    
+    func image(image:UIImage, didFinishSavingWithError:NSError, contextInfo:UnsafeMutablePointer<Void>) {
+        print("save complete")
     }
     
     func openUserDetail() {
