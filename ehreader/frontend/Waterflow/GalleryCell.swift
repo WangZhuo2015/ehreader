@@ -182,14 +182,14 @@ class GalleryCell: UICollectionViewCell {
                 return
             }
         }
-        self.imageView.kf_setImageWithURL(NSURL(string: illust.getMediaImageUrl()!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
+        self.imageView.kf_setImageWithURL(NSURL(string: illust.getMediaImageUrl()!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: {[weak self] (receivedSize, totalSize) in
             let progress = Float(receivedSize)/Float(totalSize)
-            self.progressView.progress = progress
-        }) { (image, error, cacheType, imageURL) in
-            self.progressView.progress = 0
-            self.progressView.hidden = true
+            self?.progressView.progress = progress
+        }) {[weak self] (image, error, cacheType, imageURL) in
+            self?.progressView.progress = 0
+            self?.progressView.hidden = true
             UIView.animateWithDuration(0.5, animations: {
-                self.imageView.alpha = 1
+                self?.imageView.alpha = 1
             })
         }
     }
