@@ -282,16 +282,23 @@ class PhotoViewController: UIViewController {
             displayImageViewer(largeImage, imageUrl: largeImageUrl, placeholderImageKey: imageUrl)
         }else {
             // download the image
+            for subview in self.imageView.subviews {
+                if subview.isKindOfClass(UCZProgressView) {
+                    return
+                }
+            }
             let imageProgressView = UCZProgressView(frame: CGRectMake(0, 0, imageView.bounds.width, imageView.bounds.height))
-            imageView.addSubview(imageProgressView)
+            imageProgressView.frame = imageView.bounds
+            imageProgressView.showsText = true
             imageProgressView.indeterminate = true
             imageProgressView.blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
             imageProgressView.usesVibrancyEffect = true
-            imageProgressView.showsText = true
             imageProgressView.lineWidth = 1
             imageProgressView.radius = 20
             imageProgressView.textSize = 12
             imageProgressView.alpha = 0.9
+            imageView.addSubview(imageProgressView)
+            
             
             KingfisherManager.sharedManager.downloader.requestModifier = {(request:NSMutableURLRequest)->Void in
                 let refrer = "http://www.pixiv.net/member_illust.php?mode=medium&illust_id=\(illustId)"
@@ -302,15 +309,16 @@ class PhotoViewController: UIViewController {
             
             let placeholderImage = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(imageUrl)
             
-            self.imageView.kf_setImageWithURL(NSURL(string:largeImageUrl)!, placeholderImage: placeholderImage, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
+            self.imageView.kf_setImageWithURL(NSURL(string:largeImageUrl)!, placeholderImage: placeholderImage, optionsInfo: nil, progressBlock: {(receivedSize, totalSize)  in
                 let progress = CGFloat(receivedSize)/CGFloat(totalSize)
                 imageProgressView.progress = progress
-            }) { (image, error, cacheType, imageURL) in
+            }) {[weak self] (image, error, cacheType, imageURL) in
                 if image != nil {
                     imageProgressView.progress = 1
                     imageProgressView.progressAnimiationDidStop({
-                        self.displayImageViewer(image!, imageUrl: largeImageUrl, placeholderImageKey: imageUrl)
+                        self?.displayImageViewer(image!, imageUrl: largeImageUrl, placeholderImageKey: imageUrl)
                     })
+                    imageProgressView.removeFromSuperview()
                 }
             }
         }
@@ -377,13 +385,23 @@ class PhotoViewController: UIViewController {
         self.titleLabel.text = illust.title
         self.avatarImageView.kf_setImageWithURL(NSURL(string: illust.profile_url_px_50x50!)!, placeholderImage: nil)
         self.usernameLabel.text = illust.name
-        self.imageView.kf_setImageWithURL(NSURL(string:self.photoUrl!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
-            let progress = Float(receivedSize)/Float(totalSize)
-            self.progressView.progress = progress
-        }) { (image, error, cacheType, imageURL) in
-            self.progressView.progress = 0
-            self.progressView.hidden = true
+        
+        
+        if let largeImageUrl = illust.url_large {
+            if let largeImage = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(largeImageUrl) {
+                self.imageView.image = largeImage
+            }
         }
+        if self.imageView.image == nil {
+            self.imageView.kf_setImageWithURL(NSURL(string:self.photoUrl!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
+                let progress = Float(receivedSize)/Float(totalSize)
+                self.progressView.progress = progress
+            }) { (image, error, cacheType, imageURL) in
+                self.progressView.progress = 0
+                self.progressView.hidden = true
+            }
+        }
+        
         loadIllustDetail()
     }
     

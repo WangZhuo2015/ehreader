@@ -25,16 +25,15 @@ class MainTabbarController: UITabBarController {
         super.viewDidLoad()
         addTabbars()
         addChildViewControllers()
+        self.customTabBar?.reloadData()
+        if let firstButton =  self.customTabBar?.buttons.first {
+            self.customTabBar?.btnClick(firstButton)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         removeSystemTabbar()
-        self.tabbarHeight = self.tabBar.frame.height
-        self.customTabBar?.reloadData()
-        if let firstButton =  self.customTabBar?.buttons.first {
-            self.customTabBar?.btnClick(firstButton)
-        }
     }
     
     

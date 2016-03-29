@@ -174,7 +174,14 @@ class GalleryCell: UICollectionViewCell {
             request.setValue(refrer, forHTTPHeaderField: "Referer")
             request.setValue(agent, forHTTPHeaderField: "User-Agent")
         }
-        
+        if let image =  KingfisherManager.sharedManager.cache.retrieveImageInDiskCacheForKey(illust.getMediaImageUrl()!), imageViewImage = self.imageView.image {
+            if imageViewImage == image{
+                UIView.animateWithDuration(0.5, animations: {
+                    self.imageView.alpha = 1
+                })
+                return
+            }
+        }
         self.imageView.kf_setImageWithURL(NSURL(string: illust.getMediaImageUrl()!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: { (receivedSize, totalSize) in
             let progress = Float(receivedSize)/Float(totalSize)
             self.progressView.progress = progress
