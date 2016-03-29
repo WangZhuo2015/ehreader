@@ -342,7 +342,14 @@ class PhotoViewController: UIViewController {
         guard let imageUrl = self.photoUrl else {
             return
         }
-        if let image = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(imageUrl, scale: 1) {
+        if let largeImageUrl = self.illust?.url_large {
+            if let image = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(largeImageUrl) {
+                UIImageWriteToSavedPhotosAlbum(image, self, #selector(PhotoViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                return
+            }
+        }
+        
+        if let image = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(imageUrl) {
             UIImageWriteToSavedPhotosAlbum(image, self, #selector(PhotoViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
         }
     }

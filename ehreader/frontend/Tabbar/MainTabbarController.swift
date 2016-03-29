@@ -17,7 +17,7 @@ class MainTabbarController: UITabBarController {
     private var searchViewController:SearchViewController!
     private var profileViewController:ProfileViewController!
     private var downloadManagerViewController:GalleryWaterFlowViewController!
-    private var tabbarHeight:CGFloat = 50
+    private var tabbarHeight:CGFloat = 49
     
     private var tabbarItems:[UITabBarItem] = []
     
