@@ -86,6 +86,7 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-ehreader/AXStretchableHeaderTabViewController.framework"
   install_framework "Pods-ehreader/Alamofire.framework"
+  install_framework "Pods-ehreader/CollieGallery.framework"
   install_framework "Pods-ehreader/CryptoSwift.framework"
   install_framework "Pods-ehreader/JTSImageViewController.framework"
   install_framework "Pods-ehreader/Kingfisher.framework"
@@ -99,6 +100,7 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ehreader/AXStretchableHeaderTabViewController.framework"
   install_framework "Pods-ehreader/Alamofire.framework"
+  install_framework "Pods-ehreader/CollieGallery.framework"
   install_framework "Pods-ehreader/CryptoSwift.framework"
   install_framework "Pods-ehreader/JTSImageViewController.framework"
   install_framework "Pods-ehreader/Kingfisher.framework"

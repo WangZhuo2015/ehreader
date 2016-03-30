@@ -38,6 +38,11 @@ class GalleryCell: UICollectionViewCell {
         return view
     }()
     
+    lazy var typeImageView:UIImageView = {
+        let imageView = UIImageView(frame: CGRectZero)
+        return imageView
+    }()
+    
     lazy var titleLabel:UILabel = {
         let label = UILabel(frame: CGRectZero)
         label.font = UIFont.systemFontOfSize(12)
@@ -102,6 +107,7 @@ class GalleryCell: UICollectionViewCell {
         addSubview(avatarImageView)
         addSubview(usernameLabel)
         addSubview(progressView)
+        addSubview(typeImageView)
         
         setConstraints()
     }
@@ -109,6 +115,11 @@ class GalleryCell: UICollectionViewCell {
     private func setConstraints() {
         imageView.snp_makeConstraints { (make) -> Void in
             make.leading.trailing.top.equalTo(self)
+        }
+        
+        typeImageView.snp_makeConstraints { (make) in
+            make.trailing.equalTo(self)
+            make.centerY.equalTo(self.avatarImageView)
         }
         
         imageBackgroundView.snp_makeConstraints { (make) in
@@ -166,6 +177,22 @@ class GalleryCell: UICollectionViewCell {
         self.titleLabel.numberOfLines = 0
         self.avatarImageView.kf_setImageWithURL(NSURL(string: illust.profile_url_px_50x50!)!, placeholderImage: nil)
         self.usernameLabel.text = illust.name
+        
+        if let type = illust.type {
+            if let rankingType = PixivRankingType(rawValue: type) {
+                switch rankingType {
+                case .Ugoira:
+                    typeImageView.image = UIImage(named: "thumb_type_ugoira")
+                    break
+                case .Manga:
+                    typeImageView.image = UIImage(named: "thumb_type_manga")
+                    break
+                default:
+                    typeImageView.image = nil
+                    break
+                }
+            }
+        }
         
         KingfisherManager.sharedManager.cache.clearMemoryCache()
         KingfisherManager.sharedManager.downloader.requestModifier = {(request:NSMutableURLRequest)->Void in

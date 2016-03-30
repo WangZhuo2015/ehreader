@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (3.3.0)
   - AXStretchableHeaderTabViewController (0.2.0)
+  - CollieGallery (0.1.1)
   - CryptoSwift (0.3)
   - JTSImageViewController (1.5.1)
   - Kingfisher (2.2.0)
@@ -17,6 +18,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - AXStretchableHeaderTabViewController
+  - CollieGallery (from `./`)
   - CryptoSwift
   - JTSImageViewController
   - Kingfisher
@@ -26,9 +28,14 @@ DEPENDENCIES:
   - ViewPagerSwift
   - Zip
 
+EXTERNAL SOURCES:
+  CollieGallery:
+    :path: ./
+
 SPEC CHECKSUMS:
   Alamofire: 9054db4a1b1ca9e363223183e01cea380159a27c
   AXStretchableHeaderTabViewController: 37c56211c98d3e823ecf7493d68f5ee8fa7028e1
+  CollieGallery: 12e0b98734e3aed7624bf0c177b61d8d2c613a9a
   CryptoSwift: 19d29910d88440fcb132761d9ab57e175f1b0d0e
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
   Kingfisher: 350869ed88d6451803b390475d977abdd9f0a357

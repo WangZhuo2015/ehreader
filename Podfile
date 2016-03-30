@@ -12,4 +12,5 @@ target ‘ehreader’ do
     pod 'RAMAnimatedTabBarController'
     pod 'ViewPagerSwift'
     pod 'JTSImageViewController'
+    pod 'CollieGallery', :path => './'
 end

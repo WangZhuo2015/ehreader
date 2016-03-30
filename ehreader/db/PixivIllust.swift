@@ -83,7 +83,7 @@ public class PixivIllust: Object {
     }
     
     public static func createPixivIllust(source:NSDictionary, isWork:Bool)->Int? {
-        //print(source)
+        print(source)
         var data:NSDictionary?
         if isWork {
             data = source
@@ -168,6 +168,7 @@ public class PixivIllust: Object {
             illust.age_limit = data?.objectForKey("age_limit") as? String
             illust.width = data?.objectForKey("width")?.integerValue ?? illust.width
             if let metadata = data?.objectForKey("metadata") as? NSDictionary {
+                illust.metadata = metadata.jsonString()
                 if let pages = metadata.objectForKey("pages") as? NSArray {
                     let firstObject = pages.firstObject as? NSDictionary
                     let imageUrls = firstObject?.objectForKey("image_urls") as? NSDictionary
