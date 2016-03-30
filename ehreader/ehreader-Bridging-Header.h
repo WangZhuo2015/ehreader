@@ -4,4 +4,3 @@
 
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonDigest.h>
-#import "UCZProgressView.h"

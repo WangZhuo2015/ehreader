@@ -1,0 +1,25 @@
+{
+  "name": "UCZProgressView",
+  "version": "0.0.1",
+  "summary": "Easy-to-use and highly customizable fullscreen image gallery with support for local and remote images written in Swift.",
+  "description": "",
+  "homepage": "https://github.com/zzycami/UCZProgressView",
+  "license": "MIT",
+  "authors": {
+    "zzycami": "zzycami@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/zzycami/UCZProgressView.git",
+    "tag": "0.0.1"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "requires_arc": true,
+  "source_files": "UCZProgressView/Classes/**/*",
+  "resource_bundles": {
+    "CollieGallery": [
+      "UCZProgressView/Assets/*.png"
+    ]
+  }
+}

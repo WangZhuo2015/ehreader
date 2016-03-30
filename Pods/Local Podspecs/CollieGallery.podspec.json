@@ -27,5 +27,16 @@
     "CollieGallery": [
       "CollieGallery/Assets/*.png"
     ]
+  },
+  "dependencies": {
+    "UCZProgressView": [
+
+    ],
+    "Kingfisher": [
+
+    ],
+    "SnapKit": [
+
+    ]
   }
 }

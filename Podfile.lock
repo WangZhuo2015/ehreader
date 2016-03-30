@@ -1,7 +1,10 @@
 PODS:
   - Alamofire (3.3.0)
   - AXStretchableHeaderTabViewController (0.2.0)
-  - CollieGallery (0.1.1)
+  - CollieGallery (0.1.1):
+    - Kingfisher
+    - SnapKit
+    - UCZProgressView
   - CryptoSwift (0.3)
   - JTSImageViewController (1.5.1)
   - Kingfisher (2.2.0)
@@ -12,6 +15,7 @@ PODS:
   - RealmSwift (0.98.6):
     - Realm (= 0.98.6)
   - SnapKit (0.20.0)
+  - UCZProgressView (0.0.1)
   - ViewPagerSwift (1.0.0)
   - Zip (0.3.4)
 
@@ -25,17 +29,20 @@ DEPENDENCIES:
   - RAMAnimatedTabBarController
   - RealmSwift
   - SnapKit
+  - UCZProgressView (from `./`)
   - ViewPagerSwift
   - Zip
 
 EXTERNAL SOURCES:
   CollieGallery:
     :path: ./
+  UCZProgressView:
+    :path: ./
 
 SPEC CHECKSUMS:
   Alamofire: 9054db4a1b1ca9e363223183e01cea380159a27c
   AXStretchableHeaderTabViewController: 37c56211c98d3e823ecf7493d68f5ee8fa7028e1
-  CollieGallery: 12e0b98734e3aed7624bf0c177b61d8d2c613a9a
+  CollieGallery: 4b7620963debba436066b783bb416bc77c9e7676
   CryptoSwift: 19d29910d88440fcb132761d9ab57e175f1b0d0e
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
   Kingfisher: 350869ed88d6451803b390475d977abdd9f0a357
@@ -43,6 +50,7 @@ SPEC CHECKSUMS:
   Realm: 44803f35418c5d89b27825a564247fcd190de37e
   RealmSwift: c7239c52c83f8c43525a5269ba7be1694da33afc
   SnapKit: 5fce3c1bbbf1fbd31de9aa92f33eb9fa03f15650
+  UCZProgressView: 3218c7a112c5ec311a4e619a81de15b633128525
   ViewPagerSwift: f607f30ed55ebe7adf74ebe6bcd8e9b23a73f155
   Zip: 99d6f8bdcbcf1fd2f189af929651282bdc42c2f7
 

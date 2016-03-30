@@ -94,6 +94,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-ehreader/Realm.framework"
   install_framework "Pods-ehreader/RealmSwift.framework"
   install_framework "Pods-ehreader/SnapKit.framework"
+  install_framework "Pods-ehreader/UCZProgressView.framework"
   install_framework "Pods-ehreader/ViewPagerSwift.framework"
   install_framework "Pods-ehreader/Zip.framework"
 fi
@@ -108,6 +109,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ehreader/Realm.framework"
   install_framework "Pods-ehreader/RealmSwift.framework"
   install_framework "Pods-ehreader/SnapKit.framework"
+  install_framework "Pods-ehreader/UCZProgressView.framework"
   install_framework "Pods-ehreader/ViewPagerSwift.framework"
   install_framework "Pods-ehreader/Zip.framework"
 fi

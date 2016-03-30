@@ -12,6 +12,7 @@ import SnapKit
 import Alamofire
 import JTSImageViewController
 import CollieGallery
+import UCZProgressView
 
 private let ProgressHeight:CGFloat = 1
 private let IllustTagCellIdentifer = "IllustTagCellIdentifer"

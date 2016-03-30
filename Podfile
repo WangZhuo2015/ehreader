@@ -1,7 +1,7 @@
 platform :ios, '8.0'
 use_frameworks!
 
-target ‘ehreader’ do
+target 'ehreader' do
     pod 'SnapKit'
     pod 'Alamofire'
     pod 'RealmSwift'
@@ -13,4 +13,5 @@ target ‘ehreader’ do
     pod 'ViewPagerSwift'
     pod 'JTSImageViewController'
     pod 'CollieGallery', :path => './'
+    pod 'UCZProgressView', :path => './'
 end

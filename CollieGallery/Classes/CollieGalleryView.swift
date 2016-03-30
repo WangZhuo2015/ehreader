@@ -160,7 +160,6 @@ internal class CollieGalleryView: UIView, UIScrollViewDelegate {
         }
         
         self.imageView.frame = zoomFrame
-        
     }
     
     private func updateImageViewSize() {

@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'CD210C8D86C6615B72FC51D3'
-               BlueprintName = 'CollieGallery'
+               BlueprintIdentifier = '0C1526F84BA9278756CB69C0'
+               BlueprintName = 'UCZProgressView'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'CollieGallery.framework'>
+               BuildableName = 'UCZProgressView.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

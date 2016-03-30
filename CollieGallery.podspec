@@ -18,6 +18,9 @@ s.requires_arc = true
 
 s.source_files = 'CollieGallery/Classes/**/*'
 s.resource_bundles = {
-'CollieGallery' => ['CollieGallery/Assets/*.png']
+    'CollieGallery' => ['CollieGallery/Assets/*.png']
 }
+s.dependency 'UCZProgressView'
+s.dependency 'Kingfisher'
+s.dependency 'SnapKit'
 end
