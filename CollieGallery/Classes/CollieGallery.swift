@@ -250,6 +250,9 @@ public class CollieGallery: UIViewController, UIScrollViewDelegate, CollieGaller
     }
     
     private func loadImagesNextToIndex(index: Int) {
+        if index < 0 || index >= self.pictureViews.count{
+            return
+        }
         self.pictureViews[index].loadImage()
         
         let imagesToLoad = self.options.preLoadedImages

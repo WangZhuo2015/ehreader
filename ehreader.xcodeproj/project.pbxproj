@@ -15,6 +15,7 @@
 		E92C26D11C4E091D009FB297 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E92C26D01C4E091D009FB297 /* CryptoSwift.framework */; };
 		E934F77B1CAB7CA600A26E64 /* CollieGallery.podspec in Resources */ = {isa = PBXBuildFile; fileRef = E934F77A1CAB7CA600A26E64 /* CollieGallery.podspec */; };
 		E934F77D1CAB7E1400A26E64 /* CollieGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E934F77C1CAB7E1400A26E64 /* CollieGallery.framework */; };
+		E934F77F1CABA2EA00A26E64 /* PixivImageUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E934F77E1CABA2EA00A26E64 /* PixivImageUrl.swift */; };
 		E93D68CC1C4FDC6C00EB0932 /* PixivProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93D68CB1C4FDC6C00EB0932 /* PixivProviderTests.swift */; };
 		E95C063F1C48C2A70081C9C3 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */; };
 		E95C06411C48C2F70081C9C3 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E95C06401C48C2F70081C9C3 /* Media.xcassets */; };
@@ -119,6 +120,7 @@
 		E92C26D01C4E091D009FB297 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = "Pods/../build/Debug-iphoneos/CryptoSwift.framework"; sourceTree = "<group>"; };
 		E934F77A1CAB7CA600A26E64 /* CollieGallery.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CollieGallery.podspec; sourceTree = "<group>"; };
 		E934F77C1CAB7E1400A26E64 /* CollieGallery.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CollieGallery.framework; path = "../../Library/Developer/Xcode/DerivedData/ehreader-bsawwpbfimnubodhgkvnncxpxovf/Build/Products/Debug-iphoneos/CollieGallery.framework"; sourceTree = "<group>"; };
+		E934F77E1CABA2EA00A26E64 /* PixivImageUrl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivImageUrl.swift; sourceTree = "<group>"; };
 		E93872CF1C848C930034B465 /* ehreader-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ehreader-Bridging-Header.h"; sourceTree = "<group>"; };
 		E93D68CB1C4FDC6C00EB0932 /* PixivProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivProviderTests.swift; sourceTree = "<group>"; };
 		E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
@@ -437,6 +439,7 @@
 			children = (
 				F78DD6FE1BF9E56D003D3CB9 /* DataLoader.swift */,
 				F72B31E71C4F7C88007C6B21 /* PixivProvider.swift */,
+				E934F77E1CABA2EA00A26E64 /* PixivImageUrl.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -674,6 +677,7 @@
 				E967A4921C5079EF000C6DC2 /* PixivUser.swift in Sources */,
 				E98B07401C89C2E100EE44B7 /* CustomNavigationController.swift in Sources */,
 				E967A4961C50D172000C6DC2 /* PixivIllustGallery.swift in Sources */,
+				E934F77F1CABA2EA00A26E64 /* PixivImageUrl.swift in Sources */,
 				E97D61D11C8D4B5800E12AEF /* PushTransition.swift in Sources */,
 				E98B07491C89C2E100EE44B7 /* MainTabbarController.swift in Sources */,
 				E9AE80BA1C9F997B006A5AC4 /* MeFollowingViewController.swift in Sources */,

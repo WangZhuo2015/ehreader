@@ -29,6 +29,7 @@ public class CollieGalleryPicture: NSObject {
     internal var image: UIImage!
     internal var url: String!
     internal var placeholder: UIImage?
+    public var httpHeader:[String:String] = [String:String]()
     
     
     // MARK: - Initializers

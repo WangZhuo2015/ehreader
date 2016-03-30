@@ -67,6 +67,10 @@ public class PixivIllust: Object {
         return "illust_id"
     }
     
+    public override class func ignoredProperties() -> [String] {
+        return ["imageUrls"]
+    }
+    
     public func imageSize()->CGSize {
         return CGSizeMake(CGFloat(self.width), CGFloat(self.height))
     }
@@ -200,4 +204,14 @@ public class PixivIllust: Object {
         let realm = try! Realm()
         return realm.objects(PixivIllust).filter("illust_id = \(illustId)").first
     }
+    
+    public lazy var imageUrls:[PixivImageUrl] = {
+        guard let metadata = self.metadata?.jsonValue() as? NSDictionary else {
+            return []
+        }
+        guard let pages = metadata.objectForKey("pages") as? NSArray else {
+            return []
+        }
+        return PixivImageUrl.createImageUrls(pages)
+    }()
 }

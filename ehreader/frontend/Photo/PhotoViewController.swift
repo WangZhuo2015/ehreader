@@ -11,6 +11,7 @@ import Kingfisher
 import SnapKit
 import Alamofire
 import JTSImageViewController
+import CollieGallery
 
 private let ProgressHeight:CGFloat = 1
 private let IllustTagCellIdentifer = "IllustTagCellIdentifer"
@@ -267,6 +268,11 @@ class PhotoViewController: UIViewController {
     }
     
     func checkLargeImage(sender:UIBarButtonItem) {
+        if let pageCount = self.illust?.page_count where pageCount > 1{
+            self.openGallery()
+            return
+        }
+        
         guard let largeImageUrl = self.illust?.url_large else {
             return
         }
@@ -322,6 +328,30 @@ class PhotoViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func openGallery() {
+        guard let pages = self.illust?.imageUrls else{
+            return
+        }
+        guard let illustId = illust?.illust_id else {
+            return
+        }
+        self.hideMainTabbar(true)
+        var pictures = [CollieGalleryPicture]()
+        for imageUrl in pages {
+            if let url = imageUrl.medium{
+                let picture = CollieGalleryPicture(url:url)
+                let header = [
+                    "Referer":"http://www.pixiv.net/member_illust.php?mode=medium&illust_id=\(illustId)",
+                    "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Ubuntu/12.10 Chromium/22.0.1229.94 Chrome/22.0.1229.94 Safari/537.4"
+                ]
+                picture.httpHeader = header
+                pictures.append(picture)
+            }
+        }
+        let gallery = CollieGallery(pictures: pictures)
+        gallery.presentInViewController(self)
     }
     
     func displayImageViewer(image:UIImage, imageUrl:String, placeholderImageKey:String) {
