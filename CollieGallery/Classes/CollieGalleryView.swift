@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UCZProgressView
+import Kingfisher
 
 internal class CollieGalleryView: UIView, UIScrollViewDelegate {
     
@@ -30,7 +32,7 @@ internal class CollieGalleryView: UIView, UIScrollViewDelegate {
     var picture: CollieGalleryPicture!
     var scrollView: UIScrollView!
     var imageView: UIImageView!
-    var activityIndicator: UIActivityIndicatorView!
+    var activityIndicator: UCZProgressView!
     
     
     // MARK: - Private properties
@@ -99,12 +101,17 @@ internal class CollieGalleryView: UIView, UIScrollViewDelegate {
     }
     
     private func setupActivityIndicatorView() {
-        self.activityIndicator = UIActivityIndicatorView()
-        self.activityIndicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
-        self.activityIndicator.center = self.imageView.center
-        self.activityIndicator.hidesWhenStopped = true
-        self.activityIndicator.color = self.theme.progressIndicatorColor
-
+        activityIndicator = UCZProgressView(frame: CGRectMake(0, 0, self.bounds.width, self.bounds.height))
+        activityIndicator.frame = imageView.bounds
+        activityIndicator.showsText = true
+        activityIndicator.indeterminate = true
+        activityIndicator.blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+        activityIndicator.usesVibrancyEffect = true
+        activityIndicator.lineWidth = 1
+        activityIndicator.radius = 20
+        activityIndicator.textSize = 12
+        activityIndicator.alpha = 0.9
+        
         self.addSubview(self.activityIndicator)
     }
 
@@ -207,31 +214,26 @@ internal class CollieGalleryView: UIView, UIScrollViewDelegate {
                 
             } else if let url = self.picture.url {
                 
-                if let placeholder = self.picture.placeholder {
-                    self.imageView.image = placeholder
-                    self.updateImageViewSize()
-                }
                 
-                self.activityIndicator.startAnimating()
-                
-                let request: NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: url)!)
-                for (field, value) in self.picture.httpHeader {
-                    request.setValue(value, forHTTPHeaderField: field)
-                }
-                
-                let mainQueue = NSOperationQueue.mainQueue()
-                NSURLConnection.sendAsynchronousRequest(request, queue: mainQueue, completionHandler: { (response, data, error) -> Void in
-                    if error == nil && data != nil {
-                        if let image = UIImage(data: data!) {
-                            dispatch_async(dispatch_get_main_queue(), {
-                                self.imageView.image = image
-                                self.updateImageViewSize()
-                                
-                                self.activityIndicator.stopAnimating()
-                            })
-                        }
+                KingfisherManager.sharedManager.downloader.requestModifier = {(request:NSMutableURLRequest)->Void in
+                    for (field, value) in self.picture.httpHeader {
+                        request.setValue(value, forHTTPHeaderField: field)
                     }
-                })
+                }
+                
+                self.imageView.kf_setImageWithURL(NSURL(string:url)!, placeholderImage: self.picture.placeholder, optionsInfo: nil, progressBlock: {[weak self](receivedSize, totalSize)  in
+                    let progress = CGFloat(receivedSize)/CGFloat(totalSize)
+                    self?.activityIndicator.progress = progress
+                }) {[weak self] (image, error, cacheType, imageURL) in
+                    if image != nil {
+                        self?.imageView.image = image
+                        self?.updateImageViewSize()
+                        self?.activityIndicator.progress = 1
+                        self?.activityIndicator.progressAnimiationDidStop({
+                            self?.activityIndicator.removeFromSuperview()
+                        })
+                    }
+                }
             }
         }
     }

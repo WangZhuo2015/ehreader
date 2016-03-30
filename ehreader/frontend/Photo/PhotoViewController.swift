@@ -324,8 +324,8 @@ class PhotoViewController: UIViewController {
                     imageProgressView.progress = 1
                     imageProgressView.progressAnimiationDidStop({
                         self?.displayImageViewer(image!, imageUrl: largeImageUrl, placeholderImageKey: imageUrl)
+                        imageProgressView.removeFromSuperview()
                     })
-                    imageProgressView.removeFromSuperview()
                 }
             }
         }

@@ -8,12 +8,11 @@
 
 #import "UCZProgressView.h"
 
-
 @interface UCZProgressView ()
 
 @property (nonatomic) CALayer *backgroundLayer;
 @property (nonatomic) CAShapeLayer *progressLayer;
-@property (nonatomic,copy)void(^progressDidStopBlock)(void);
+@property (nonatomic, copy) void(^progressDidStopBlock)(void);
 
 @end
 
@@ -71,7 +70,7 @@
 
 - (UIView *)defaultBackgroundView {
     UIView *backgroundView = [[UIView alloc] init];
-    backgroundView.backgroundColor = [UIColor clearColor];
+    backgroundView.backgroundColor = [UIColor whiteColor];
     
     return backgroundView;
 }
@@ -315,7 +314,7 @@
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"path"];
     animation.delegate = self;
     animation.toValue = (id)finalPath.CGPath;
-    animation.duration = 1;
+    animation.duration = 0.4;
     animation.beginTime = CACurrentMediaTime() + 0.4;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
     animation.fillMode  = kCAFillModeForwards;
@@ -324,13 +323,9 @@
     [maskLayer addAnimation:animation forKey:@"path"];
 }
 
-
-- (void)progressAnimiationDidStop:(void(^)(void))block{
-    self.progressDidStopBlock = block;
-}
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    if (self.progressDidStopBlock) {
-        self.progressDidStopBlock();
+    if (self.animationDidStopBlock) {
+        self.animationDidStopBlock();
     }
     self.backgroundView.layer.mask = nil;
     self.hidden = YES;
