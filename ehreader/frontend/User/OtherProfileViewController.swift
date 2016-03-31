@@ -106,6 +106,10 @@ class OtherProfileViewController: UIViewController {
         addViewControllers()
     }
     
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    }
+    
     deinit {
         print("deinit OtherProfileViewController")
         //fix crash bug in ios8 http://stackoverflow.com/questions/26103756/uiscrollview-internal-consistency-crash
@@ -197,6 +201,8 @@ class OtherProfileViewController: UIViewController {
         }))
         
         alertController.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))
+        //http://stackoverflow.com/questions/25639883/runtime-exception-coming-when-show-uialertcontrolleractionsheet-ios8
+        alertController.popoverPresentationController?.barButtonItem = sender
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
@@ -294,12 +300,6 @@ extension OtherProfileViewController: UITableViewDataSource, UITableViewDelegate
             view.snp_makeConstraints { (make) in
                 make.edges.equalTo(cell.contentView)
             }
-//            view.alpha = 0
-//            UIView.animateWithDuration(1, animations: {
-//                view.alpha = 1
-//            }, completion: { (finished:Bool) in
-//                    
-//            })
         }
         
         return cell

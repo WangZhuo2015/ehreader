@@ -64,6 +64,8 @@ class UserFollowingViewController: UIViewController {
     }
     
     deinit {
+        self.collectionView.delegate = nil
+        self.collectionView.dataSource = nil
         print("deinit UserFollowingViewController")
     }
     
@@ -198,6 +200,8 @@ extension UserFollowingViewController: FollowingCollectionViewCellDelegate {
         }))
         
         alertController.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))
+        //http://stackoverflow.com/questions/25639883/runtime-exception-coming-when-show-uialertcontrolleractionsheet-ios8
+        alertController.popoverPresentationController?.sourceView = cell
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
