@@ -38,11 +38,6 @@ class GalleryCell: UICollectionViewCell {
         return view
     }()
     
-    lazy var typeImageView:UIImageView = {
-        let imageView = UIImageView(frame: CGRectZero)
-        return imageView
-    }()
-    
     lazy var titleLabel:UILabel = {
         let label = UILabel(frame: CGRectZero)
         label.font = UIFont.systemFontOfSize(12)
@@ -85,6 +80,30 @@ class GalleryCell: UICollectionViewCell {
         return progressView
     }()
     
+    lazy var pageCountLabel:UILabel = {
+        let label = UILabel(frame: CGRectZero)
+        label.font = UIFont.systemFontOfSize(10)
+        label.layer.cornerRadius = 3
+        label.layer.borderWidth = 1
+        label.layer.borderColor = UIConstants.GrapefruitColorHighlight.CGColor
+        label.backgroundColor = UIConstants.GrapefruitColorHighlight
+        label.textColor = UIConstants.LightGray
+        label.clipsToBounds = true
+        return label
+    }()
+    
+    lazy var typeLabel:UILabel = {
+        let label = UILabel(frame: CGRectZero)
+        label.font = UIFont.systemFontOfSize(10)
+        label.layer.cornerRadius = 3
+        label.layer.borderWidth = 1
+        label.layer.borderColor = UIConstants.GrapefruitColorHighlight.CGColor
+        label.backgroundColor = UIConstants.GrapefruitColorHighlight
+        label.textColor = UIConstants.LightGray
+        label.clipsToBounds = true
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupGalleryCell()
@@ -103,11 +122,12 @@ class GalleryCell: UICollectionViewCell {
         addSubview(imageBackgroundView)
         addSubview(imageView)
         addSubview(self.titleLabel)
+        addSubview(self.pageCountLabel)
+        addSubview(self.typeLabel)
         addSubview(lineView)
         addSubview(avatarImageView)
         addSubview(usernameLabel)
         addSubview(progressView)
-        addSubview(typeImageView)
         
         setConstraints()
     }
@@ -115,11 +135,6 @@ class GalleryCell: UICollectionViewCell {
     private func setConstraints() {
         imageView.snp_makeConstraints { (make) -> Void in
             make.leading.trailing.top.equalTo(self)
-        }
-        
-        typeImageView.snp_makeConstraints { (make) in
-            make.trailing.equalTo(self)
-            make.centerY.equalTo(self.avatarImageView)
         }
         
         imageBackgroundView.snp_makeConstraints { (make) in
@@ -132,10 +147,20 @@ class GalleryCell: UICollectionViewCell {
             make.trailing.equalTo(self).offset(-8)
         }
         
+        pageCountLabel.snp_makeConstraints { (make) in
+            make.leading.equalTo(self).offset(8)
+            make.top.equalTo(self.titleLabel.snp_bottom).offset(10)
+        }
+        
+        typeLabel.snp_makeConstraints { (make) in
+            make.leading.equalTo(self.pageCountLabel.snp_trailing).offset(6)
+            make.centerY.equalTo(self.pageCountLabel)
+        }
+        
         lineView.snp_makeConstraints { (make) in
             make.leading.trailing.equalTo(self)
             make.height.equalTo(0.5)
-            make.top.equalTo(self.titleLabel.snp_bottom).offset(10)
+            make.top.equalTo(self.pageCountLabel.snp_bottom).offset(10)
         }
         
         avatarImageView.snp_makeConstraints { (make) in
@@ -179,20 +204,10 @@ class GalleryCell: UICollectionViewCell {
         self.usernameLabel.text = illust.name
         
         if let type = illust.type {
-            if let rankingType = PixivRankingType(rawValue: type) {
-                switch rankingType {
-                case .Ugoira:
-                    typeImageView.image = UIImage(named: "thumb_type_ugoira")
-                    break
-                case .Manga:
-                    typeImageView.image = UIImage(named: "thumb_type_manga")
-                    break
-                default:
-                    typeImageView.image = nil
-                    break
-                }
-            }
+            self.typeLabel.text = " \(type) "
         }
+        self.pageCountLabel.text = " \(illust.page_count) 页 "
+        
         
         KingfisherManager.sharedManager.cache.clearMemoryCache()
         KingfisherManager.sharedManager.downloader.requestModifier = {(request:NSMutableURLRequest)->Void in

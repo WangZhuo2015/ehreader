@@ -155,11 +155,13 @@ extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionVi
     func bottomHeight(indexPath:NSIndexPath, calculateSize: CGSize) -> Float {
         if let illustId = self.gallery?.illusts[indexPath.row] {
             if let illust = PixivIllust.getIllustWithId(illustId) {
-                let normalHeight = 20 + AvatarWidth + 0.5 + 20
+                let normalHeight = 20 + AvatarWidth + 0.5 + 20 + 10
                 if let text = illust.title {
                     let titleWidth = calculateSize.width - 16
                     let titleHeight = text.heightWithConstrainedWidth(titleWidth, font: UIFont.systemFontOfSize(12))
-                    return Float(titleHeight + normalHeight)
+                    let detailHeight = "\(illust.page_count) 页".heightWithConstrainedWidth(titleWidth, font: UIFont.systemFontOfSize(10))
+                    
+                    return Float(titleHeight + detailHeight + normalHeight)
                 }
                 return Float(normalHeight) + 24
             }

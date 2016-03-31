@@ -124,6 +124,30 @@ class PhotoViewController: UIViewController {
         return label
     }()
     
+    lazy var pageCountLabel:UILabel = {
+        let label = UILabel(frame: CGRectZero)
+        label.font = UIFont.systemFontOfSize(10)
+        label.layer.cornerRadius = 3
+        label.layer.borderWidth = 1
+        label.layer.borderColor = UIConstants.GrapefruitColorHighlight.CGColor
+        label.backgroundColor = UIConstants.GrapefruitColorHighlight
+        label.textColor = UIConstants.LightGray
+        label.clipsToBounds = true
+        return label
+    }()
+    
+    lazy var typeLabel:UILabel = {
+        let label = UILabel(frame: CGRectZero)
+        label.font = UIFont.systemFontOfSize(10)
+        label.layer.cornerRadius = 3
+        label.layer.borderWidth = 1
+        label.layer.borderColor = UIConstants.GrapefruitColorHighlight.CGColor
+        label.backgroundColor = UIConstants.GrapefruitColorHighlight
+        label.textColor = UIConstants.LightGray
+        label.clipsToBounds = true
+        return label
+    }()
+    
     lazy var lineView:UIView = {
         let line = UIView(frame:CGRectZero)
         line.backgroundColor = UIConstants.GrayBackgroundColor
@@ -145,6 +169,8 @@ class PhotoViewController: UIViewController {
         self.scrollView.addSubview(self.avatarImageView)
         self.scrollView.addSubview(self.usernameLabel)
         self.scrollView.addSubview(self.lineView)
+        self.scrollView.addSubview(self.pageCountLabel)
+        self.scrollView.addSubview(self.typeLabel)
         self.view.addGestureRecognizer(self.edgePanGestureRecognizer)
         addConstraints()
     }
@@ -207,6 +233,16 @@ class PhotoViewController: UIViewController {
             make.trailing.equalTo(self.view)
         }
         
+        pageCountLabel.snp_makeConstraints { (make) in
+            make.leading.equalTo(self.scrollView).offset(10)
+            make.top.equalTo(self.titleLabel.snp_bottom).offset(10)
+        }
+        
+        typeLabel.snp_makeConstraints { (make) in
+            make.leading.equalTo(self.pageCountLabel.snp_trailing).offset(6)
+            make.centerY.equalTo(self.pageCountLabel)
+        }
+        
         self.shareButton.snp_makeConstraints { (make) in
             make.trailing.equalTo(self.scrollView).offset(-10)
             make.width.height.equalTo(32)
@@ -223,7 +259,7 @@ class PhotoViewController: UIViewController {
         avatarImageView.snp_makeConstraints { (make) in
             make.leading.equalTo(self.scrollView).offset(10)
             make.width.height.equalTo(AvatarWidth)
-            make.top.equalTo(self.titleLabel.snp_bottom).offset(10)
+            make.top.equalTo(self.pageCountLabel.snp_bottom).offset(10)
         }
         
         usernameLabel.snp_makeConstraints { (make) in
@@ -288,6 +324,7 @@ class PhotoViewController: UIViewController {
         guard let illustId = illust?.illust_id else {
             return
         }
+        
         
         if let largeImage = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(largeImageUrl) {
             displayImageViewer(largeImage, imageUrl: largeImageUrl, placeholderImageKey: imageUrl)
@@ -428,6 +465,11 @@ class PhotoViewController: UIViewController {
         self.avatarImageView.kf_setImageWithURL(NSURL(string: illust.profile_url_px_50x50!)!, placeholderImage: nil)
         self.usernameLabel.text = illust.name
         
+        if let type = illust.type {
+            self.typeLabel.text = " \(type) "
+        }
+        
+        self.pageCountLabel.text = " \(illust.page_count) 页 "
         
         if let largeImageUrl = illust.url_large {
             if let largeImage = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(largeImageUrl) {

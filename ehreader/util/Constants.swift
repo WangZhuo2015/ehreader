@@ -123,4 +123,10 @@ public struct UIConstants {
     public static let DefaultBlackTextColor:UIColor = UIColor.createColor(30, green: 30, blue: 30, alpha: 1)
     public static let GrayBackgroundColor:UIColor = UIColor.createColor(220, green: 220, blue: 224, alpha: 1)
     public static let DisableBackgroundColor:UIColor = UIColor.createColor(239, green: 239, blue: 239, alpha: 1)
+    
+    public static let GrapefruitColorHighlight:UIColor = UIColor.colorWithRGB(0xDA4453)
+    public static let GrapefruitColor:UIColor = UIColor.colorWithRGB(0xED5565)
+    
+    public static let LightGrayHighlight:UIColor = UIColor.colorWithRGB(0xE6E9ED)
+    public static let LightGray:UIColor = UIColor.colorWithRGB(0xF5F6FA)
 }

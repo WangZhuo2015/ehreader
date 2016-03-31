@@ -47,6 +47,7 @@
 		E98BBEEC1CA02C25009C5099 /* UserFavoriteWorksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98BBEEB1CA02C25009C5099 /* UserFavoriteWorksViewController.swift */; };
 		E98BBEEE1CA03EAB009C5099 /* UserFollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98BBEED1CA03EAB009C5099 /* UserFollowingViewController.swift */; };
 		E98F53F41C9AE64F003B5093 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98F53F31C9AE64F003B5093 /* PageControl.swift */; };
+		E997EAFA1CAD69E7005E1431 /* UgoiraHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E997EAF91CAD69E7005E1431 /* UgoiraHelper.swift */; };
 		E9A90D911CA7D3C300253629 /* SearchHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A90D901CA7D3C300253629 /* SearchHistory.swift */; };
 		E9AE80BA1C9F997B006A5AC4 /* MeFollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE80B91C9F997B006A5AC4 /* MeFollowingViewController.swift */; };
 		E9AE80BC1C9FA133006A5AC4 /* FollowingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE80BB1C9FA133006A5AC4 /* FollowingCollectionViewCell.swift */; };
@@ -155,6 +156,7 @@
 		E98BBEEB1CA02C25009C5099 /* UserFavoriteWorksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFavoriteWorksViewController.swift; sourceTree = "<group>"; };
 		E98BBEED1CA03EAB009C5099 /* UserFollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFollowingViewController.swift; sourceTree = "<group>"; };
 		E98F53F31C9AE64F003B5093 /* PageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
+		E997EAF91CAD69E7005E1431 /* UgoiraHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UgoiraHelper.swift; sourceTree = "<group>"; };
 		E9A90D901CA7D3C300253629 /* SearchHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHistory.swift; sourceTree = "<group>"; };
 		E9A90D921CA8304100253629 /* YHImageViewer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YHImageViewer.framework; path = "Pods/../build/Debug-iphoneos/YHImageViewer.framework"; sourceTree = "<group>"; };
 		E9AE80B91C9F997B006A5AC4 /* MeFollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeFollowingViewController.swift; sourceTree = "<group>"; };
@@ -456,6 +458,7 @@
 				E92C26CE1C4E0787009FB297 /* BppDownloadFile.swift */,
 				F730FDE71BFEFA6000F44740 /* GalleryService.swift */,
 				E9B216F51C4A84990099CF54 /* PhotoService.swift */,
+				E997EAF91CAD69E7005E1431 /* UgoiraHelper.swift */,
 			);
 			path = service;
 			sourceTree = "<group>";
@@ -696,6 +699,7 @@
 				E98B07441C89C2E100EE44B7 /* GalleryTableViewCell.swift in Sources */,
 				E9FB94931C8FBE3D0076E01D /* CurveView.swift in Sources */,
 				E98B07421C89C2E100EE44B7 /* GalleryCollectionViewCell.swift in Sources */,
+				E997EAFA1CAD69E7005E1431 /* UgoiraHelper.swift in Sources */,
 				E9FDED9C1C49385E00557D0A /* RatingBar.swift in Sources */,
 				F78DD6DA1BF9DB7C003D3CB9 /* AppDelegate.swift in Sources */,
 				E9F1FD211C8EA6BE0029BD17 /* DropdownController.swift in Sources */,
