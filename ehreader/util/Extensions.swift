@@ -207,6 +207,23 @@ public extension NSString {
     
 }
 
+extension NSAttributedString {
+    func heightWithConstrainedWidth(width: CGFloat) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: CGFloat.max)
+        let boundingBox = self.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
+        
+        return ceil(boundingBox.height)
+    }
+    
+    func widthWithConstrainedHeight(height: CGFloat) -> CGFloat {
+        let constraintRect = CGSize(width: CGFloat.max, height: height)
+        
+        let boundingBox = self.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
+        
+        return ceil(boundingBox.width)
+    }
+}
+
 public extension String {
     subscript (r: Range<Int>) -> String {
         get {
@@ -233,14 +250,20 @@ public extension String {
         return self[from..<end]
     }
     
+    func widthWithConstrainedHeight(height: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: CGFloat.max, height: height)
+        
+        let boundingBox = self.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        
+        return boundingBox.height
+    }
     
-    public func contentRect(font:UIFont, maxSize:CGSize)->CGRect {
-        let attrStr = NSAttributedString(string: self)
-        var range = NSMakeRange(0, attrStr.length)
-        let dic = attrStr.attributesAtIndex(0, effectiveRange: &range)
-        let str = self as NSString
-        let rect = str.boundingRectWithSize(maxSize, options: [NSStringDrawingOptions.UsesLineFragmentOrigin, NSStringDrawingOptions.UsesFontLeading], attributes: dic, context: nil)
-        return rect
+    func heightWithConstrainedWidth(width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: CGFloat.max)
+        
+        let boundingBox = self.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        
+        return boundingBox.height
     }
     
     public var stringByDeletingLastPathComponent:String {

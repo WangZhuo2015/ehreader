@@ -66,6 +66,12 @@ class ProfileViewController: UIViewController {
         self.displayMainTabbar(true)
     }
     
+    deinit {
+        //fix crash bug in ios8 http://stackoverflow.com/questions/26103756/uiscrollview-internal-consistency-crash
+        self.tableView.delegate = nil;
+        self.tableView.dataSource = nil;
+    }
+    
     private func addConstraints() {
         profileView.snp_makeConstraints { (make) in
             make.top.equalTo(self.snp_topLayoutGuideBottom)

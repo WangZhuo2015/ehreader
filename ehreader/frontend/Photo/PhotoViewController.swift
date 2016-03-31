@@ -151,6 +151,10 @@ class PhotoViewController: UIViewController {
     
     deinit {
         print("deinit PhotoViewController")
+        //fix crash bug in ios8 http://stackoverflow.com/questions/26103756/uiscrollview-internal-consistency-crash
+        self.tableView.delegate = nil;
+        self.tableView.dataSource = nil;
+        self.scrollView.delegate = nil
     }
     
     private var originalNaivgationControllerDelegate:UINavigationControllerDelegate?

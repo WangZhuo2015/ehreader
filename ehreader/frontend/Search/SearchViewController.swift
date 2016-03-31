@@ -47,6 +47,12 @@ class SearchViewController: UIViewController {
         addConstraints()
     }
     
+    deinit {
+        //fix crash bug in ios8 http://stackoverflow.com/questions/26103756/uiscrollview-internal-consistency-crash
+        self.tableView.delegate = nil;
+        self.tableView.dataSource = nil;
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.displayMainTabbar(true)

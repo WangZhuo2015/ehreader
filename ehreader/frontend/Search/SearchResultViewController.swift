@@ -67,6 +67,13 @@ class SearchResultViewController: UIViewController {
         addConstraints()
     }
     
+    deinit {
+        //fix crash bug in ios8 http://stackoverflow.com/questions/26103756/uiscrollview-internal-consistency-crash
+        self.pageView.delegate = nil;
+        self.pageView.dataSource = nil;
+        self.pageView.contentView.delegate = nil;
+    }
+    
     private var originalNaivgationControllerDelegate:UINavigationControllerDelegate?
     
     override func viewWillAppear(animated: Bool) {

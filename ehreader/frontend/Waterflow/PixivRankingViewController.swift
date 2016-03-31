@@ -71,6 +71,12 @@ class PixivRankingViewController: UIViewController {
             make.leading.trailing.bottom.equalTo(self.view)
         }
     }
+    
+    deinit {
+        //fix crash bug in ios8 http://stackoverflow.com/questions/26103756/uiscrollview-internal-consistency-crash
+        self.tableView.delegate = nil;
+        self.tableView.dataSource = nil;
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

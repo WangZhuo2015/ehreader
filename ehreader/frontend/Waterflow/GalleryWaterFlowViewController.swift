@@ -81,6 +81,9 @@ class GalleryWaterFlowViewController: UIViewController {
         print("deint GalleryWaterFlowViewController")
         self.currentSelectedCell = nil
         self.gallery = nil
+        //fix crash bug in ios8 http://stackoverflow.com/questions/26103756/uiscrollview-internal-consistency-crash
+        self.collectionView.delegate = nil;
+        self.collectionView.dataSource = nil;
     }
     
     func addViewConstraints() {
@@ -155,7 +158,7 @@ extension GalleryWaterFlowViewController: UICollectionViewDelegate, CollectionVi
                 let normalHeight = 20 + AvatarWidth + 0.5 + 20
                 if let text = illust.title {
                     let titleWidth = calculateSize.width - 16
-                    let titleHeight = text.contentRect(UIFont.systemFontOfSize(12), maxSize: CGSizeMake(titleWidth, CGFloat(MAXFLOAT))).height
+                    let titleHeight = text.heightWithConstrainedWidth(titleWidth, font: UIFont.systemFontOfSize(12))
                     return Float(titleHeight + normalHeight)
                 }
                 return Float(normalHeight) + 24
