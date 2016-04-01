@@ -68,7 +68,7 @@ public class PixivIllust: Object {
     }
     
     public override class func ignoredProperties() -> [String] {
-        return ["imageUrls"]
+        return ["imageUrls", "frames", "zipUrls"]
     }
     
     public func imageSize()->CGSize {
@@ -213,5 +213,35 @@ public class PixivIllust: Object {
             return []
         }
         return PixivImageUrl.createImageUrls(pages)
+    }()
+    
+    public lazy var frames:[NSTimeInterval] = {
+        guard let metadata = self.metadata?.jsonValue() as? NSDictionary else {
+            return []
+        }
+        guard let framesArray = metadata.objectForKey("frames") as? NSArray else {
+            return []
+        }
+        var frames:[NSTimeInterval] = []
+        for value in framesArray {
+            if let delayMsec = value.objectForKey("delay_msec") as? NSTimeInterval {
+                frames.append(delayMsec)
+            }
+        }
+        return frames
+    }()
+    
+    public lazy var zipUrls:[String] = {
+        guard let metadata = self.metadata?.jsonValue() as? NSDictionary else {
+            return []
+        }
+        guard let zipUrlDic = metadata.objectForKey("zip_urls") as? NSDictionary else {
+            return []
+        }
+        var zipUrls:[String] = []
+        for (key, value) in zipUrlDic {
+            zipUrls.append(value as! String)
+        }
+        return zipUrls
     }()
 }

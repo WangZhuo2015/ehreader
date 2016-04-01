@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		86EA0D6DDE51F968E31AD00E /* Pods_ehreader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */; };
+		E9187DC61CAE134000B6B733 /* SSZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9187DC51CAE134000B6B733 /* SSZipArchive.framework */; };
 		E91B7BCD1C9A7E54007ED39F /* LatestGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B7BCC1C9A7E54007ED39F /* LatestGalleryViewController.swift */; };
 		E91B7BCF1C9A7F12007ED39F /* RankGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B7BCE1C9A7F12007ED39F /* RankGalleryViewController.swift */; };
 		E91B7BD31C9AA248007ED39F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B7BD21C9AA248007ED39F /* SearchViewController.swift */; };
@@ -30,7 +31,6 @@
 		E98AB13F1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13B1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework */; };
 		E98AB1401C7456C500291F27 /* RAMAnimatedTabBarController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13C1C7456C500291F27 /* RAMAnimatedTabBarController.framework */; };
 		E98AB1411C7456C500291F27 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13D1C7456C500291F27 /* Realm.framework */; };
-		E98AB1421C7456C500291F27 /* Zip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98AB13E1C7456C500291F27 /* Zip.framework */; };
 		E98B07401C89C2E100EE44B7 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B072E1C89C2E100EE44B7 /* CustomNavigationController.swift */; };
 		E98B07411C89C2E100EE44B7 /* GalleryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B07301C89C2E100EE44B7 /* GalleryDetailViewController.swift */; };
 		E98B07421C89C2E100EE44B7 /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B07321C89C2E100EE44B7 /* GalleryCollectionViewCell.swift */; };
@@ -115,6 +115,8 @@
 		45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ehreader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18FFB26088383633394625A /* Pods-ehreader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.debug.xcconfig"; sourceTree = "<group>"; };
 		C546FD883CD238072C87AC87 /* Pods-ehreader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.release.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.release.xcconfig"; sourceTree = "<group>"; };
+		E9187DC31CAE0C1300B6B733 /* objective_zip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = objective_zip.framework; path = "Pods/../build/Debug-iphoneos/objective_zip.framework"; sourceTree = "<group>"; };
+		E9187DC51CAE134000B6B733 /* SSZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SSZipArchive.framework; path = "Pods/../build/Debug-iphoneos/SSZipArchive.framework"; sourceTree = "<group>"; };
 		E91B7BCC1C9A7E54007ED39F /* LatestGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LatestGalleryViewController.swift; sourceTree = "<group>"; };
 		E91B7BCE1C9A7F12007ED39F /* RankGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankGalleryViewController.swift; sourceTree = "<group>"; };
 		E91B7BD21C9AA248007ED39F /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9187DC61CAE134000B6B733 /* SSZipArchive.framework in Frameworks */,
 				E96971421CAC2A090073FA43 /* UCZProgressView.framework in Frameworks */,
 				E934F77D1CAB7E1400A26E64 /* CollieGallery.framework in Frameworks */,
 				E9F0C6FB1CA9347000AB0A77 /* JTSImageViewController.framework in Frameworks */,
@@ -229,7 +232,6 @@
 				E98AB13F1C7456C500291F27 /* AXStretchableHeaderTabViewController.framework in Frameworks */,
 				E98AB1401C7456C500291F27 /* RAMAnimatedTabBarController.framework in Frameworks */,
 				E98AB1411C7456C500291F27 /* Realm.framework in Frameworks */,
-				E98AB1421C7456C500291F27 /* Zip.framework in Frameworks */,
 				E92C26D11C4E091D009FB297 /* CryptoSwift.framework in Frameworks */,
 				F7EB133B1BFDDC4300538CC5 /* Kingfisher.framework in Frameworks */,
 				F7FAA4E91BFABCCD00E27E4A /* SnapKit.framework in Frameworks */,
@@ -253,6 +255,8 @@
 		21DD57ACF2F65B9C647D2B90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E9187DC51CAE134000B6B733 /* SSZipArchive.framework */,
+				E9187DC31CAE0C1300B6B733 /* objective_zip.framework */,
 				E96971411CAC2A090073FA43 /* UCZProgressView.framework */,
 				E934F7821CABBCDB00A26E64 /* UCZProgressView.framework */,
 				E934F77C1CAB7E1400A26E64 /* CollieGallery.framework */,

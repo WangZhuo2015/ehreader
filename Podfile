@@ -7,7 +7,7 @@ target 'ehreader' do
     pod 'RealmSwift'
     pod 'Kingfisher'
     pod 'CryptoSwift'
-    pod 'Zip'
+    pod 'SSZipArchive'
     pod 'AXStretchableHeaderTabViewController'
     pod 'RAMAnimatedTabBarController'
     pod 'ViewPagerSwift'

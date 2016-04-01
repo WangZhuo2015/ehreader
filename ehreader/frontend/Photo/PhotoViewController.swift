@@ -13,6 +13,7 @@ import Alamofire
 import JTSImageViewController
 import CollieGallery
 import UCZProgressView
+import ImageIO
 
 private let ProgressHeight:CGFloat = 1
 private let IllustTagCellIdentifer = "IllustTagCellIdentifer"
@@ -308,7 +309,53 @@ class PhotoViewController: UIViewController {
         
     }
     
+    var helper:UgoiraHelper?
+    
+    func startLoadingUgoira() {
+        guard let illust = self.illust else {
+            return
+        }
+        self.helper?.stopAnimation()
+        helper = UgoiraHelper(illust: illust, imageView: self.imageView)
+        imageView.addSubview(imageProgressView)
+        
+        self.imageProgressView.progressAnimiationDidStop({[weak self] in
+            self?.imageProgressView.removeFromSuperview()
+        })
+        
+        helper?.startLoadingUgoira({[weak self] (progress) in
+            self?.imageProgressView.progress = progress
+        }) {[weak self] (error) in
+            if let error = error {
+                print("Failed with error: \(error)")
+            } else {
+                print("Downloaded file successfully")
+            }
+            self?.imageProgressView.progress = 1
+            self?.helper?.unzipUgoira()
+        }
+    }
+    
+    private lazy var imageProgressView:UCZProgressView = {
+        let imageProgressView = UCZProgressView(frame: CGRectMake(0, 0, self.imageView.bounds.width, self.imageView.bounds.height))
+        imageProgressView.frame = self.imageView.bounds
+        imageProgressView.showsText = true
+        imageProgressView.indeterminate = true
+        imageProgressView.blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+        imageProgressView.usesVibrancyEffect = true
+        imageProgressView.lineWidth = 1
+        imageProgressView.radius = 20
+        imageProgressView.textSize = 12
+        imageProgressView.alpha = 0.9
+        return imageProgressView
+    }()
+    
     func checkLargeImage(sender:UIBarButtonItem) {
+        if let type = self.illust?.type where type == "ugoira" {
+            self.startLoadingUgoira()
+            return
+        }
+        
         if let pageCount = self.illust?.page_count where pageCount > 1{
             self.openGallery()
             return
@@ -335,18 +382,8 @@ class PhotoViewController: UIViewController {
                     return
                 }
             }
-            let imageProgressView = UCZProgressView(frame: CGRectMake(0, 0, imageView.bounds.width, imageView.bounds.height))
-            imageProgressView.frame = imageView.bounds
-            imageProgressView.showsText = true
-            imageProgressView.indeterminate = true
-            imageProgressView.blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
-            imageProgressView.usesVibrancyEffect = true
-            imageProgressView.lineWidth = 1
-            imageProgressView.radius = 20
-            imageProgressView.textSize = 12
-            imageProgressView.alpha = 0.9
-            imageView.addSubview(imageProgressView)
             
+            imageView.addSubview(imageProgressView)
             
             KingfisherManager.sharedManager.downloader.requestModifier = {(request:NSMutableURLRequest)->Void in
                 let refrer = "http://www.pixiv.net/member_illust.php?mode=medium&illust_id=\(illustId)"
@@ -357,15 +394,15 @@ class PhotoViewController: UIViewController {
             
             let placeholderImage = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(imageUrl)
             
-            self.imageView.kf_setImageWithURL(NSURL(string:largeImageUrl)!, placeholderImage: placeholderImage, optionsInfo: nil, progressBlock: {(receivedSize, totalSize)  in
+            self.imageView.kf_setImageWithURL(NSURL(string:largeImageUrl)!, placeholderImage: placeholderImage, optionsInfo: nil, progressBlock: {[weak self](receivedSize, totalSize)  in
                 let progress = CGFloat(receivedSize)/CGFloat(totalSize)
-                imageProgressView.progress = progress
+                self?.imageProgressView.progress = progress
             }) {[weak self] (image, error, cacheType, imageURL) in
                 if image != nil {
-                    imageProgressView.progress = 1
-                    imageProgressView.progressAnimiationDidStop({
+                    self?.imageProgressView.progress = 1
+                    self?.imageProgressView.progressAnimiationDidStop({
                         self?.displayImageViewer(image!, imageUrl: largeImageUrl, placeholderImageKey: imageUrl)
-                        imageProgressView.removeFromSuperview()
+                        self?.imageProgressView.removeFromSuperview()
                     })
                 }
             }

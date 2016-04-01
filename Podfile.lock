@@ -15,9 +15,9 @@ PODS:
   - RealmSwift (0.98.6):
     - Realm (= 0.98.6)
   - SnapKit (0.20.0)
+  - SSZipArchive (1.1)
   - UCZProgressView (0.0.1)
   - ViewPagerSwift (1.0.0)
-  - Zip (0.3.4)
 
 DEPENDENCIES:
   - Alamofire
@@ -29,9 +29,9 @@ DEPENDENCIES:
   - RAMAnimatedTabBarController
   - RealmSwift
   - SnapKit
+  - SSZipArchive
   - UCZProgressView (from `./`)
   - ViewPagerSwift
-  - Zip
 
 EXTERNAL SOURCES:
   CollieGallery:
@@ -50,8 +50,8 @@ SPEC CHECKSUMS:
   Realm: 44803f35418c5d89b27825a564247fcd190de37e
   RealmSwift: c7239c52c83f8c43525a5269ba7be1694da33afc
   SnapKit: 5fce3c1bbbf1fbd31de9aa92f33eb9fa03f15650
+  SSZipArchive: de3d215ab73f87db627f81f2ce24f1731e3886c3
   UCZProgressView: 3218c7a112c5ec311a4e619a81de15b633128525
   ViewPagerSwift: f607f30ed55ebe7adf74ebe6bcd8e9b23a73f155
-  Zip: 99d6f8bdcbcf1fd2f189af929651282bdc42c2f7
 
 COCOAPODS: 0.39.0
