@@ -14,7 +14,7 @@ private let ProfileTableViewCellIdentifier = "ProfileTableViewCellIdentifier"
 
 private var bookmarkTitles:[String] = ["收藏的书签", "非公开书签"]
 
-private var followingTitles:[String] = ["关注的用户", "悄悄关注的用户", "互相关注的朋友"]
+private var followingTitles:[String] = ["关注的用户", "悄悄关注的用户"]
 
 private var titleValues:[[String]] = [bookmarkTitles, followingTitles]
 

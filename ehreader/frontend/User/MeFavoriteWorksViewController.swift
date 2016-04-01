@@ -42,15 +42,19 @@ class MeFavoriteWorksViewController: GalleryWaterFlowViewController {
     }
     
     func startLoading(page:Int = 1, publicity:PixivPublicity) {
+        if self.isLoadingFinished {
+            return
+        }
+        
         do {
             try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
         }catch let error as NSError {
             print(error.localizedDescription)
         }
         
-        pixivProvider.meFavoriteWorks(publicity: publicity) { (gallery, error) in
+        pixivProvider.meFavoriteWorks(page, publicity: publicity) { (gallery, error) in
             if error != nil || gallery == nil{
-                print("loading choice data failed:\(error!.localizedDescription)")
+                print("loading choice data failed:\(error?.localizedDescription)")
                 self.backgroundView.status = BackgroundViewStatus.Failed
                 return
             }

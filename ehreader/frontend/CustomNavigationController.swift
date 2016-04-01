@@ -10,6 +10,7 @@ import UIKit
 
 public class CustomNavigationController: UINavigationController {
     internal(set) var screenshoots:[UIImage] = []
+    private var interactiveTransition: UIPercentDrivenInteractiveTransition?
     
     public var canDragBack:Bool = true
     public var isMoving:Bool = false
@@ -48,6 +49,7 @@ public class CustomNavigationController: UINavigationController {
         super.viewDidLoad()
         
         self.navigationBar.tintColor = UIColor.redColor()
+        self.interactivePopGestureRecognizer?.delegate = self
     }
 
     override public func didReceiveMemoryWarning() {

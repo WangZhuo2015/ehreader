@@ -189,7 +189,7 @@ class PhotoViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         print(self.imageView.frame)
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PhotoViewController.onApplicationEnterBackground(_:)), name: UIApplicationDidEnterBackgroundNotification, object: nil)
         self.originalNaivgationControllerDelegate = self.navigationController?.delegate
         self.navigationController?.delegate = self
     }
@@ -201,11 +201,18 @@ class PhotoViewController: UIViewController {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
         super.navigationController?.delegate = self.originalNaivgationControllerDelegate
+        self.helper?.stopAnimation()
+        self.helper = nil
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+    }
+    
+    func onApplicationEnterBackground(notification:NSNotification) {
+        self.helper?.stopAnimation()
     }
     
     private func addConstraints() {
