@@ -225,7 +225,7 @@ public class PixivIllust: Object {
         var frames:[NSTimeInterval] = []
         for value in framesArray {
             if let delayMsec = value.objectForKey("delay_msec") as? NSTimeInterval {
-                frames.append(delayMsec)
+                frames.append(delayMsec/1000)
             }
         }
         return frames

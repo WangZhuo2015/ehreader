@@ -16,6 +16,9 @@ public class UgoiraHelper: NSObject {
     
     private weak var imageView:UIImageView?
     
+    public var isAnimating:Bool = false
+    public var isLoading:Bool = false
+    
     var filename:String?
     
     var delayTimes:[NSTimeInterval] = []
@@ -52,6 +55,7 @@ public class UgoiraHelper: NSObject {
         }
         
         if !isFileExist {
+            isLoading = true
             let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
             download(.GET, zipUrl, parameters: nil, headers: header, destination: destination).progress {(bytesRead, totalBytesRead, totalBytesExpectedToRead) in
                 print(totalBytesRead)
@@ -61,8 +65,9 @@ public class UgoiraHelper: NSObject {
                         progressClosure?(progress:progress)
                     }
                 }
-            }.response { _, _, _, error in
+            }.response {[weak self] _, _, _, error in
                 if completeClosure != nil {
+                    self?.isLoading = false
                     completeClosure?(error:error)
                 }
             }
@@ -99,17 +104,14 @@ public class UgoiraHelper: NSObject {
                     }
                 }
                 print(images.count)
-                self?.frames = images
-                self?.startAnimation()
+                self?.startAnimation(images)
             }
         })
     }
     
-    private var frames:[CGImageRef] = []
-    
     let AnimationKey = "GIFAnimation"
     
-    public func startAnimation() {
+    public func startAnimation(frames:[CGImageRef]) {
         var totalTime:NSTimeInterval = 0
         for value  in delayTimes {
             totalTime += value
@@ -128,11 +130,12 @@ public class UgoiraHelper: NSObject {
         animation.duration = totalTime
         animation.delegate = self
         animation.repeatCount = MAXFLOAT
-        
+        isAnimating = true
         self.imageView?.layer.addAnimation(animation, forKey: AnimationKey)
     }
     
     public func stopAnimation() {
+        isAnimating = false
         self.imageView?.stopAnimating()
         self.imageView?.layer.removeAnimationForKey(AnimationKey)
     }

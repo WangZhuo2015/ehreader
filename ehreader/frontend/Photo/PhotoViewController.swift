@@ -315,6 +315,16 @@ class PhotoViewController: UIViewController {
         guard let illust = self.illust else {
             return
         }
+        
+        if let helper = self.helper where helper.isAnimating {
+            helper.stopAnimation()
+            return
+        }
+        
+        if let helper = self.helper where helper.isLoading {
+            return
+        }
+        
         self.helper?.stopAnimation()
         helper = UgoiraHelper(illust: illust, imageView: self.imageView)
         imageView.addSubview(imageProgressView)
