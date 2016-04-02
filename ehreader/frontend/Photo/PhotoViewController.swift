@@ -79,6 +79,7 @@ class PhotoViewController: UIViewController {
     private lazy var shareButton:UIButton = {
         let button = UIButton(frame: CGRectZero)
         button.setImage(UIImage(named:"ic_sendto"), forState: UIControlState.Normal)
+        button.addTarget(self, action: #selector(PhotoViewController.shareToSNS(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         return button
     }()
     
@@ -155,6 +156,7 @@ class PhotoViewController: UIViewController {
         return line
     }()
     
+    //MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -303,6 +305,7 @@ class PhotoViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: Event Response
     func onBookmark(sender:UIBarButtonItem) {
         if let illust = self.illust {
             PixivProvider.getInstance().meFavoriteWorksAdd(illust.illust_id, publicity: PixivPublicity.Public) { (success, error) in
@@ -313,7 +316,25 @@ class PhotoViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func shareToSNS(sender:UIButton)  {
+        guard let shareString = self.illust?.title else {
+            return
+        }
         
+        guard let imageUrl = self.illust?.getMediaImageUrl() else {
+            return
+        }
+        
+        guard let image = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(imageUrl) else {
+            return
+        }
+        let str = "分享一张来自P站的图片:\(shareString)"
+        
+        let activityViewController = UIActivityViewController(activityItems: [str, image], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = sender
+        self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
     var helper:UgoiraHelper?
