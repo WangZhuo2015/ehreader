@@ -25,6 +25,8 @@
 		E967A4941C50C9B2000C6DC2 /* PixivIllust.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967A4931C50C9B2000C6DC2 /* PixivIllust.swift */; };
 		E967A4961C50D172000C6DC2 /* PixivIllustGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967A4951C50D172000C6DC2 /* PixivIllustGallery.swift */; };
 		E96971421CAC2A090073FA43 /* UCZProgressView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96971411CAC2A090073FA43 /* UCZProgressView.framework */; };
+		E97149821CB35E0300DC4F7F /* BALoadingView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E97149801CB35E0300DC4F7F /* BALoadingView.framework */; };
+		E97149831CB35E0300DC4F7F /* RNLoadingButton_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E97149811CB35E0300DC4F7F /* RNLoadingButton_Swift.framework */; };
 		E97999971C4D1DFC00003AF6 /* PhotoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */; };
 		E97D61D11C8D4B5800E12AEF /* PushTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97D61D01C8D4B5800E12AEF /* PushTransition.swift */; };
 		E97D61D31C8D58A700E12AEF /* PopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97D61D21C8D58A700E12AEF /* PopTransition.swift */; };
@@ -46,8 +48,12 @@
 		E98B074C1C89C2E100EE44B7 /* GalleryWaterFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B073F1C89C2E100EE44B7 /* GalleryWaterFlowViewController.swift */; };
 		E98BBEEC1CA02C25009C5099 /* UserFavoriteWorksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98BBEEB1CA02C25009C5099 /* UserFavoriteWorksViewController.swift */; };
 		E98BBEEE1CA03EAB009C5099 /* UserFollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98BBEED1CA03EAB009C5099 /* UserFollowingViewController.swift */; };
+		E98E21EB1CB3E79C001448FA /* NVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98E21EA1CB3E79C001448FA /* NVActivityIndicatorView.framework */; };
+		E98E21ED1CB3E7A0001448FA /* RKDropdownAlert.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98E21EC1CB3E7A0001448FA /* RKDropdownAlert.framework */; };
+		E98E21EF1CB3FD94001448FA /* PixivLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98E21EE1CB3FD94001448FA /* PixivLoginHelper.swift */; };
 		E98F53F41C9AE64F003B5093 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98F53F31C9AE64F003B5093 /* PageControl.swift */; };
 		E997EAFA1CAD69E7005E1431 /* UgoiraHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E997EAF91CAD69E7005E1431 /* UgoiraHelper.swift */; };
+		E99D54111CB0DED100963364 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99D54101CB0DED100963364 /* LoginViewController.swift */; };
 		E9A90D911CA7D3C300253629 /* SearchHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A90D901CA7D3C300253629 /* SearchHistory.swift */; };
 		E9AE80BA1C9F997B006A5AC4 /* MeFollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE80B91C9F997B006A5AC4 /* MeFollowingViewController.swift */; };
 		E9AE80BC1C9FA133006A5AC4 /* FollowingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE80BB1C9FA133006A5AC4 /* FollowingCollectionViewCell.swift */; };
@@ -135,6 +141,8 @@
 		E967A4931C50C9B2000C6DC2 /* PixivIllust.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivIllust.swift; sourceTree = "<group>"; };
 		E967A4951C50D172000C6DC2 /* PixivIllustGallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivIllustGallery.swift; sourceTree = "<group>"; };
 		E96971411CAC2A090073FA43 /* UCZProgressView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UCZProgressView.framework; path = "../../Library/Developer/Xcode/DerivedData/ehreader-bsawwpbfimnubodhgkvnncxpxovf/Build/Products/Debug-iphoneos/UCZProgressView.framework"; sourceTree = "<group>"; };
+		E97149801CB35E0300DC4F7F /* BALoadingView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BALoadingView.framework; path = "Pods/../build/Debug-iphoneos/BALoadingView.framework"; sourceTree = "<group>"; };
+		E97149811CB35E0300DC4F7F /* RNLoadingButton_Swift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RNLoadingButton_Swift.framework; path = "Pods/../build/Debug-iphoneos/RNLoadingButton_Swift.framework"; sourceTree = "<group>"; };
 		E97999961C4D1DFC00003AF6 /* PhotoServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoServiceTests.swift; sourceTree = "<group>"; };
 		E97D61D01C8D4B5800E12AEF /* PushTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTransition.swift; sourceTree = "<group>"; };
 		E97D61D21C8D58A700E12AEF /* PopTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTransition.swift; sourceTree = "<group>"; };
@@ -157,8 +165,12 @@
 		E98B073F1C89C2E100EE44B7 /* GalleryWaterFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryWaterFlowViewController.swift; sourceTree = "<group>"; };
 		E98BBEEB1CA02C25009C5099 /* UserFavoriteWorksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFavoriteWorksViewController.swift; sourceTree = "<group>"; };
 		E98BBEED1CA03EAB009C5099 /* UserFollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFollowingViewController.swift; sourceTree = "<group>"; };
+		E98E21EA1CB3E79C001448FA /* NVActivityIndicatorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NVActivityIndicatorView.framework; path = "Pods/../build/Debug-iphoneos/NVActivityIndicatorView.framework"; sourceTree = "<group>"; };
+		E98E21EC1CB3E7A0001448FA /* RKDropdownAlert.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RKDropdownAlert.framework; path = "Pods/../build/Debug-iphoneos/RKDropdownAlert.framework"; sourceTree = "<group>"; };
+		E98E21EE1CB3FD94001448FA /* PixivLoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivLoginHelper.swift; sourceTree = "<group>"; };
 		E98F53F31C9AE64F003B5093 /* PageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
 		E997EAF91CAD69E7005E1431 /* UgoiraHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UgoiraHelper.swift; sourceTree = "<group>"; };
+		E99D54101CB0DED100963364 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E9A90D901CA7D3C300253629 /* SearchHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHistory.swift; sourceTree = "<group>"; };
 		E9A90D921CA8304100253629 /* YHImageViewer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YHImageViewer.framework; path = "Pods/../build/Debug-iphoneos/YHImageViewer.framework"; sourceTree = "<group>"; };
 		E9AE80B91C9F997B006A5AC4 /* MeFollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeFollowingViewController.swift; sourceTree = "<group>"; };
@@ -224,6 +236,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E98E21ED1CB3E7A0001448FA /* RKDropdownAlert.framework in Frameworks */,
+				E98E21EB1CB3E79C001448FA /* NVActivityIndicatorView.framework in Frameworks */,
+				E97149821CB35E0300DC4F7F /* BALoadingView.framework in Frameworks */,
+				E97149831CB35E0300DC4F7F /* RNLoadingButton_Swift.framework in Frameworks */,
 				E9187DC61CAE134000B6B733 /* SSZipArchive.framework in Frameworks */,
 				E96971421CAC2A090073FA43 /* UCZProgressView.framework in Frameworks */,
 				E934F77D1CAB7E1400A26E64 /* CollieGallery.framework in Frameworks */,
@@ -255,6 +271,10 @@
 		21DD57ACF2F65B9C647D2B90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E98E21EC1CB3E7A0001448FA /* RKDropdownAlert.framework */,
+				E98E21EA1CB3E79C001448FA /* NVActivityIndicatorView.framework */,
+				E97149801CB35E0300DC4F7F /* BALoadingView.framework */,
+				E97149811CB35E0300DC4F7F /* RNLoadingButton_Swift.framework */,
 				E9187DC51CAE134000B6B733 /* SSZipArchive.framework */,
 				E9187DC31CAE0C1300B6B733 /* objective_zip.framework */,
 				E96971411CAC2A090073FA43 /* UCZProgressView.framework */,
@@ -369,6 +389,7 @@
 			isa = PBXGroup;
 			children = (
 				E9F6CB821C9AB8D000D26534 /* ProfileViewController.swift */,
+				E99D54101CB0DED100963364 /* LoginViewController.swift */,
 				E9AE80BD1C9FCF3C006A5AC4 /* OtherProfileViewController.swift */,
 				E9F774C61C9BF7150045D128 /* MeFavoriteWorksViewController.swift */,
 				E9AE80B91C9F997B006A5AC4 /* MeFollowingViewController.swift */,
@@ -473,6 +494,7 @@
 				F7EE39E41BFC0E9E00531983 /* Extensions.swift */,
 				E9DC51EB1C4699740053D331 /* Constants.swift */,
 				F7A556D51BFB485000E7CBEB /* LoginHelper.swift */,
+				E98E21EE1CB3FD94001448FA /* PixivLoginHelper.swift */,
 				F7EB132B1BFD5F0E00538CC5 /* RegexHelper.swift */,
 				E97D61D01C8D4B5800E12AEF /* PushTransition.swift */,
 				E97D61D21C8D58A700E12AEF /* PopTransition.swift */,
@@ -686,6 +708,7 @@
 				F7FAA4EB1BFAC43100E27E4A /* Gallery.swift in Sources */,
 				E9F774C11C9BAD250045D128 /* PixivProfile.swift in Sources */,
 				E967A4921C5079EF000C6DC2 /* PixivUser.swift in Sources */,
+				E99D54111CB0DED100963364 /* LoginViewController.swift in Sources */,
 				E98B07401C89C2E100EE44B7 /* CustomNavigationController.swift in Sources */,
 				E967A4961C50D172000C6DC2 /* PixivIllustGallery.swift in Sources */,
 				E934F77F1CABA2EA00A26E64 /* PixivImageUrl.swift in Sources */,
@@ -720,6 +743,7 @@
 				E9F6CB851C9ABBB900D26534 /* ProfileView.swift in Sources */,
 				E9F6CB831C9AB8D000D26534 /* ProfileViewController.swift in Sources */,
 				E9B78FCF1CA272FC00A5F5D8 /* SearchWaterFlowViewController.swift in Sources */,
+				E98E21EF1CB3FD94001448FA /* PixivLoginHelper.swift in Sources */,
 				F730FDE81BFEFA6000F44740 /* GalleryService.swift in Sources */,
 				E98B07451C89C2E100EE44B7 /* GalleryTableViewController.swift in Sources */,
 				F72B31E81C4F7C89007C6B21 /* PixivProvider.swift in Sources */,

@@ -36,6 +36,10 @@ class MainTabbarController: UITabBarController {
         removeSystemTabbar()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        PixivLoginHelper.getInstance().checkLogin(self)
+    }
     
     func removeSystemTabbar () {
         var onceToken:dispatch_once_t = 0

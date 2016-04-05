@@ -40,11 +40,6 @@ class UserFavoriteWorksViewController: GalleryWaterFlowViewController {
         guard let profile = self.profile else {
             return
         }
-        do {
-            try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
-        }catch let error as NSError {
-            print(error.localizedDescription)
-        }
         
         if self.isLoadingFinished {
             return

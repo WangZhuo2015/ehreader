@@ -81,10 +81,8 @@ class UserFollowingViewController: UIViewController {
         guard let profile = self.profile else {
             return
         }
-        do {
-            try PixivProvider.getInstance().loginIfNeeded("zzycami", password: "13968118472q")
-        }catch let error as NSError {
-            print(error.localizedDescription)
+        if !PixivLoginHelper.getInstance().checkLogin(self.tabBarController!) {
+            return
         }
         
         if self.isLoadingFinished {

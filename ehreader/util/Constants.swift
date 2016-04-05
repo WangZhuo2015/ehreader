@@ -129,4 +129,6 @@ public struct UIConstants {
     
     public static let LightGrayHighlight:UIColor = UIColor.colorWithRGB(0xE6E9ED)
     public static let LightGray:UIColor = UIColor.colorWithRGB(0xF5F6FA)
+    
+    public static let EmptyTextColor:UIColor = UIColor.createColor(179, green: 179, blue: 179, alpha: 1)
 }

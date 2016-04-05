@@ -48,10 +48,8 @@ class SearchWaterFlowViewController: GalleryWaterFlowViewController {
         if self.isLoadingFinished {
             return
         }
-        do {
-            try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
-        }catch let error as NSError {
-            print(error.localizedDescription)
+        if !PixivLoginHelper.getInstance().checkLogin(self.tabBarController!) {
+            return
         }
         
         // Add search log

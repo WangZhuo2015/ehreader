@@ -47,10 +47,8 @@ class MeFollowingViewController: UIViewController {
     }
     
     func startLoading(page:Int = 1) {
-        do {
-            try PixivProvider.getInstance().loginIfNeeded("zzycami", password: "13968118472q")
-        }catch let error as NSError {
-            print(error.localizedDescription)
+        if !PixivLoginHelper.getInstance().checkLogin(self.tabBarController!) {
+            return
         }
         
         PixivProvider.getInstance().meFollowing(publicity: self.publicity) { (profiles, pagination, error) in

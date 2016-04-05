@@ -32,13 +32,15 @@ public class PixivUser: Object {
     
     public dynamic var account:String?
     
+    public dynamic var password:String?
+    
     public dynamic var session:String?
     
     public override static func primaryKey() -> String? {
         return "id"
     }
     
-    static func createPixivUser(source:[NSObject:AnyObject], session:String?)->PixivUser {
+    static func createPixivUser(source:[NSObject:AnyObject], session:String?, password:String)->PixivUser {
         let pixivUser = PixivUser()
         pixivUser.access_token = source["access_token"] as? String
         pixivUser.session = session
@@ -47,6 +49,7 @@ public class PixivUser: Object {
         pixivUser.token_type = source["token_type"] as? String
         pixivUser.scope = source["scope"] as? String
         pixivUser.refresh_token = source["refresh_token"] as? String
+        pixivUser.password = password
         if let user = source["user"] as? [NSObject:AnyObject] {
             pixivUser.id = user["id"] as? String ?? "-1"
             pixivUser.name = user["name"] as? String

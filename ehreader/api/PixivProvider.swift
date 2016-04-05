@@ -210,12 +210,11 @@ public class PixivProvider: NSObject {
                 value = value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                 if key == "PHPSESSID" {
                     self.session = value
-                    
                 }
             }
         }
         
-        self.user = PixivUser.createPixivUser(response, session: self.session)
+        self.user = PixivUser.createPixivUser(response, session: self.session, password: password)
         
         return self.user
     }

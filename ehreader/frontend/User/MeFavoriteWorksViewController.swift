@@ -46,10 +46,8 @@ class MeFavoriteWorksViewController: GalleryWaterFlowViewController {
             return
         }
         
-        do {
-            try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
-        }catch let error as NSError {
-            print(error.localizedDescription)
+        if !PixivLoginHelper.getInstance().checkLogin(self.tabBarController!) {
+            return
         }
         
         pixivProvider.meFavoriteWorks(page, publicity: publicity) { (gallery, error) in

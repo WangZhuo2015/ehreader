@@ -98,9 +98,7 @@ class OtherProfileViewController: UIViewController {
         backgroundView.status = BackgroundViewStatus.Loading
         backgroundView.addTarget(self, action: #selector(ProfileViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(backgroundView)
-        
-        
-        
+
         addConstraints()
         startLoading()
         addViewControllers()

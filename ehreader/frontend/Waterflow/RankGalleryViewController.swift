@@ -42,7 +42,10 @@ class RankGalleryViewController: GalleryWaterFlowViewController {
                 self!.currentPage += 1
                 self!.startLoading(self!.rankingMode, page: self!.currentPage)
             }
-            
+        }
+        if isLoginFailed {
+            isLoginFailed = false
+            startLoading()
         }
     }
     
@@ -58,14 +61,17 @@ class RankGalleryViewController: GalleryWaterFlowViewController {
         
     }
     
+    /// If login failed, then login success, wes hould load the view
+    var isLoginFailed:Bool = false
+    
+    
     func startLoading(rankingMode:PixivRankingMode = PixivRankingMode.Daily, page:Int = 1) {
         if self.isLoadingFinished {
             return
         }
-        do {
-            try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
-        }catch let error as NSError {
-            print(error.localizedDescription)
+        if !PixivLoginHelper.getInstance().checkLogin(self.tabBarController!) {
+            isLoginFailed = true
+            return
         }
         
         pixivProvider.getRankingAll(rankingMode, page: page) { (gallery, error) in

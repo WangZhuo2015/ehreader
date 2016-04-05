@@ -2,6 +2,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'ehreader' do
+    pod 'BALoadingView'
     pod 'SnapKit'
     pod 'Alamofire'
     pod 'RealmSwift'
@@ -14,4 +15,7 @@ target 'ehreader' do
     pod 'JTSImageViewController'
     pod 'CollieGallery', :path => './'
     pod 'UCZProgressView', :path => './'
+    pod 'RNLoadingButton-Swift'
+    pod 'RKDropdownAlert'
+    pod 'NVActivityIndicatorView'
 end

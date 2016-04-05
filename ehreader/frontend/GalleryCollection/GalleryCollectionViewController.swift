@@ -33,7 +33,10 @@ class GalleryCollectionViewController: UIViewController {
         collectionView.dataSource = self
         
         addConstraints()
-        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         startLoading()
     }
 
@@ -43,10 +46,8 @@ class GalleryCollectionViewController: UIViewController {
     }
     
     func startLoading() {
-        do {
-            try pixivProvider.loginIfNeeded("zzycami", password: "13968118472q")
-        }catch let error as NSError {
-            print(error.localizedDescription)
+        if !PixivLoginHelper.getInstance().checkLogin(self.tabBarController!) {
+            return
         }
         
         pixivProvider.getRankingAll(PixivRankingMode.Daily, page: 1) { (gallery, error) in
