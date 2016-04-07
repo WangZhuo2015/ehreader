@@ -14,6 +14,7 @@ import JTSImageViewController
 import CollieGallery
 import UCZProgressView
 import ImageIO
+import SVProgressHUD
 
 private let ProgressHeight:CGFloat = 1
 private let IllustTagCellIdentifer = "IllustTagCellIdentifer"
@@ -312,7 +313,7 @@ class PhotoViewController: UIViewController {
                 if success {
                     sender.image = UIImage(named: "ic_navibar_liked")
                 }else {
-                    //TODO: Give failed hint
+                    SVProgressHUD.showErrorWithStatus("收藏失败!")
                 }
             }
         }
@@ -320,14 +321,17 @@ class PhotoViewController: UIViewController {
     
     func shareToSNS(sender:UIButton)  {
         guard let shareString = self.illust?.title else {
+            SVProgressHUD.showErrorWithStatus("缺少分享标题!")
             return
         }
         
         guard let imageUrl = self.illust?.getMediaImageUrl() else {
+            SVProgressHUD.showErrorWithStatus("缺少分享图片地址!")
             return
         }
         
         guard let image = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(imageUrl) else {
+            SVProgressHUD.showErrorWithStatus("缺少分享的图片!")
             return
         }
         let str = "分享一张来自P站的图片:\(shareString)"
@@ -487,22 +491,40 @@ class PhotoViewController: UIViewController {
     
     func downloadImage(sender:UIBarButtonItem) {
         guard let imageUrl = self.photoUrl else {
+            SVProgressHUD.showErrorWithStatus("缺少中等图地址!")
             return
         }
-        if let largeImageUrl = self.illust?.url_large {
-            if let image = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(largeImageUrl) {
-                UIImageWriteToSavedPhotosAlbum(image, self, #selector(PhotoViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
-                return
-            }
+        
+        guard let largeImageUrl = self.illust?.url_large else {
+            SVProgressHUD.showErrorWithStatus("缺少大图地址!")
+            return
         }
         
-        if let image = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(imageUrl) {
+        let placeholderImage = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(imageUrl)
+        
+        if let image = ImageCache.defaultCache.retrieveImageInDiskCacheForKey(largeImageUrl) {
+            SVProgressHUD.show()
             UIImageWriteToSavedPhotosAlbum(image, self, #selector(PhotoViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
+            return
+        }else {
+            SVProgressHUD.showProgress(0, status: "正在下载高清图片")
+            self.imageView.kf_setImageWithURL(NSURL(string:largeImageUrl)!, placeholderImage: placeholderImage, optionsInfo: nil, progressBlock: {(receivedSize, totalSize)  in
+                let progress = Float(receivedSize)/Float(totalSize)
+                SVProgressHUD.showProgress(progress, status: "正在下载高清图片")
+            }) {[weak self] (image, error, cacheType, imageURL) in
+                if image != nil {
+                    UIImageWriteToSavedPhotosAlbum(image!, self, #selector(PhotoViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                    self?.imageProgressView.removeFromSuperview()
+                }
+            }
         }
     }
     
     func image(image:UIImage, didFinishSavingWithError:NSError, contextInfo:UnsafeMutablePointer<Void>) {
         print("save complete")
+        SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.Black)
+        SVProgressHUD.setMinimumDismissTimeInterval(1)
+        SVProgressHUD.showSuccessWithStatus("已经下载到系统相册中")
     }
     
     func openUserDetail() {

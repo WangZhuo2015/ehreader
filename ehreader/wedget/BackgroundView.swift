@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import NVActivityIndicatorView
 
 /**
  The BackgroundView's status
@@ -25,8 +26,12 @@ public enum BackgroundViewStatus:String {
 private let rotateAnimationKey = "rotation"
 
 public class LoadingView: UIView {
-    var loadingImageView:UIImageView = UIImageView(frame: CGRectZero)
-    var loadingArcImageView:UIImageView = UIImageView(frame: CGRectZero)
+    var activityIndicatorView:NVActivityIndicatorView = {
+        let activityIndicatorView = NVActivityIndicatorView(frame: CGRectZero, type: NVActivityIndicatorType.BallClipRotatePulse, color: UIConstants.GrapefruitColor, size: CGSizeMake(40, 40))
+        return activityIndicatorView
+    }()
+    
+    
     var hintLabel = UILabel(frame: CGRectZero)
     
     public override init(frame: CGRect) {
@@ -40,31 +45,21 @@ public class LoadingView: UIView {
     }
     
     private func setupLoadingView() {
-        loadingImageView.image = UIImage(named: "loading_bg")
-        loadingArcImageView.image = UIImage(named: "loading_arc")
         hintLabel.text = "努力加载中，请稍候..."
         hintLabel.textAlignment = NSTextAlignment.Center
         hintLabel.textColor = UIColor.createColor(78, green: 78, blue: 78, alpha: 1)
         hintLabel.font = UIFont.systemFontOfSize(12)
         
-        addSubview(loadingImageView)
-        addSubview(loadingArcImageView)
+        addSubview(activityIndicatorView)
         addSubview(hintLabel)
         
-        loadingImageView.snp_makeConstraints { (make) -> Void in
-            make.center.equalTo(self)
-            make.width.equalTo(42)
-            make.height.equalTo(42)
-        }
-        
-        loadingArcImageView.snp_makeConstraints { (make) -> Void in
-            make.center.equalTo(self)
-            make.width.equalTo(43)
-            make.height.equalTo(43)
+        activityIndicatorView.snp_makeConstraints { (make) in
+            make.top.equalTo(100)
+            make.centerX.equalTo(self)
         }
         
         hintLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(loadingArcImageView.snp_bottom).offset(10)
+            make.top.equalTo(activityIndicatorView.snp_bottom).offset(40)
             make.height.equalTo(16)
             make.leading.equalTo(self)
             make.trailing.equalTo(self)
@@ -72,17 +67,11 @@ public class LoadingView: UIView {
     }
     
     public func startAnimation() {
-        let animation = CABasicAnimation(keyPath: "transform.rotation.z")
-        animation.duration = 1.5
-        animation.toValue = 2*M_PI
-        animation.repeatCount = MAXFLOAT
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        animation.removedOnCompletion = false
-        loadingArcImageView.layer.addAnimation(animation, forKey: rotateAnimationKey)
+        activityIndicatorView.startAnimation()
     }
     
     public func stopAnimation() {
-        loadingArcImageView.layer.removeAnimationForKey(rotateAnimationKey)
+        activityIndicatorView.stopAnimation()
     }
 }
 
@@ -132,30 +121,28 @@ public class BackgroundView: UIControl {
     
     public var status:BackgroundViewStatus = BackgroundViewStatus.Loading {
         didSet {
-            //dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                switch self.status {
-                case .Loading:
-                    self.alpha = 1
-                    self.loadingView.hidden = false
-                    self.loadingFailView.hidden = true
-                    self.loadingView.startAnimation()
-                    break
-                case .Hidden:
-                    self.loadingView.hidden = true
-                    self.loadingFailView.hidden = true
-                    self.loadingView.stopAnimation()
-                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-                        self.alpha = 0
-                    })
-                    break
-                case .Failed:
-                    self.alpha = 1
-                    self.loadingView.hidden = true
-                    self.loadingFailView.hidden = false
-                    self.loadingView.stopAnimation()
-                    break
-                }
-            //}
+            switch self.status {
+            case .Loading:
+                self.alpha = 1
+                self.loadingView.hidden = false
+                self.loadingFailView.hidden = true
+                self.loadingView.startAnimation()
+                break
+            case .Hidden:
+                self.loadingView.hidden = true
+                self.loadingFailView.hidden = true
+                self.loadingView.stopAnimation()
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.alpha = 0
+                })
+                break
+            case .Failed:
+                self.alpha = 1
+                self.loadingView.hidden = true
+                self.loadingFailView.hidden = false
+                self.loadingView.stopAnimation()
+                break
+            }
         }
     }
     
@@ -178,11 +165,13 @@ public class BackgroundView: UIControl {
         self.backgroundColor = UIColor.whiteColor()
         
         loadingFailView.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(self)
+            make.top.equalTo(self).offset(20)
+            make.leading.trailing.bottom.equalTo(self)
         }
         
         loadingView.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(self)
+            make.top.equalTo(self).offset(20)
+            make.leading.trailing.bottom.equalTo(self)
         }
     }
     

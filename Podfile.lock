@@ -6,9 +6,9 @@ PODS:
     - Kingfisher
     - SnapKit
     - UCZProgressView
-  - CryptoSwift (0.3)
+  - CryptoSwift (0.3.1)
   - JTSImageViewController (1.5.1)
-  - Kingfisher (2.2.0)
+  - Kingfisher (2.2.2)
   - NVActivityIndicatorView (2.3)
   - RAMAnimatedTabBarController (1.2.2)
   - Realm (0.98.6):
@@ -20,6 +20,7 @@ PODS:
   - RNLoadingButton-Swift (3.1.0)
   - SnapKit (0.20.0)
   - SSZipArchive (1.1)
+  - SVProgressHUD (2.0.3)
   - UCZProgressView (0.0.1)
   - ViewPagerSwift (1.0.0)
 
@@ -38,6 +39,7 @@ DEPENDENCIES:
   - RNLoadingButton-Swift
   - SnapKit
   - SSZipArchive
+  - SVProgressHUD
   - UCZProgressView (from `./`)
   - ViewPagerSwift
 
@@ -52,9 +54,9 @@ SPEC CHECKSUMS:
   AXStretchableHeaderTabViewController: 37c56211c98d3e823ecf7493d68f5ee8fa7028e1
   BALoadingView: 3117f79ee2307f35d3d097ae11fb092a4e185487
   CollieGallery: 4b7620963debba436066b783bb416bc77c9e7676
-  CryptoSwift: 19d29910d88440fcb132761d9ab57e175f1b0d0e
+  CryptoSwift: baf01e3fb3226c0155cd54c266be882b13d45d5e
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
-  Kingfisher: 350869ed88d6451803b390475d977abdd9f0a357
+  Kingfisher: 7e8de5b0cf7b5dc8ec559d193029a0859df93ef1
   NVActivityIndicatorView: c7ef25ef527ab5e51b00322cb1ddd58681bcf2a3
   RAMAnimatedTabBarController: cadbef3162bc7ae86091661273ccec503deb3398
   Realm: 44803f35418c5d89b27825a564247fcd190de37e
@@ -63,6 +65,7 @@ SPEC CHECKSUMS:
   RNLoadingButton-Swift: 153bb6e160ec153c1988b7852fdf4c8fa31e5e0a
   SnapKit: 5fce3c1bbbf1fbd31de9aa92f33eb9fa03f15650
   SSZipArchive: de3d215ab73f87db627f81f2ce24f1731e3886c3
+  SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
   UCZProgressView: 3218c7a112c5ec311a4e619a81de15b633128525
   ViewPagerSwift: f607f30ed55ebe7adf74ebe6bcd8e9b23a73f155
 

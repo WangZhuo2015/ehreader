@@ -48,7 +48,7 @@ class SearchWaterFlowViewController: GalleryWaterFlowViewController {
         if self.isLoadingFinished {
             return
         }
-        if !PixivLoginHelper.getInstance().checkLogin(self.tabBarController!) {
+        if !PixivLoginHelper.getInstance().checkLogin(self) {
             return
         }
         

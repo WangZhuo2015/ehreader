@@ -18,4 +18,5 @@ target 'ehreader' do
     pod 'RNLoadingButton-Swift'
     pod 'RKDropdownAlert'
     pod 'NVActivityIndicatorView'
+    pod 'SVProgressHUD'
 end
