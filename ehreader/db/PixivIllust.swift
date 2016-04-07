@@ -87,7 +87,7 @@ public class PixivIllust: Object {
     }
     
     public static func createPixivIllust(source:NSDictionary, isWork:Bool)->Int? {
-        print(source)
+        //print(source)
         var data:NSDictionary?
         if isWork {
             data = source

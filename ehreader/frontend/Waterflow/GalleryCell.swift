@@ -193,7 +193,6 @@ class GalleryCell: UICollectionViewCell {
         titleLabel.text = gallery.title
     }
     
-    
     func configCellWithPxiv(illust:PixivIllust) -> Void {
         self.imageView.alpha = 0
         self.progressView.hidden = false
@@ -216,7 +215,12 @@ class GalleryCell: UICollectionViewCell {
             request.setValue(refrer, forHTTPHeaderField: "Referer")
             request.setValue(agent, forHTTPHeaderField: "User-Agent")
         }
-        if let image =  KingfisherManager.sharedManager.cache.retrieveImageInDiskCacheForKey(illust.getMediaImageUrl()!), imageViewImage = self.imageView.image {
+        
+        guard let imageUrl = illust.getMediaImageUrl() else {
+            return
+        }
+        
+        if let image =  KingfisherManager.sharedManager.cache.retrieveImageInDiskCacheForKey(imageUrl), imageViewImage = self.imageView.image {
             if imageViewImage == image{
                 UIView.animateWithDuration(0.5, animations: {
                     self.imageView.alpha = 1
@@ -224,7 +228,7 @@ class GalleryCell: UICollectionViewCell {
                 return
             }
         }
-        self.imageView.kf_setImageWithURL(NSURL(string: illust.getMediaImageUrl()!)!, placeholderImage: nil, optionsInfo: nil, progressBlock: {[weak self] (receivedSize, totalSize) in
+        self.imageView.kf_setImageWithURL(NSURL(string: imageUrl)!, placeholderImage: nil, optionsInfo: nil, progressBlock: {[weak self] (receivedSize, totalSize) in
             let progress = Float(receivedSize)/Float(totalSize)
             self?.progressView.progress = progress
         }) {[weak self] (image, error, cacheType, imageURL) in
