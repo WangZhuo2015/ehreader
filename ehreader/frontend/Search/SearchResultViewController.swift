@@ -47,7 +47,7 @@ class SearchResultViewController: UIViewController {
         return viewController
     }()
     
-    var functionButtons = ["搜索标签", "搜索标题", "搜索用户"]
+    var functionButtons = ["搜索标签", "搜索标题和内容", "只搜索标题"]
     
     private lazy  var functionView:FunctionView = {
         let functionView = FunctionView(frame: CGRectZero)

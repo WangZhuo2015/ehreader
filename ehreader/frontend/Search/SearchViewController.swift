@@ -12,7 +12,7 @@ import RealmSwift
 
 private let SearchTagCellIdentifer = "SearchTagCellIdentifer"
 
-let SearchType:[String] = ["在标签中搜索", "在标题中搜索", "在用户中搜索"]
+let SearchType:[String] = ["在标签中搜索", "在标题和文本中搜索", "只在标题中搜索"]
 let SearchTypeImage:[String] = ["ico_tag", "ico_detail", "ico_user"]
 
 class SearchViewController: UIViewController {
@@ -143,6 +143,8 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
             mode = PixivSearchMode.Tag
         }else if indexPath.section == 0 && indexPath.row == 1 {
             mode = PixivSearchMode.Text
+        }else if indexPath.section == 0 && indexPath.row == 1 {
+            mode = PixivSearchMode.Caption
         }else if indexPath.section == 1 {
             if let array = self.searchHintArray[indexPath.section] as? Results<SearchHistory> {
                 self.searchBar.text = array[indexPath.row].keyword
