@@ -16,7 +16,40 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L8U-za-lNk">
+                                <rect key="frame" x="0.0" y="440" width="600" height="160"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="auspicious" translatesAutoresizingMaskIntoConstraints="NO" id="Yhh-Ll-lgn">
+                                        <rect key="frame" x="450" y="10" width="150" height="150"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="150" id="5Ux-UW-H7k"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="6yH-YP-Rzh"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="RS3-KJ-e4A"/>
+                                            <constraint firstAttribute="width" constant="150" id="acW-wY-fO5"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="6yH-YP-Rzh"/>
+                                                <exclude reference="RS3-KJ-e4A"/>
+                                            </mask>
+                                        </variation>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.91372549019607852" green="0.24346922703645216" blue="0.32481504556520591" alpha="0.66947737068965518" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="160" id="8aR-C3-U3Q"/>
+                                    <constraint firstAttribute="trailing" secondItem="Yhh-Ll-lgn" secondAttribute="trailing" id="QOI-5W-d66"/>
+                                    <constraint firstAttribute="bottom" secondItem="Yhh-Ll-lgn" secondAttribute="bottom" id="pVd-Qk-GUV"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="L8U-za-lNk" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="3iO-xr-VNQ"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="L8U-za-lNk" secondAttribute="bottom" id="AIc-wK-Y5G"/>
+                            <constraint firstAttribute="trailing" secondItem="L8U-za-lNk" secondAttribute="trailing" id="Leg-x9-Oo5"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -24,4 +57,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="auspicious" width="200" height="200"/>
+    </resources>
 </document>

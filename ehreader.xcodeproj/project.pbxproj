@@ -10,6 +10,7 @@
 		86EA0D6DDE51F968E31AD00E /* Pods_ehreader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45B23450AFE3BAEB72051ACE /* Pods_ehreader.framework */; };
 		E911817B1CB62F0A0009A52C /* SVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E911817A1CB62F0A0009A52C /* SVProgressHUD.framework */; };
 		E911817D1CB642130009A52C /* UIRefreshHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E911817C1CB642130009A52C /* UIRefreshHeaderView.swift */; };
+		E91181801CB6700A0009A52C /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E911817F1CB6700A0009A52C /* SettingViewController.swift */; };
 		E9187DC61CAE134000B6B733 /* SSZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9187DC51CAE134000B6B733 /* SSZipArchive.framework */; };
 		E91B7BCD1C9A7E54007ED39F /* LatestGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B7BCC1C9A7E54007ED39F /* LatestGalleryViewController.swift */; };
 		E91B7BCF1C9A7F12007ED39F /* RankGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B7BCE1C9A7F12007ED39F /* RankGalleryViewController.swift */; };
@@ -125,6 +126,7 @@
 		C546FD883CD238072C87AC87 /* Pods-ehreader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ehreader.release.xcconfig"; path = "Pods/Target Support Files/Pods-ehreader/Pods-ehreader.release.xcconfig"; sourceTree = "<group>"; };
 		E911817A1CB62F0A0009A52C /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = "Pods/../build/Debug-iphoneos/SVProgressHUD.framework"; sourceTree = "<group>"; };
 		E911817C1CB642130009A52C /* UIRefreshHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRefreshHeaderView.swift; sourceTree = "<group>"; };
+		E911817F1CB6700A0009A52C /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		E9187DC31CAE0C1300B6B733 /* objective_zip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = objective_zip.framework; path = "Pods/../build/Debug-iphoneos/objective_zip.framework"; sourceTree = "<group>"; };
 		E9187DC51CAE134000B6B733 /* SSZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SSZipArchive.framework; path = "Pods/../build/Debug-iphoneos/SSZipArchive.framework"; sourceTree = "<group>"; };
 		E91B7BCC1C9A7E54007ED39F /* LatestGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LatestGalleryViewController.swift; sourceTree = "<group>"; };
@@ -306,6 +308,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E911817E1CB66FEF0009A52C /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				E911817F1CB6700A0009A52C /* SettingViewController.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
 		E91B7BD11C9AA237007ED39F /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -336,6 +346,7 @@
 				E98B07351C89C2E100EE44B7 /* GalleryTableViewController.swift */,
 				E98B07361C89C2E100EE44B7 /* Photo */,
 				E98B07381C89C2E100EE44B7 /* Tabbar */,
+				E911817E1CB66FEF0009A52C /* Setting */,
 				E98B073C1C89C2E100EE44B7 /* Waterflow */,
 				E9F6CB811C9AB8B300D26534 /* User */,
 			);
@@ -705,6 +716,7 @@
 				E95C063F1C48C2A70081C9C3 /* BackgroundView.swift in Sources */,
 				E91B7BCF1C9A7F12007ED39F /* RankGalleryViewController.swift in Sources */,
 				F7A556D21BFB2A1F00E7CBEB /* ImageSearch.swift in Sources */,
+				E91181801CB6700A0009A52C /* SettingViewController.swift in Sources */,
 				E9F0C6FD1CA9637000AB0A77 /* ImageProgressView.swift in Sources */,
 				E9C237D01C9FE70500343A41 /* UserWorksGalleryViewController.swift in Sources */,
 				F7A556D41BFB2DAB00E7CBEB /* Download.swift in Sources */,

@@ -63,6 +63,20 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    private lazy var registerButton:UIButton = {
+        let button = RNLoadingButton(type: UIButtonType.Custom)
+        let tintColor = UIConstants.GrapefruitColor
+        button.setTitle("没有Pixiv账号，前往Pixiv注册", forState: UIControlState.Normal)
+        button.layer.borderWidth = 1
+        button.clipsToBounds = true
+        button.layer.borderColor = tintColor.CGColor
+        button.setTitleColor(UIConstants.GrapefruitColor, forState: UIControlState.Normal)
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 25
+        button.addTarget(self, action: #selector(LoginViewController.registerPixivAccount(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        return button
+    }()
+    
     private lazy var backgroundView:UIImageView = {
         let backgroundView = UIImageView(image:UIImage(named: "loginBg"))
         backgroundView.hidden = true
@@ -71,6 +85,7 @@ class LoginViewController: UIViewController {
     
     private lazy var topBackgroundView:UIImageView = {
         let backgroundView = UIImageView(image:UIImage(named: "guaide_background"))
+        backgroundView.contentMode = UIViewContentMode.ScaleAspectFill
         return backgroundView
     }()
     
@@ -96,6 +111,7 @@ class LoginViewController: UIViewController {
         view.addSubview(accountTextField)
         view.addSubview(passwordTextField)
         view.addSubview(loginButton)
+        view.addSubview(registerButton)
         view.addSubview(lineView1)
         view.addSubview(lineView2)
         addConstraints()
@@ -141,9 +157,16 @@ class LoginViewController: UIViewController {
             make.height.equalTo(50)
         }
         
+        registerButton.snp_makeConstraints { (make) in
+            make.top.equalTo(self.loginButton.snp_bottom).offset(30)
+            make.leading.equalTo(self.view).offset(Padding)
+            make.trailing.equalTo(self.view).offset(-Padding)
+            make.height.equalTo(50)
+        }
+        
         topBackgroundView.snp_makeConstraints { (make) in
             make.leading.top.trailing.equalTo(self.view)
-            make.height.equalTo(149)
+            make.height.equalTo(250)
         }
     }
 
@@ -209,6 +232,10 @@ class LoginViewController: UIViewController {
                 })
             }
         }
+    }
+    
+    func registerPixivAccount(button:UIButton) {
+        UIApplication.sharedApplication().openURL(NSURL(string: "http://touch.pixiv.net/signup.php")!)
     }
     
     func displayMessage(message:String, backgroundColor:UIColor, textColor:UIColor) {
