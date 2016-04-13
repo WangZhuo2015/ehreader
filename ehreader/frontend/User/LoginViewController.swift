@@ -85,7 +85,6 @@ class LoginViewController: UIViewController {
     
     private lazy var topBackgroundView:UIImageView = {
         let backgroundView = UIImageView(image:UIImage(named: "guaide_background"))
-        backgroundView.contentMode = UIViewContentMode.ScaleAspectFill
         return backgroundView
     }()
     
@@ -164,10 +163,21 @@ class LoginViewController: UIViewController {
             make.height.equalTo(50)
         }
         
-        topBackgroundView.snp_makeConstraints { (make) in
-            make.leading.top.trailing.equalTo(self.view)
-            make.height.equalTo(250)
+        
+        if let image = self.topBackgroundView.image {
+            let scale = image.size.height/image.size.width
+            let height = self.view.frame.width * scale
+            print(height)
+            topBackgroundView.snp_makeConstraints { (make) in
+                make.leading.top.trailing.equalTo(self.view)
+                make.height.equalTo(height)
+            }
+        }else {
+            topBackgroundView.snp_makeConstraints { (make) in
+                make.leading.top.trailing.equalTo(self.view)
+            }
         }
+        
     }
 
     override func didReceiveMemoryWarning() {

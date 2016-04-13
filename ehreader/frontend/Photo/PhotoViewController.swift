@@ -208,6 +208,7 @@ class PhotoViewController: UIViewController {
         super.navigationController?.delegate = self.originalNaivgationControllerDelegate
         self.helper?.stopAnimation()
         self.helper = nil
+        SVProgressHUD.dismiss()
     }
     
     override func viewWillLayoutSubviews() {
