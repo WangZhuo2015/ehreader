@@ -132,6 +132,7 @@ extension MeFollowingViewController: FollowingCollectionViewCellDelegate {
         }))
         
         alertController.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))
+        alertController.popoverPresentationController?.sourceView = cell.followButton
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     

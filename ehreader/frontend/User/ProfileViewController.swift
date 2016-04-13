@@ -23,6 +23,9 @@ private let titles:[String] = ["书签", "关注"]
 class ProfileViewController: UIViewController {
     lazy var profileView:ProfileView = {
         let profileView = ProfileView(frame: CGRectZero)
+        profileView.onAvatarButtonClickedClosure = {[weak self](profileView:ProfileView, button:UIButton)->Void in
+            
+        }
         return profileView
     }()
     

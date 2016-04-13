@@ -24,7 +24,10 @@ class UserFollowingViewController: UIViewController {
     
     private lazy  var backgroundView:BackgroundView = BackgroundView(frame: CGRectZero)
     
-    var footerView:CurveRefreshFooterView?
+    lazy var footerView:CurveRefreshFooterView = {
+        let footerView = CurveRefreshFooterView(associatedScrollView: self.collectionView, withNavigationBar: true)
+        return footerView
+    }()
     
     weak var delegate:UserWorksGalleryViewControllerDelegate?
     
@@ -55,7 +58,7 @@ class UserFollowingViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        footerView?.refreshingBlock = {[weak self] ()->() in
+        footerView.refreshingBlock = {[weak self] ()->() in
             if self != nil {
                 self!.currentPage += 1
                 self!.startLoading(self!.currentPage)
@@ -117,13 +120,13 @@ class UserFollowingViewController: UIViewController {
                 self.delegate?.onLoadLayoutFinished(self.collectionView, contentSize: size)
             }
             
-            if let footerView = self.footerView where footerView.loading {
-                self.footerView?.stopRefreshing()
+            if self.footerView.loading {
+                self.footerView.stopRefreshing()
             }
             
             if let p = pagination{
                 if p.next == -1 {
-                    self.footerView?.setNoMoreLoading()
+                    self.footerView.setNoMoreLoading()
                 }
             }
         }

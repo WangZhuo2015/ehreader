@@ -34,6 +34,14 @@ class OtherProfileViewController: UIViewController {
     
     lazy var profileView:ProfileView = {
         let profileView = ProfileView(frame: CGRectZero)
+        
+        profileView.onAvatarButtonClickedClosure = {[weak self](profileView:ProfileView, button:UIButton)->Void in
+            if let weakSelf = self {
+                weakSelf.userFollowingViewController.profile = weakSelf.profile
+                weakSelf.navigationController?.pushViewController(weakSelf.userFollowingViewController, animated: true)
+            }
+        }
+        
         return profileView
     }()
     
@@ -49,11 +57,10 @@ class OtherProfileViewController: UIViewController {
         didSet {
             self.userWorksGalleryViewController.profile = profile
             self.userFavoriteWorksViewController.profile = profile
-            self.userFollowingViewController.profile = profile
         }
     }
     
-    var functionButtons = ["作品一栏", "他的收藏", "他的关注"]
+    var functionButtons = ["作品一栏", "他的收藏"]
     
     var currentDisplayViewController:UIViewController?
     var prevDisplayViewController:UIViewController?
@@ -78,7 +85,6 @@ class OtherProfileViewController: UIViewController {
         let viewController = UserFollowingViewController()
         viewController.profile = self.profile
         viewController.delegate = self
-        viewController.collectionView.scrollEnabled = false
         return viewController
     }()
     
@@ -125,8 +131,6 @@ class OtherProfileViewController: UIViewController {
         
         if let viewController = self.currentDisplayViewController as? GalleryWaterFlowViewController {
             viewController.footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
-        }else if let viewController = self.currentDisplayViewController as? UserFollowingViewController {
-            viewController.footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
         }
         
     }
@@ -140,7 +144,6 @@ class OtherProfileViewController: UIViewController {
     private func addViewControllers() {
         addChildViewController(self.userWorksGalleryViewController)
         addChildViewController(self.userFavoriteWorksViewController)
-        addChildViewController(self.userFollowingViewController)
     }
     
     private func addConstraints() {
@@ -322,18 +325,12 @@ extension OtherProfileViewController: FunctionViewDataSource, FunctionViewDelega
             self.currentDisplayViewController = self.childViewControllers[index]
             self.currentDisplayViewController?.automaticallyAdjustsScrollViewInsets = false
         }
-        self.userFollowingViewController.footerView?.removeFromSuperview()
+        self.userFollowingViewController.footerView.removeFromSuperview()
         self.userWorksGalleryViewController.footerView.removeFromSuperview()
-        self.userFavoriteWorksViewController.footerView.removeFromSuperview()
         if let viewController = self.currentDisplayViewController as? GalleryWaterFlowViewController {
             viewController.footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
             if viewController.isLoadingFinished {
                 viewController.footerView.setNoMoreLoading()
-            }
-        }else if let viewController = self.currentDisplayViewController as? UserFollowingViewController {
-            viewController.footerView = CurveRefreshFooterView(associatedScrollView: self.tableView, withNavigationBar: true)
-            if viewController.isLoadingFinished {
-                viewController.footerView?.setNoMoreLoading()
             }
         }
         self.tableView.reloadData()

@@ -59,12 +59,13 @@ public class ProfileView: UIView {
         let button = UIButton(frame: CGRectZero)
         button.setBackgroundImage(UIImage(named:"profileFloBtn"), forState: UIControlState.Normal)
         button.setBackgroundImage(UIImage(named:"profileFloBtn_pressed"), forState: UIControlState.Highlighted)
-        button.setTitle("查看用户详情", forState: UIControlState.Normal)
+        button.setTitle("关注的用户", forState: UIControlState.Normal)
         button.titleLabel?.font = UIFont.systemFontOfSize(12)
         button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         button.setImage(UIImage(named:"profileFloArrow"), forState: UIControlState.Normal)
         button.titleEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10)
         button.imageEdgeInsets = UIEdgeInsetsMake(0, 90, 0, -90)
+        button.addTarget(self, action: #selector(ProfileView.onAvatarButtonClicked(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         return button
     }()
     
@@ -110,6 +111,12 @@ public class ProfileView: UIView {
         pageControl.pointColor = UIColor.createColor(214, green: 192, blue: 177, alpha: 1)
         return pageControl
     }()
+    
+    public var onAvatarButtonClickedClosure:((profileView:ProfileView, button:UIButton)->Void)?
+    
+    public func onAvatarButtonClicked(button:UIButton) {
+        self.onAvatarButtonClickedClosure?(profileView:self, button:button)
+    }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
