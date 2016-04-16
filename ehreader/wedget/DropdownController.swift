@@ -11,6 +11,7 @@ import UIKit
 public extension UIViewController {
     private struct AssociatedKeys {
         static var dropdownViewKey = "UIViewController.dropdownView"
+        static var isAnimatingKey = "UIViewController.isAnimating"
     }
 
     
@@ -25,48 +26,72 @@ public extension UIViewController {
         }
     }
     
+    public var isAnimating:Bool {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedKeys.isAnimatingKey) as? Bool ?? false
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.isAnimatingKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
+        }
+    }
+    
+    public func setupDropdownViewEvent(target: AnyObject?, action: Selector) {
+        self.dropdownView = UIView(frame: self.view.bounds)
+        let gestureRecognizer = UITapGestureRecognizer(target: target, action: action)
+        self.dropdownView?.addGestureRecognizer(gestureRecognizer)
+        self.dropdownView?.userInteractionEnabled = true
+    }
+    
     public func presentDropdownController(dropdownController:UIViewController, height:CGFloat, foldControl:UIControl?, animated:Bool) {
-        dropdownView = UIView(frame: self.view.bounds)
+        if isAnimating {
+            return
+        }
+        if self.dropdownView == nil {
+            self.dropdownView = UIView(frame: self.view.bounds)
+        }
+        isAnimating = true
+        dropdownView?.frame = self.view.bounds
         dropdownView?.backgroundColor = UIColor(white: 0, alpha: 0.4)
         
         foldControl?.enabled = false
-        UIView.transitionWithView(self.view, duration: 0.3, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: {
-            self.view.addSubview(self.dropdownView!)
-        }) { (finished:Bool) in
-            self.addChildViewController(dropdownController)
-            dropdownController.view.frame = CGRectMake(0, -height, CGRectGetWidth(self.view.frame), height)
-            self.view.addSubview(dropdownController.view)
-            dropdownController.didMoveToParentViewController(self)
-            if animated {
-                UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                    dropdownController.view.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), height)
-                }, completion: { (complete:Bool) in
-                    foldControl?.enabled = true
-                })
-            }else {
-                UIView.animateWithDuration(0.3, animations: {
-                    dropdownController.view.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), height)
-                }, completion: { (finished:Bool) in
-                    foldControl?.enabled = true
-                })
-            }
+        
+        self.view.addSubview(self.dropdownView!)
+        self.addChildViewController(dropdownController)
+        dropdownController.view.frame = CGRectMake(0, -height, CGRectGetWidth(self.view.frame), height)
+        self.view.addSubview(dropdownController.view)
+        dropdownController.didMoveToParentViewController(self)
+        if animated {
+            UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                dropdownController.view.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), height)
+            }, completion: {[weak self] (complete:Bool) in
+                foldControl?.enabled = true
+                self?.isAnimating = false
+            })
+        }else {
+            UIView.animateWithDuration(0.3, animations: {
+                dropdownController.view.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), height)
+            }, completion: {[weak self] (finished:Bool) in
+                foldControl?.enabled = true
+                self?.isAnimating = false
+            })
         }
     }
     
     public func dismissDropdownController(dropdownController:UIViewController, height:CGFloat, foldControl:UIControl?, animated:Bool) {
         foldControl?.enabled = false
-        UIView.transitionWithView(self.view, duration: 0.3, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: {
-            self.dropdownView?.removeFromSuperview()
-            self.dropdownView = nil
-        }) { (finished:Bool) in
-            UIView.animateWithDuration(0.3, animations: {
-                dropdownController.view.frame = CGRectMake(0, -height, CGRectGetWidth(self.view.frame), height)
-            }, completion: { (finished:Bool) in
-                dropdownController.view.removeFromSuperview()
-                dropdownController.removeFromParentViewController()
-                dropdownController.didMoveToParentViewController(nil)
-                foldControl?.enabled = true
-            })
+        if isAnimating {
+            return
         }
+        isAnimating = true
+        self.dropdownView?.removeFromSuperview()
+        UIView.animateWithDuration(0.3, animations: {
+            dropdownController.view.frame = CGRectMake(0, -height, CGRectGetWidth(self.view.frame), height)
+        }, completion: {[weak self] (finished:Bool) in
+            dropdownController.view.removeFromSuperview()
+            dropdownController.removeFromParentViewController()
+            dropdownController.didMoveToParentViewController(nil)
+            foldControl?.enabled = true
+            self?.isAnimating = false
+        })
     }
 }

@@ -23,9 +23,12 @@ class RankGalleryViewController: GalleryWaterFlowViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.title = rankingTypes[PixivRankingMode.Daily]
         self.arrowTitleView.titleLabel.text = self.title
         self.navigationItem.titleView = self.arrowTitleView
-        self.title = rankingTypes[PixivRankingMode.Daily]
+        self.setupDropdownViewEvent(self.arrowTitleView, action: #selector(arrowTitleView.triggerButtonEvent))
+        
         startLoading()
     }
     
@@ -106,14 +109,14 @@ class RankGalleryViewController: GalleryWaterFlowViewController {
         }
     }
     
-    func onPresentPixivRanking(sender:UIArrowTitleView) {
-        if sender.arrowStatus == UIArrowTitleViewState.Down {
-            presentDropdownController(self.pixivRankingViewController, height: self.view.frame.height, foldControl: sender, animated: false)
+    func onPresentPixivRanking(sender:AnyObject?) {
+        if self.arrowTitleView.arrowStatus == UIArrowTitleViewState.Down {
+            presentDropdownController(self.pixivRankingViewController, height: self.pixivRankingViewController.preferredContentSize.height, foldControl: self.arrowTitleView, animated: false)
             if let mainTabbarController = self.tabBarController as? MainTabbarController {
                 mainTabbarController.hideTabbar(true)
             }
         }else {
-            dismissDropdownController(self.pixivRankingViewController, height: self.view.frame.height, foldControl: sender, animated: true)
+            dismissDropdownController(self.pixivRankingViewController, height: self.pixivRankingViewController.preferredContentSize.height, foldControl: self.arrowTitleView, animated: true)
             if let mainTabbarController = self.tabBarController as? MainTabbarController {
                 mainTabbarController.displayTabbar(true)
             }
