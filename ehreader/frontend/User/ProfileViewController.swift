@@ -106,7 +106,8 @@ class ProfileViewController: UIViewController {
     }
     
     func openSetting(sender:UIBarButtonItem) {
-        
+        let settingViewController = SettingViewController()
+        self.navigationController?.pushViewController(settingViewController, animated: true)
     }
 }
 
