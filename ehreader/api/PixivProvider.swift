@@ -54,6 +54,19 @@ public enum PixivRankingMode:String {
     case R18g = "r18g"
 }
 
+var RankingTypes:[PixivRankingMode:String] = [
+    PixivRankingMode.Daily: "每日",
+    PixivRankingMode.Weekly:"每周",
+    PixivRankingMode.Monthly:"每月",
+    PixivRankingMode.Male:"最受男生欢迎",
+    PixivRankingMode.Female:"最受女生欢迎",
+    PixivRankingMode.Rookie:"Rookie",
+    PixivRankingMode.DailyR18:"每日R18",
+    PixivRankingMode.WeeklyR18:"每周R18",
+    PixivRankingMode.MaleR18:"最受男生欢迎R18",
+    PixivRankingMode.FemaleR18:"最受女生欢迎R18",
+    PixivRankingMode.R18g:"R18g"]
+
 public enum PixivSearchMode:String {
     case ExactTag = "exact_tag"
     case Text = "text"

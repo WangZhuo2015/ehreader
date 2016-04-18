@@ -33,9 +33,11 @@ public class UIArrowTitleView: UIControl {
     public var arrowTitleViewWidth:CGFloat {
         if let title = self.titleLabel.text {
             let height = self.frame.height
-            return title.widthWithConstrainedHeight(height, font: UIFont.boldSystemFontOfSize(17))  + 20 + 30
+            let width = title.widthWithConstrainedHeight(height, font: UIFont.boldSystemFontOfSize(17))
+            //print("title:\(title) width:\(width)")
+            return width  + 20
         }
-        return 0
+        return 50
     }
     
     public override init(frame: CGRect) {
@@ -59,7 +61,7 @@ public class UIArrowTitleView: UIControl {
         arrowImageView.snp_makeConstraints { (make) in
             make.centerY.equalTo(self)
             make.height.width.equalTo(20)
-            make.trailing.equalTo(self)
+            make.leading.equalTo(self.titleLabel.snp_trailing)
         }
     }
     

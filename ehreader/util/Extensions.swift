@@ -255,7 +255,7 @@ public extension String {
         
         let boundingBox = self.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
         
-        return boundingBox.height
+        return boundingBox.width
     }
     
     func heightWithConstrainedWidth(width: CGFloat, font: UIFont) -> CGFloat {

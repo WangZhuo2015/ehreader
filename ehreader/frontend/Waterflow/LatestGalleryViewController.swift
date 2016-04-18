@@ -15,17 +15,22 @@ class LatestGalleryViewController: GalleryWaterFlowViewController {
         return titleView
     }()
     
-    private lazy var dropdownViewController:UITableViewController = {
-        let viewController = UITableViewController()
+    private lazy var dropdownViewController:SimpleListViewController = {
+        let viewController = SimpleListViewController()
+        viewController.dataSource = self
+        viewController.delegate = self
         return viewController
     }()
+    
+    private var topOptions:[String] = ["一般新作", "我关注的新作"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "新作"
+        self.title = topOptions.first
         self.arrowTitleView.titleLabel.text = self.title
         self.navigationItem.titleView = self.arrowTitleView
+        self.setupDropdownViewEvent(self.arrowTitleView, action: #selector(arrowTitleView.triggerButtonEvent))
         
         backgroundView.addTarget(self, action: #selector(LatestGalleryViewController.startLoading), forControlEvents: UIControlEvents.TouchUpInside)
         startLoading()
@@ -60,13 +65,14 @@ class LatestGalleryViewController: GalleryWaterFlowViewController {
     }
     
     func onPresentLatestType(sender:UIArrowTitleView) {
+        let height = self.dropdownViewController.preferredContentSize.height
         if sender.arrowStatus == UIArrowTitleViewState.Down {
-            presentDropdownController(self.dropdownViewController, height: self.view.frame.height, foldControl: sender, animated: false)
+            presentDropdownController(self.dropdownViewController, height: height, foldControl: sender, animated: false)
             if let mainTabbarController = self.tabBarController as? MainTabbarController {
                 mainTabbarController.hideTabbar(true)
             }
         }else {
-            dismissDropdownController(self.dropdownViewController, height: self.view.frame.height, foldControl: sender, animated: true)
+            dismissDropdownController(self.dropdownViewController, height: height, foldControl: sender, animated: true)
             if let mainTabbarController = self.tabBarController as? MainTabbarController {
                 mainTabbarController.displayTabbar(true)
             }
@@ -112,5 +118,19 @@ class LatestGalleryViewController: GalleryWaterFlowViewController {
                 }
             }
         }
+    }
+}
+
+extension LatestGalleryViewController: SimpleListViewControllerDataSource, SimpleListViewControllerDelegate {
+    func numberOfItemsForSimpleList(viewController: SimpleListViewController) -> Int {
+        return topOptions.count
+    }
+    
+    func simpleListViewController(viewController: SimpleListViewController, titleForItemIndex index: Int) -> String {
+        return topOptions[index]
+    }
+    
+    func simpleListViewController(viewController: SimpleListViewController, didSelectIndex index: Int) {
+        
     }
 }
