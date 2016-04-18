@@ -19,4 +19,5 @@ target 'ehreader' do
     pod 'RKDropdownAlert'
     pod 'NVActivityIndicatorView'
     pod 'SVProgressHUD'
+    pod 'UMengAnalytics'
 end

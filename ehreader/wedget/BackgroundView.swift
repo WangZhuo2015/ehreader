@@ -27,7 +27,7 @@ private let rotateAnimationKey = "rotation"
 
 public class LoadingView: UIView {
     var activityIndicatorView:NVActivityIndicatorView = {
-        let activityIndicatorView = NVActivityIndicatorView(frame: CGRectZero, type: NVActivityIndicatorType.BallClipRotatePulse, color: UIConstants.GrapefruitColor, size: CGSizeMake(40, 40))
+        let activityIndicatorView = NVActivityIndicatorView(frame: CGRectZero, type: NVActivityIndicatorType.BallClipRotatePulse, color: UIConstants.GrapefruitColor, padding: 20)
         return activityIndicatorView
     }()
     

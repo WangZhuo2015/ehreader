@@ -16,6 +16,7 @@
 		E91B7BCD1C9A7E54007ED39F /* LatestGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B7BCC1C9A7E54007ED39F /* LatestGalleryViewController.swift */; };
 		E91B7BCF1C9A7F12007ED39F /* RankGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B7BCE1C9A7F12007ED39F /* RankGalleryViewController.swift */; };
 		E91B7BD31C9AA248007ED39F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B7BD21C9AA248007ED39F /* SearchViewController.swift */; };
+		E91CC5361CC4DF5200E8D17C /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E91CC5351CC4DF5200E8D17C /* libMobClickLibrary.a */; };
 		E92C26CF1C4E0787009FB297 /* BppDownloadFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92C26CE1C4E0787009FB297 /* BppDownloadFile.swift */; };
 		E92C26D11C4E091D009FB297 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E92C26D01C4E091D009FB297 /* CryptoSwift.framework */; };
 		E934F77B1CAB7CA600A26E64 /* CollieGallery.podspec in Resources */ = {isa = PBXBuildFile; fileRef = E934F77A1CAB7CA600A26E64 /* CollieGallery.podspec */; };
@@ -134,6 +135,8 @@
 		E91B7BCC1C9A7E54007ED39F /* LatestGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LatestGalleryViewController.swift; sourceTree = "<group>"; };
 		E91B7BCE1C9A7F12007ED39F /* RankGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankGalleryViewController.swift; sourceTree = "<group>"; };
 		E91B7BD21C9AA248007ED39F /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		E91CC5331CC4DDB000E8D17C /* libUMSocial_Sdk_5.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libUMSocial_Sdk_5.0.a; path = Pods/UMengSocial/Umeng_SDK_Social_iOS_ARM64_5.0/UMSocial_Sdk_5.0/libUMSocial_Sdk_5.0.a; sourceTree = "<group>"; };
+		E91CC5351CC4DF5200E8D17C /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = Pods/UMengAnalytics/umsdk_IOS_analytics_idfa_v3.6.6/UMAnalytics_Sdk_3.6.6/libMobClickLibrary.a; sourceTree = "<group>"; };
 		E92C26CE1C4E0787009FB297 /* BppDownloadFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BppDownloadFile.swift; sourceTree = "<group>"; };
 		E92C26D01C4E091D009FB297 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = "Pods/../build/Debug-iphoneos/CryptoSwift.framework"; sourceTree = "<group>"; };
 		E934F77A1CAB7CA600A26E64 /* CollieGallery.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CollieGallery.podspec; sourceTree = "<group>"; };
@@ -244,6 +247,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E91CC5361CC4DF5200E8D17C /* libMobClickLibrary.a in Frameworks */,
 				E911817B1CB62F0A0009A52C /* SVProgressHUD.framework in Frameworks */,
 				E98E21ED1CB3E7A0001448FA /* RKDropdownAlert.framework in Frameworks */,
 				E98E21EB1CB3E79C001448FA /* NVActivityIndicatorView.framework in Frameworks */,
@@ -280,6 +284,8 @@
 		21DD57ACF2F65B9C647D2B90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E91CC5351CC4DF5200E8D17C /* libMobClickLibrary.a */,
+				E91CC5331CC4DDB000E8D17C /* libUMSocial_Sdk_5.0.a */,
 				E911817A1CB62F0A0009A52C /* SVProgressHUD.framework */,
 				E98E21EC1CB3E7A0001448FA /* RKDropdownAlert.framework */,
 				E98E21EA1CB3E79C001448FA /* NVActivityIndicatorView.framework */,
@@ -571,6 +577,7 @@
 				F78DD6D41BF9DB7C003D3CB9 /* Resources */,
 				8354AE4C0AF9ECB57719C335 /* Embed Pods Frameworks */,
 				3A0C97DCD9A506E589AC207B /* Copy Pods Resources */,
+				E91CC53A1CC4E24600E8D17C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -706,6 +713,19 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		E91CC53A1CC4E24600E8D17C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "if [ $CONFIGURATION == Release ]; then\necho \"Bumping build number...\"\nplist=${PROJECT_DIR}/${INFOPLIST_FILE}\n\n#increment the build number (ie 115 to 116)\nbuildnum=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${plist}\")\nif [[ \"${buildnum}\" == \"\" ]]; then\necho \"No build number in $plist\"\nexit 2\nfi\n\nbuildnum=$(expr $buildnum + 1)\n/usr/libexec/Plistbuddy -c \"Set CFBundleVersion $buildnum\" \"${plist}\"\necho \"Bumped build number to $buildnum\"\n\nelse\necho $CONFIGURATION \" build - Not bumping build number.\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -927,6 +947,11 @@
 				INFOPLIST_FILE = ehreader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/UMengSocial/Umeng_SDK_Social_iOS_ARM64_5.0/UMSocial_Sdk_5.0",
+					"$(PROJECT_DIR)/Pods/UMengAnalytics/umsdk_IOS_analytics_idfa_v3.6.6/UMAnalytics_Sdk_3.6.6",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bravedefault.ehreader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -949,6 +974,11 @@
 				INFOPLIST_FILE = ehreader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/UMengSocial/Umeng_SDK_Social_iOS_ARM64_5.0/UMSocial_Sdk_5.0",
+					"$(PROJECT_DIR)/Pods/UMengAnalytics/umsdk_IOS_analytics_idfa_v3.6.6/UMAnalytics_Sdk_3.6.6",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bravedefault.ehreader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
