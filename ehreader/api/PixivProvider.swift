@@ -113,6 +113,8 @@ private struct ResponseWrapper {
     }
 }
 
+public typealias GalleryCompleteClosure = (gallery:PixivIllustGallery?, error:NSError?)->Void
+
 private extension Dictionary {
     func buildUrlParameters()->String? {
         var parts:[String] = []
@@ -257,7 +259,7 @@ public class PixivProvider: NSObject {
      - parameter page:        [1-n]
      - parameter complete:
      */
-    public func getRankingAll(mode:PixivRankingMode, rankingType:PixivRankingType = PixivRankingType.All, page:Int, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+    public func getRankingAll(mode:PixivRankingMode, rankingType:PixivRankingType = PixivRankingType.All, page:Int, complete:GalleryCompleteClosure?) {
         
         let url = PixivPAPIRoot + "ranking/\(rankingType.rawValue).json"
         let parameters:[String:AnyObject] = [
@@ -305,7 +307,7 @@ public class PixivProvider: NSObject {
         }
     }
     
-    public func getLastWorks(page:Int = 1, perPage:Int = 30, includeStatus:Bool = true, includeSanityLevel:Bool = true, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+    public func getLastWorks(page:Int = 1, perPage:Int = 30, includeStatus:Bool = true, includeSanityLevel:Bool = true, complete:GalleryCompleteClosure?) {
         let url = PixivPAPIRoot + "works.json"
         let parameters:[String:AnyObject] = [
             "page": page,
@@ -346,7 +348,45 @@ public class PixivProvider: NSObject {
         }
     }
     
-    public func usersFavoriteWorks(userId:Int, page:Int = 1, perPage:Int = 30, includeSanityLevel:Bool = true, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+    public func meFeed(showR18:Bool, maxId:Int?, complete:GalleryCompleteClosure?) {
+        let url = PixivSAPIRoot + "me/feeds.json"
+        let parameters:[String:AnyObject] = [
+            "relation": "all",
+            "type": "touch_nottext",
+            "show_r18": showR18,
+        ]
+        var error:NSError?
+        authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            dispatch_async(dispatch_get_global_queue(0, 0), {
+                if response.result.error != nil {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: response.result.error)
+                    })
+                    return
+                }
+                
+                guard let result = response.result.value as? [NSObject:AnyObject] else {
+                    let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: error)
+                    })
+                    return
+                }
+                
+                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete?(gallery: gallery, error: nil)
+                })
+            })
+        }
+        if error != nil {
+            complete?(gallery: nil, error: error)
+        }
+    }
+    
+    public func usersFavoriteWorks(userId:Int, page:Int = 1, perPage:Int = 30, includeSanityLevel:Bool = true, complete:GalleryCompleteClosure?) {
         let url = PixivPAPIRoot + "users/\(userId)/favorite_works.json"
         let parameters:[String:AnyObject] = [
             "page": page,
@@ -443,7 +483,7 @@ public class PixivProvider: NSObject {
         }
     }
     
-    public func meFavoriteWorks(page:Int = 1, perPage:Int = 50, publicity:PixivPublicity, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+    public func meFavoriteWorks(page:Int = 1, perPage:Int = 50, publicity:PixivPublicity, complete:GalleryCompleteClosure?) {
         let url = PixivPAPIRoot + "me/favorite_works.json"
         let parameters:[String:AnyObject] = [
             "page": page,
@@ -484,7 +524,56 @@ public class PixivProvider: NSObject {
         }
     }
     
-    public func usersWorks(userId:Int, page:Int = 1, perPage:Int = 50, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+    /**
+     关注的新作品
+     
+     - parameter page:     请求的页
+     - parameter perPage:  每页多少
+     - parameter complete: 完成的回调
+     */
+    public func meFollowingWorks(page:Int = 1, perPage:Int = 30, complete:GalleryCompleteClosure?) {
+        let url = PixivPAPIRoot + "me/following/works.json"
+        let parameters:[String:AnyObject] = [
+            "page": page,
+            "per_page": perPage,
+            "image_sizes": "medium,small,px_128x128,px_480mw,large",
+            "profile_image_sizes": "px_170x170,px_50x50",
+            "include_stats": "true",
+            "include_sanity_level": "true"
+        ]
+        
+        var error:NSError?
+        authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
+            dispatch_async(dispatch_get_global_queue(0, 0), {
+                if response.result.error != nil {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: response.result.error)
+                    })
+                    return
+                }
+                
+                guard let result = response.result.value as? [NSObject:AnyObject] else {
+                    let error = NSError(domain: ErrorDomainPixivProvider, code: PixivError.ResultFormatInvalid._code, userInfo: [NSLocalizedDescriptionKey:"Result format is not right"])
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        complete?(gallery: nil, error: error)
+                    })
+                    return
+                }
+                
+                let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete?(gallery: gallery, error: nil)
+                })
+            })
+        }
+        if error != nil {
+            complete?(gallery: nil, error: error)
+        }
+    }
+    
+    public func usersWorks(userId:Int, page:Int = 1, perPage:Int = 50, complete:GalleryCompleteClosure?) {
         let url = PixivPAPIRoot + "users/\(userId)/works.json"
         let parameters:[String:AnyObject] = [
             "page": page,
@@ -707,7 +796,7 @@ public class PixivProvider: NSObject {
      - parameter sort:     排序方式，目前只有date
      - parameter complete: 完成回调
      */
-    public func searchWorks(query:String, page:Int = 1, perPage:Int = 30, mode:PixivSearchMode = PixivSearchMode.ExactTag, period:String = "all", order:String = "desc", sort:String = "date", complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+    public func searchWorks(query:String, page:Int = 1, perPage:Int = 30, mode:PixivSearchMode = PixivSearchMode.ExactTag, period:String = "all", order:String = "desc", sort:String = "date", complete:GalleryCompleteClosure?) {
         
         let url = PixivPAPIRoot + "search/works.json"
         let parameters:[String:AnyObject] = [
@@ -757,7 +846,7 @@ public class PixivProvider: NSObject {
         }
     }
     
-    public func searchUsers(query:String, page:Int = 1, perPage:Int = 30, complete:((gallery:PixivIllustGallery?, error:NSError?)->Void)?) {
+    public func searchUsers(query:String, page:Int = 1, perPage:Int = 30, complete:GalleryCompleteClosure?) {
         
         let url = PixivSAPIRoot + "search_user.php"
         let parameters:[String:AnyObject] = [

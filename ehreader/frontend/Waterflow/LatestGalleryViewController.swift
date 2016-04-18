@@ -22,7 +22,8 @@ class LatestGalleryViewController: GalleryWaterFlowViewController {
         return viewController
     }()
     
-    private var topOptions:[String] = ["一般新作", "我关注的新作"]
+    private var topOptions:[String] = ["我关注的新作", "一般新作"]
+    private var currentOptionIndex:Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,15 +52,15 @@ class LatestGalleryViewController: GalleryWaterFlowViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         headerView.refreshingBlock = {[weak self] ()->() in
-            if self != nil {
-                self!.startLoading(self!.currentPage)
+            if let weakSelf = self {
+                self!.startLoading(weakSelf.currentPage, optionIndex: weakSelf.currentOptionIndex)
             }
         }
         
         footerView.refreshingBlock = {[weak self] ()->() in
-            if self != nil {
-                self!.currentPage += 1
-                self!.startLoading(self!.currentPage)
+            if let weakSelf = self {
+                weakSelf.currentPage += 1
+                weakSelf.startLoading(self!.currentPage, optionIndex: weakSelf.currentOptionIndex)
             }
         }
     }
@@ -79,7 +80,7 @@ class LatestGalleryViewController: GalleryWaterFlowViewController {
         }
     }
     
-    func startLoading(page:Int = 1) {
+    func startLoading(page:Int = 1, optionIndex:Int = 0) {
         if self.isLoadingFinished {
             return
         }
@@ -88,7 +89,7 @@ class LatestGalleryViewController: GalleryWaterFlowViewController {
             return
         }
         
-        pixivProvider.getLastWorks(page) { (gallery, error) in
+        let completeClosure:GalleryCompleteClosure = { (gallery, error) in
             if error != nil || gallery == nil{
                 print("loading choice data failed:\(error!.localizedDescription)")
                 self.backgroundView.status = BackgroundViewStatus.Failed
@@ -118,6 +119,12 @@ class LatestGalleryViewController: GalleryWaterFlowViewController {
                 }
             }
         }
+        if optionIndex == 1 {
+            pixivProvider.getLastWorks(page, complete: completeClosure)
+        }else if optionIndex == 0 {
+            pixivProvider.meFollowingWorks(page, complete: completeClosure)
+        }
+        
     }
 }
 
@@ -131,6 +138,10 @@ extension LatestGalleryViewController: SimpleListViewControllerDataSource, Simpl
     }
     
     func simpleListViewController(viewController: SimpleListViewController, didSelectIndex index: Int) {
-        
+        self.currentOptionIndex = index
+        self.gallery = nil
+        self.arrowTitleView.titleLabel.text = self.topOptions[index]
+        self.startLoading(self.currentPage, optionIndex: index)
+        self.arrowTitleView.triggerButtonEvent()
     }
 }
