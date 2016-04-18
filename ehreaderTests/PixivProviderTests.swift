@@ -105,4 +105,18 @@ class PixivProviderTests: XCTestCase {
         }
         waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
     }
+    
+    func testMeFeed() {
+        do {
+            try self.pixivProvider.loginIfNeeded(username, password: password)
+        }catch let error as NSError {
+            XCTAssert(false, error.localizedDescription)
+        }
+        let expectation = expectationWithDescription("")
+        self.pixivProvider.meFeed(true, maxId: nil) { (gallery, error) in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(defaultTimeout, handler: nil)
+    }
 }

@@ -349,12 +349,15 @@ public class PixivProvider: NSObject {
     }
     
     public func meFeed(showR18:Bool, maxId:Int?, complete:GalleryCompleteClosure?) {
-        let url = PixivSAPIRoot + "me/feeds.json"
-        let parameters:[String:AnyObject] = [
+        let url = PixivPAPIRoot + "me/feeds.json"
+        var parameters:[String:AnyObject] = [
             "relation": "all",
             "type": "touch_nottext",
-            "show_r18": showR18,
+            "show_r18": showR18 ? "1" : "0"
         ]
+        if let maxId = maxId {
+            parameters["max_id"] = maxId
+        }
         var error:NSError?
         authrizonRequest(.GET, url: url, parameters: parameters, error: &error) { (response:Response<AnyObject, NSError>) in
             dispatch_async(dispatch_get_global_queue(0, 0), {
@@ -373,6 +376,16 @@ public class PixivProvider: NSObject {
                     })
                     return
                 }
+                
+                do {
+                    let jsonData = try NSJSONSerialization.dataWithJSONObject(result, options: NSJSONWritingOptions.PrettyPrinted)
+                    if let jsonStr = NSString(data: jsonData, encoding: NSUTF8StringEncoding) {
+                        print(jsonStr)
+                    }
+                }catch let error as NSError {
+                    print(error)
+                }
+                
                 
                 let gallery = PixivIllustGallery.createPixivIllustGallery(result, isWork: true)
                 
