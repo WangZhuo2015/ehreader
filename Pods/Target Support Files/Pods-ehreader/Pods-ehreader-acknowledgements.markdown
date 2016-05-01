@@ -134,6 +134,10 @@ SOFTWARE.
 
 
 
+## MTGDTMob
+
+LICENSE  ©2016 Domob, Inc. All rights reserved
+
 ## NVActivityIndicatorView
 
 The MIT License (MIT)

@@ -171,6 +171,14 @@ SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>LICENSE  &#169;2016 Domob, Inc. All rights reserved</string>
+			<key>Title</key>
+			<string>MTGDTMob</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>The MIT License (MIT)
 
 Copyright (c) 2015 Nguyen Vinh

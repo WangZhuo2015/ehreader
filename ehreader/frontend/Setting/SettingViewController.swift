@@ -25,7 +25,7 @@ class SettingViewController: UIViewController {
         var group = SettingGroup()
         group.title = "设定"
         group.settings.append(SettingModel(title: "分享设定"))
-        group.settings.append(SettingModel(title: "浏览本地缓存"))
+        group.settings.append(SettingModel(title: "清除本地缓存"))
         group.settings.append(SettingModel(title: "删除历史搜索记录"))
         settingGroups.append(group)
         

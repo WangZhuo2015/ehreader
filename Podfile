@@ -20,4 +20,5 @@ target 'ehreader' do
     pod 'NVActivityIndicatorView'
     pod 'SVProgressHUD'
     pod 'UMengAnalytics'
+    pod 'MTGDTMob'
 end

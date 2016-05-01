@@ -5,3 +5,6 @@
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "MobClick.h"
+#import "GDTSplashAd.h"
+#import "GDTTrack.h"
+#import "GDTNativeAd.h"
