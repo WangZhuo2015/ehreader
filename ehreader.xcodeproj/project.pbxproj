@@ -25,6 +25,11 @@
 		E934F77D1CAB7E1400A26E64 /* CollieGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E934F77C1CAB7E1400A26E64 /* CollieGallery.framework */; };
 		E934F77F1CABA2EA00A26E64 /* PixivImageUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E934F77E1CABA2EA00A26E64 /* PixivImageUrl.swift */; };
 		E934F7811CABBB8900A26E64 /* UCZProgressView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = E934F7801CABBB8900A26E64 /* UCZProgressView.podspec */; };
+		E936252C1CE2FD95008CF708 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E936252B1CE2FD95008CF708 /* iAd.framework */; };
+		E936252E1CE2FD9B008CF708 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E936252D1CE2FD9B008CF708 /* AdSupport.framework */; };
+		E93625301CE31FC9008CF708 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E936252F1CE31FC9008CF708 /* AboutViewController.swift */; };
+		E93625331CE326C0008CF708 /* ionicons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93625311CE326C0008CF708 /* ionicons.framework */; };
+		E93625341CE326C0008CF708 /* VTAcknowledgementsViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93625321CE326C0008CF708 /* VTAcknowledgementsViewController.framework */; };
 		E93D68CC1C4FDC6C00EB0932 /* PixivProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93D68CB1C4FDC6C00EB0932 /* PixivProviderTests.swift */; };
 		E95C063F1C48C2A70081C9C3 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */; };
 		E95C06411C48C2F70081C9C3 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E95C06401C48C2F70081C9C3 /* Media.xcassets */; };
@@ -147,6 +152,11 @@
 		E934F77E1CABA2EA00A26E64 /* PixivImageUrl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivImageUrl.swift; sourceTree = "<group>"; };
 		E934F7801CABBB8900A26E64 /* UCZProgressView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UCZProgressView.podspec; sourceTree = "<group>"; };
 		E934F7821CABBCDB00A26E64 /* UCZProgressView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UCZProgressView.framework; path = "Pods/../build/Debug-iphoneos/UCZProgressView.framework"; sourceTree = "<group>"; };
+		E936252B1CE2FD95008CF708 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		E936252D1CE2FD9B008CF708 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		E936252F1CE31FC9008CF708 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		E93625311CE326C0008CF708 /* ionicons.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ionicons.framework; path = "Pods/../build/Debug-iphoneos/ionicons.framework"; sourceTree = "<group>"; };
+		E93625321CE326C0008CF708 /* VTAcknowledgementsViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VTAcknowledgementsViewController.framework; path = "../../Library/Developer/Xcode/DerivedData/ehreader-bsawwpbfimnubodhgkvnncxpxovf/Build/Products/Debug-iphoneos/VTAcknowledgementsViewController.framework"; sourceTree = "<group>"; };
 		E93872CF1C848C930034B465 /* ehreader-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ehreader-Bridging-Header.h"; sourceTree = "<group>"; };
 		E93D68CB1C4FDC6C00EB0932 /* PixivProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixivProviderTests.swift; sourceTree = "<group>"; };
 		E95C063E1C48C2A70081C9C3 /* BackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
@@ -250,6 +260,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E93625331CE326C0008CF708 /* ionicons.framework in Frameworks */,
+				E93625341CE326C0008CF708 /* VTAcknowledgementsViewController.framework in Frameworks */,
+				E936252E1CE2FD9B008CF708 /* AdSupport.framework in Frameworks */,
+				E936252C1CE2FD95008CF708 /* iAd.framework in Frameworks */,
 				E91CC53C1CC4EADF00E8D17C /* libGDTMobSDK.a in Frameworks */,
 				E91CC5361CC4DF5200E8D17C /* libMobClickLibrary.a in Frameworks */,
 				E911817B1CB62F0A0009A52C /* SVProgressHUD.framework in Frameworks */,
@@ -288,6 +302,10 @@
 		21DD57ACF2F65B9C647D2B90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E93625311CE326C0008CF708 /* ionicons.framework */,
+				E93625321CE326C0008CF708 /* VTAcknowledgementsViewController.framework */,
+				E936252D1CE2FD9B008CF708 /* AdSupport.framework */,
+				E936252B1CE2FD95008CF708 /* iAd.framework */,
 				E91CC53B1CC4EADF00E8D17C /* libGDTMobSDK.a */,
 				E91CC5351CC4DF5200E8D17C /* libMobClickLibrary.a */,
 				E911817A1CB62F0A0009A52C /* SVProgressHUD.framework */,
@@ -324,6 +342,7 @@
 			isa = PBXGroup;
 			children = (
 				E911817F1CB6700A0009A52C /* SettingViewController.swift */,
+				E936252F1CE31FC9008CF708 /* AboutViewController.swift */,
 				E909B3F11CBF813F00AF10A9 /* SettingModel.swift */,
 			);
 			path = Setting;
@@ -799,6 +818,7 @@
 				F72B31E81C4F7C89007C6B21 /* PixivProvider.swift in Sources */,
 				F7EE39E51BFC0E9E00531983 /* Extensions.swift in Sources */,
 				E9FB94911C8FBE0C0076E01D /* CurveLayer.swift in Sources */,
+				E93625301CE31FC9008CF708 /* AboutViewController.swift in Sources */,
 				E98B07471C89C2E100EE44B7 /* MainTabbar.swift in Sources */,
 				E98B07431C89C2E100EE44B7 /* GalleryCollectionViewController.swift in Sources */,
 				F78DD6FF1BF9E56D003D3CB9 /* DataLoader.swift in Sources */,

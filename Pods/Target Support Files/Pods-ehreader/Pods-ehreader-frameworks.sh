@@ -101,7 +101,9 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-ehreader/SVProgressHUD.framework"
   install_framework "Pods-ehreader/SnapKit.framework"
   install_framework "Pods-ehreader/UCZProgressView.framework"
+  install_framework "Pods-ehreader/VTAcknowledgementsViewController.framework"
   install_framework "Pods-ehreader/ViewPagerSwift.framework"
+  install_framework "Pods-ehreader/ionicons.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ehreader/AXStretchableHeaderTabViewController.framework"
@@ -121,5 +123,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ehreader/SVProgressHUD.framework"
   install_framework "Pods-ehreader/SnapKit.framework"
   install_framework "Pods-ehreader/UCZProgressView.framework"
+  install_framework "Pods-ehreader/VTAcknowledgementsViewController.framework"
   install_framework "Pods-ehreader/ViewPagerSwift.framework"
+  install_framework "Pods-ehreader/ionicons.framework"
 fi

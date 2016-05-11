@@ -11,6 +11,7 @@ import UIKit
 
 public class SettingGroup: NSObject {
     public var title:String = ""
+    
     public var settings:[SettingModel] = []
     public var cellIdentifier:String?
     
@@ -35,6 +36,21 @@ public class SettingModel: NSObject {
         self.subtitle = subtitle
     }
     
+    public init(title:String, iconName:String) {
+        super.init()
+        self.title = title;
+        self.iconName = iconName;
+    }
+    
+    public init(title:String, subtitle:String, iconName:String) {
+        super.init()
+        self.title = title;
+        self.iconName = iconName;
+        self.subtitle = subtitle
+    }
+    
     public var title:String = ""
     public var subtitle:String = ""
+    public var iconName:String?
+    
 }

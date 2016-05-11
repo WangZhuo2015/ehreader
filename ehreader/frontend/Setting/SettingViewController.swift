@@ -24,16 +24,16 @@ class SettingViewController: UIViewController {
         
         var group = SettingGroup()
         group.title = "设定"
-        group.settings.append(SettingModel(title: "分享设定"))
-        group.settings.append(SettingModel(title: "清除本地缓存"))
-        group.settings.append(SettingModel(title: "删除历史搜索记录"))
+        group.settings.append(SettingModel(title: "分享设定", iconName:"ion-radio-waves"))
+        group.settings.append(SettingModel(title: "清除本地缓存", iconName: "ion-ios-trash"))
+        group.settings.append(SettingModel(title: "删除历史搜索记录", iconName: "ion-ios-copy"))
         settingGroups.append(group)
         
         group = SettingGroup()
         group.title = "支援"
-        group.settings.append(SettingModel(title: "关于"))
-        group.settings.append(SettingModel(title: "给我们评分"))
-        group.settings.append(SettingModel(title: "反馈中心"))
+        group.settings.append(SettingModel(title: "许可协议", iconName: "ion-ios-person"))
+        group.settings.append(SettingModel(title: "给我们评分", iconName: "ion-heart"))
+        group.settings.append(SettingModel(title: "版本"))
         settingGroups.append(group)
         
         return settingGroups

@@ -60,14 +60,47 @@ extension Realm {
         - parameter migrationBlock:     The block which migrates the Realm to the current version.
         - parameter objectTypes:        The subset of `Object` subclasses persisted in the Realm.
         */
-        public init(path: String? = RLMRealmPathForFile("default.realm"),
+        @available(*, deprecated=1, message="Use init(fileURL:...)")
+        public init(path: String?,
+                    inMemoryIdentifier: String? = nil,
+                    encryptionKey: NSData? = nil,
+                    readOnly: Bool = false,
+                    schemaVersion: UInt64 = 0,
+                    migrationBlock: MigrationBlock? = nil,
+                    objectTypes: [Object.Type]? = nil) {
+            self.fileURL = path.map { NSURL(fileURLWithPath: $0) }
+            if inMemoryIdentifier != nil {
+                self.inMemoryIdentifier = inMemoryIdentifier
+            }
+            self.encryptionKey = encryptionKey
+            self.readOnly = readOnly
+            self.schemaVersion = schemaVersion
+            self.migrationBlock = migrationBlock
+            self.objectTypes = objectTypes
+        }
+
+        /**
+        Initializes a `Realm.Configuration`, suitable for creating new `Realm` instances.
+
+        - parameter fileURL:            The local URL to the realm file.
+        - parameter inMemoryIdentifier: A string used to identify a particular in-memory Realm.
+        - parameter encryptionKey:      64-byte key to use to encrypt the data.
+        - parameter readOnly:           Whether the Realm is read-only (must be true for read-only files).
+        - parameter schemaVersion:      The current schema version.
+        - parameter migrationBlock:     The block which migrates the Realm to the current version.
+        - parameter deleteRealmIfMigrationNeeded: If `true`, recreate the Realm file with the new schema
+                                                  if a migration is required.
+        - parameter objectTypes:        The subset of `Object` subclasses persisted in the Realm.
+        */
+        public init(fileURL: NSURL? = NSURL(fileURLWithPath: RLMRealmPathForFile("default.realm"), isDirectory: false),
             inMemoryIdentifier: String? = nil,
             encryptionKey: NSData? = nil,
             readOnly: Bool = false,
             schemaVersion: UInt64 = 0,
             migrationBlock: MigrationBlock? = nil,
+            deleteRealmIfMigrationNeeded: Bool = false,
             objectTypes: [Object.Type]? = nil) {
-                self.path = path
+                self.fileURL = fileURL
                 if inMemoryIdentifier != nil {
                     self.inMemoryIdentifier = inMemoryIdentifier
                 }
@@ -75,13 +108,27 @@ extension Realm {
                 self.readOnly = readOnly
                 self.schemaVersion = schemaVersion
                 self.migrationBlock = migrationBlock
+                self.deleteRealmIfMigrationNeeded = deleteRealmIfMigrationNeeded
                 self.objectTypes = objectTypes
         }
 
         // MARK: Configuration Properties
 
+        /// The local URL to the realm file.
+        /// Mutually exclusive with `inMemoryIdentifier`.
+        public var fileURL: NSURL? {
+            set {
+                _inMemoryIdentifier = nil
+                _path = newValue?.path
+            }
+            get {
+                return _path.map { NSURL(fileURLWithPath: $0) }
+            }
+        }
+
         /// The path to the realm file.
         /// Mutually exclusive with `inMemoryIdentifier`.
+        @available(*, deprecated=1, message="Use fileURL")
         public var path: String? {
             set {
                 _inMemoryIdentifier = nil
@@ -120,6 +167,9 @@ extension Realm {
         /// The block which migrates the Realm to the current version.
         public var migrationBlock: MigrationBlock? = nil
 
+        /// Recreate the Realm file with the new schema if a migration is required.
+        public var deleteRealmIfMigrationNeeded: Bool = false
+
         /// The classes persisted in the Realm.
         public var objectTypes: [Object.Type]? {
             set {
@@ -140,8 +190,8 @@ extension Realm {
 
         internal var rlmConfiguration: RLMRealmConfiguration {
             let configuration = RLMRealmConfiguration()
-            if path != nil {
-                configuration.path = self.path
+            if fileURL != nil {
+                configuration.fileURL = self.fileURL
             } else if inMemoryIdentifier != nil {
                 configuration.inMemoryIdentifier = self.inMemoryIdentifier
             } else {
@@ -151,6 +201,7 @@ extension Realm {
             configuration.readOnly = self.readOnly
             configuration.schemaVersion = self.schemaVersion
             configuration.migrationBlock = self.migrationBlock.map { accessorMigrationBlock($0) }
+            configuration.deleteRealmIfMigrationNeeded = self.deleteRealmIfMigrationNeeded
             configuration.customSchema = self.customSchema
             configuration.disableFormatUpgrade = self.disableFormatUpgrade
             return configuration
@@ -158,7 +209,7 @@ extension Realm {
 
         internal static func fromRLMRealmConfiguration(rlmConfiguration: RLMRealmConfiguration) -> Configuration {
             var configuration = Configuration()
-            configuration._path = rlmConfiguration.path
+            configuration._path = rlmConfiguration.fileURL?.path
             configuration._inMemoryIdentifier = rlmConfiguration.inMemoryIdentifier
             configuration.encryptionKey = rlmConfiguration.encryptionKey
             configuration.readOnly = rlmConfiguration.readOnly
@@ -168,6 +219,7 @@ extension Realm {
                     rlmMigration(migration.rlmMigration, schemaVersion)
                 }
             }
+            configuration.deleteRealmIfMigrationNeeded = rlmConfiguration.deleteRealmIfMigrationNeeded
             configuration.customSchema = rlmConfiguration.customSchema
             configuration.disableFormatUpgrade = rlmConfiguration.disableFormatUpgrade
             return configuration

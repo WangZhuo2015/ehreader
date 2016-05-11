@@ -21,4 +21,6 @@ target 'ehreader' do
     pod 'SVProgressHUD'
     pod 'UMengAnalytics'
     pod 'MTGDTMob'
+    pod 'VTAcknowledgementsViewController'
+    pod 'ionicons'
 end
