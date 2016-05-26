@@ -7,21 +7,21 @@ PODS:
     - SnapKit
     - UCZProgressView
   - CryptoSwift (0.4.1)
-  - ionicons (2.0.3)
+  - IoniconsSwift (2.1.1)
   - JTSImageViewController (1.5.1)
   - Kingfisher (2.4.1)
   - MTGDTMob (4.4.1)
   - NVActivityIndicatorView (2.5)
   - RAMAnimatedTabBarController (1.4.0)
-  - Realm (0.102.0):
-    - Realm/Headers (= 0.102.0)
-  - Realm/Headers (0.102.0)
-  - RealmSwift (0.102.0):
-    - Realm (= 0.102.0)
+  - Realm (0.102.1):
+    - Realm/Headers (= 0.102.1)
+  - Realm/Headers (0.102.1)
+  - RealmSwift (0.102.1):
+    - Realm (= 0.102.1)
   - RKDropdownAlert (0.3.0)
   - RNLoadingButton-Swift (3.1.0)
   - SnapKit (0.21.0)
-  - SSZipArchive (1.1)
+  - SSZipArchive (1.2)
   - SVProgressHUD (2.0.3)
   - UCZProgressView (0.0.1)
   - UMengAnalytics (3.6.6)
@@ -34,7 +34,7 @@ DEPENDENCIES:
   - BALoadingView
   - CollieGallery (from `./`)
   - CryptoSwift
-  - ionicons
+  - IoniconsSwift
   - JTSImageViewController
   - Kingfisher
   - MTGDTMob
@@ -63,18 +63,18 @@ SPEC CHECKSUMS:
   BALoadingView: 3117f79ee2307f35d3d097ae11fb092a4e185487
   CollieGallery: 4b7620963debba436066b783bb416bc77c9e7676
   CryptoSwift: 25b5aff3f260967391f8fff2e9abe4254d2c6fd5
-  ionicons: ec1e86e6c3316bd9942a7f024080dd75c70dd6a5
+  IoniconsSwift: 1d4b89f28182f8015a7c757e64984ef3fa3d0839
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
   Kingfisher: 41aed5b6c1ed8fa98cf6d75283ce89cf7890f517
   MTGDTMob: 744078263334271acdf8eb8af16ec0f11bb45f12
   NVActivityIndicatorView: 18e82784c9cb2d5f3df3129a3e4754eb075ebca0
   RAMAnimatedTabBarController: 6f221d7dc647b4266c9e05618c84b5639f190297
-  Realm: 5d219f9037e3ec2019c599b8227bfc95433cb10e
-  RealmSwift: e6f436f9fea1c57b9ad6d1c46d57562c845f3c4c
+  Realm: 5254be610db3e5024879684717bf038990bb59ec
+  RealmSwift: 3e24e6bcf56d98ccc134f4909e00839b81a659af
   RKDropdownAlert: f4b3364c251829ad439dc666836a1f2dad26f4c7
   RNLoadingButton-Swift: 153bb6e160ec153c1988b7852fdf4c8fa31e5e0a
   SnapKit: 2756fe24b706367af224c9c508d2f9166d03354c
-  SSZipArchive: de3d215ab73f87db627f81f2ce24f1731e3886c3
+  SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
   UCZProgressView: 3218c7a112c5ec311a4e619a81de15b633128525
   UMengAnalytics: 4bf831415146b9c57cb10be65fbd43462ef8cf65

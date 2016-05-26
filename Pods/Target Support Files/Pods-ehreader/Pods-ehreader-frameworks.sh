@@ -89,6 +89,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-ehreader/BALoadingView.framework"
   install_framework "Pods-ehreader/CollieGallery.framework"
   install_framework "Pods-ehreader/CryptoSwift.framework"
+  install_framework "Pods-ehreader/IoniconsSwift.framework"
   install_framework "Pods-ehreader/JTSImageViewController.framework"
   install_framework "Pods-ehreader/Kingfisher.framework"
   install_framework "Pods-ehreader/NVActivityIndicatorView.framework"
@@ -103,7 +104,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-ehreader/UCZProgressView.framework"
   install_framework "Pods-ehreader/VTAcknowledgementsViewController.framework"
   install_framework "Pods-ehreader/ViewPagerSwift.framework"
-  install_framework "Pods-ehreader/ionicons.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ehreader/AXStretchableHeaderTabViewController.framework"
@@ -111,6 +111,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ehreader/BALoadingView.framework"
   install_framework "Pods-ehreader/CollieGallery.framework"
   install_framework "Pods-ehreader/CryptoSwift.framework"
+  install_framework "Pods-ehreader/IoniconsSwift.framework"
   install_framework "Pods-ehreader/JTSImageViewController.framework"
   install_framework "Pods-ehreader/Kingfisher.framework"
   install_framework "Pods-ehreader/NVActivityIndicatorView.framework"
@@ -125,5 +126,4 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ehreader/UCZProgressView.framework"
   install_framework "Pods-ehreader/VTAcknowledgementsViewController.framework"
   install_framework "Pods-ehreader/ViewPagerSwift.framework"
-  install_framework "Pods-ehreader/ionicons.framework"
 fi

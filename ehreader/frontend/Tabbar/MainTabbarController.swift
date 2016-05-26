@@ -8,9 +8,9 @@
 
 import UIKit
 import SnapKit
+import ionicons
 
 class MainTabbarController: UITabBarController {
-
     private var customTabBar:MainTabbar?
     private var rankGalleryViewController:RankGalleryViewController!
     private var latestGalleryViewController:LatestGalleryViewController!
@@ -95,23 +95,28 @@ class MainTabbarController: UITabBarController {
     
     func addChildViewControllers(){
         rankGalleryViewController = RankGalleryViewController()
-        addChildViewController(rankGalleryViewController, titles: "排行", image: "tab_huaban", selectImage: "tab_huaban_selected")
+        let rankImage =  IonIcons.imageWithIcon("ion-ios-timer-outline", size: 29, color: UIColor.redColor())
+        let rankImageHighlight =  IonIcons.imageWithIcon("ion-ios-timer", size: 29, color: UIColor.redColor())
+        addChildViewController(rankGalleryViewController, titles: "排行", image: rankImage, selectImage: rankImageHighlight)
         
         latestGalleryViewController = LatestGalleryViewController()
-        addChildViewController(latestGalleryViewController, titles: "新作", image: "tab_info", selectImage: "tab_info_selected")
+        addChildViewController(latestGalleryViewController, titles: "新作", imageNamed: "tab_info", selectImageNamed: "tab_info_selected")
         
         searchViewController = SearchViewController()
-        addChildViewController(searchViewController, titles: "搜索", image: "tab_explore", selectImage: "tab_explore_selected")
+        addChildViewController(searchViewController, titles: "搜索", imageNamed: "tab_explore", selectImageNamed: "tab_explore_selected")
         
         profileViewController = ProfileViewController()
-        addChildViewController(profileViewController, titles: "我的", image: "tab_me", selectImage: "tab_me_selected")
-        
+        addChildViewController(profileViewController, titles: "我的", imageNamed: "tab_me", selectImageNamed: "tab_me_selected")
     }
     
-    func addChildViewController(child:UIViewController ,titles:String ,image:String ,selectImage:String){
+    func addChildViewController(child:UIViewController ,titles:String ,imageNamed:String ,selectImageNamed:String){
+        addChildViewController(child, titles:titles , image: UIImage(named: imageNamed), selectImage: UIImage(named: selectImageNamed))
+    }
+    
+    func addChildViewController(child:UIViewController ,titles:String ,image:UIImage? ,selectImage:UIImage?) {
         child.tabBarItem.title = titles
-        child.tabBarItem.image = UIImage(named: image)
-        child.tabBarItem.selectedImage = UIImage(named: selectImage)?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+        child.tabBarItem.image = image
+        child.tabBarItem.selectedImage = selectImage?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         child.title = titles as String
         self.tabbarItems.append(child.tabBarItem)
         

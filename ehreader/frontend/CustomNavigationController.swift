@@ -49,7 +49,7 @@ public class CustomNavigationController: UINavigationController {
         super.viewDidLoad()
         
         self.navigationBar.tintColor = UIColor.redColor()
-        self.interactivePopGestureRecognizer?.delegate = self
+        self.interactivePopGestureRecognizer?.delegate = self;
     }
 
     override public func didReceiveMemoryWarning() {

@@ -22,5 +22,5 @@ target 'ehreader' do
     pod 'UMengAnalytics'
     pod 'MTGDTMob'
     pod 'VTAcknowledgementsViewController'
-    pod 'ionicons'
+    pod 'IoniconsSwift'
 end

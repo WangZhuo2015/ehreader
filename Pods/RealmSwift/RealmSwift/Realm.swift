@@ -66,14 +66,24 @@ public final class Realm {
     // MARK: Initializers
 
     /**
-    Obtains a Realm instance with the given configuration. Defaults to the default Realm configuration,
-    which can be changed by setting `Realm.Configuration.defaultConfiguration`.
+    Obtains a Realm instance with the default Realm configuration, which can be
+    changed by setting `Realm.Configuration.defaultConfiguration`.
+
+    - throws: An NSError if the Realm could not be initialized.
+    */
+    public convenience init() throws {
+        let rlmRealm = try RLMRealm(configuration: RLMRealmConfiguration.defaultConfiguration())
+        self.init(rlmRealm)
+    }
+
+    /**
+    Obtains a Realm instance with the given configuration.
 
     - parameter configuration: The configuration to use when creating the Realm instance.
 
     - throws: An NSError if the Realm could not be initialized.
     */
-    public convenience init(configuration: Configuration = Configuration.defaultConfiguration) throws {
+    public convenience init(configuration: Configuration) throws {
         let rlmRealm = try RLMRealm(configuration: configuration.rlmConfiguration)
         self.init(rlmRealm)
     }
@@ -483,7 +493,13 @@ public final class Realm {
     */
     @warn_unused_result(message="You must hold on to the NotificationToken returned from addNotificationBlock")
     public func addNotificationBlock(block: NotificationBlock) -> NotificationToken {
-        return rlmRealm.addNotificationBlock(rlmNotificationBlockFromNotificationBlock(block))
+        return rlmRealm.addNotificationBlock { rlmNotification, _ in
+            if rlmNotification == RLMRealmDidChangeNotification {
+                block(notification: Notification.DidChange, realm: self)
+            } else if rlmNotification == RLMRealmRefreshRequiredNotification {
+                block(notification: Notification.RefreshRequired, realm: self)
+            }
+        }
     }
 
     /**
@@ -658,9 +674,3 @@ public enum Notification: String {
 
 /// Closure to run when the data in a Realm was modified.
 public typealias NotificationBlock = (notification: Notification, realm: Realm) -> Void
-
-internal func rlmNotificationBlockFromNotificationBlock(notificationBlock: NotificationBlock) -> RLMNotificationBlock {
-    return { rlmNotification, rlmRealm in
-        return notificationBlock(notification: Notification(rawValue: rlmNotification)!, realm: Realm(rlmRealm))
-    }
-}
